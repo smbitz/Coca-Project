@@ -1,0 +1,5 @@
+﻿<config>
+    <string name="ITEM_URL" value="http://www.codegears.co.th/coca/item.xml" />
+    <string name="BUILDING_URL" value="http://www.codegears.co.th/coca/building.xml" />
+    <string name="PLAYER_URL" value="http://www.codegears.co.th/coca/player.xml" />
+</config>
