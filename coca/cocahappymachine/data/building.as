@@ -1,6 +1,6 @@
 ﻿package cocahappymachine.data {
 	
-	public class building {
+	public class Building {
 
 		private var id:String;
 		private var name:String;
