@@ -1,6 +1,6 @@
 ﻿package cocahappymachine.data {
 	
-	public class Building {
+	public class Building2 {
 
 		private var id:String;
 		private var name:String;
@@ -16,7 +16,7 @@
 		private var buildItem:Item;
 		private var supplyItem:Item;
 		
-		public function building() {
+		public function Building2() {
 		}
 		
 		public function setDataFromXmlNode(var xml:XML){
