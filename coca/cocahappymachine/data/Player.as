@@ -14,7 +14,7 @@
 		private var money:int;
 		private var isNew:Boolean;
 		private var tile:Array;		//array of Tile
-		private var backpack:Array;	//array of Item
+		private var backpack:Array;	//array of BackpackItem
 		
 		private var isLoad:Boolean;
 		private var loadCallback:Function;
@@ -33,13 +33,18 @@
 			loadCallback = callback;
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.dataFormat = URLLoaderDataFormat.TEXT;
-			urlLoader.addEventListener(Event.COMPLETE, onLoadComplete);
+			urlLoader.addEventListener(Event.COMPLETE, onXmlComplete);
 			urlLoader.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
 			var url:String = Config.getInstance().getData("PLAYER_URL");
 			urlLoader.load(new URLRequest(url));
 		}
 	
-		private function onLoadComplete(event:Event){
+		private function onXmlComplete(event:Event){
+			//get list of building node
+			//for each building node
+				//create new building
+				//set data from xml
+				//add building to array
 			isLoad = true;
 			loadCallback();
 		}
