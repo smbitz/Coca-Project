@@ -65,21 +65,16 @@
 			}
 			
 			//Building Yield Item
-			for each(var yieldItemAttributes:XML in xml.yield_item.attributes()){
-				if (yieldItemAttributes.name()=="id") {
-					yieldId = yieldItemAttributes;
-				}else if (yieldItemAttributes.name()=="quantity") {
-					yieldQuantity = int(yieldItemAttributes);
-				}else if (yieldItemAttributes.name()=="chance") {
-					yieldChance = int(yieldItemAttributes);
-				}else if (yieldItemAttributes.name()=="randomTime") {
-					yieldRandomTime = int(yieldItemAttributes);
-				}
+			for(var j:int = 0; j<xml.yield_item.length(); j++){
+				yieldId = xml.yield_item[j].attribute("id");
+				yieldQuantity = xml.yield_item[j].attribute("quantity");
+				yieldChance = xml.yield_item[j].attribute("chance");
+				yieldRandomTime = xml.yield_item[j].attribute("randomTime");
+				
+				var newYieldItem:BuildingYieldItem = new BuildingYieldItem();
+				newYieldItem.setDataFromNode(yieldId,yieldQuantity,yieldChance,yieldRandomTime);
+				yieldItem.push(newYieldItem);
 			}
-			
-			var newYieldItem:BuildingYieldItem = new BuildingYieldItem();
-			newYieldItem.setDataFromNode(yieldId,yieldQuantity,yieldChance,yieldRandomTime);
-			yieldItem.push(newYieldItem);
 		}
 		
 		public function getId():String{
@@ -90,28 +85,12 @@
 			return name;
 		}
 		
-		public function getBuildingType():String{
-			return buildingType;
-		}
-		
-		public function getBuildPeriod():int{
-			return buildPeriod;
-		}
-		
 		public function getSupplyId():String{
 			return supplyId;
 		}
 		
-		public function getSupplyPeriod():int{
-			return supplyPeriod;
-		}
-		
 		public function getBuildItemId():String{
 			return buildItemId;
-		}
-		
-		public function getRottenPeriod():int{
-			return rottenPeriod;
 		}
 		
 		public function getExtra():Array{

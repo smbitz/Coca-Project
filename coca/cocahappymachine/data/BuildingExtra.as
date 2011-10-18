@@ -19,10 +19,6 @@
 			return id;
 		}
 		
-		public function getResult():int{
-			return result;
-		}
-		
 		public function getItem():Item{
 			return item;
 		}

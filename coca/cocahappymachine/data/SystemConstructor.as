@@ -80,25 +80,43 @@
 		}
 		
 		private function manageData(){
+			//Set Item Building Data
 			var arrayOfBuilding = bManager.getBuilding();
 			
 			//for all building
 			for each(var buildingFeatch:Building in arrayOfBuilding){
 				//building.buildItem = iManager.getItem(building.buildItemId);
 				//building.setBuildItem(iManager.getItem(building.getBuildingItemId()));
-				buildingFeatch.setBuildItem(iManager.getItem(buildingFeatch.getBuildItemId()));
-				buildingFeatch.setSupplyItem(iManager.getItem(buildingFeatch.getSupplyId()));
+				
+				buildingFeatch.setBuildItem(iManager.getMatchItem(buildingFeatch.getBuildItemId()));
+				buildingFeatch.setSupplyItem(iManager.getMatchItem(buildingFeatch.getSupplyId()));
 				
 				var arrayBuildingExtra = buildingFeatch.getExtra();
 				for(var i:int = 0; i < arrayBuildingExtra.length; i++){
-					arrayBuildingExtra[i].setItem(iManager.getItem(arrayBuildingExtra[i].getId()));
+					arrayBuildingExtra[i].setItem(iManager.getMatchItem(arrayBuildingExtra[i].getId()));
 				}
 				
 				var arrayBuildingYield = buildingFeatch.getYieldItem();
-				//trace(arrayBuildingYield.length);
 				for(var j:int = 0; j < arrayBuildingYield.length; j++){
-					
+					if(arrayBuildingYield[j].getId()!="money"){
+						arrayBuildingYield[j].setItem(iManager.getMatchItem(arrayBuildingYield[j].getId()));
+					}
 				}
+			}
+			
+			//Set Player Data
+			//Set Tile
+			var arrayPlayerTile = currentPlayer.getTile();
+			for(var z:int = 0 ; z < arrayPlayerTile.length; z++){
+				if(arrayPlayerTile[z].getBuildingId() != null){
+					arrayPlayerTile[z].setBuilding(bManager.getMatchBuilding(arrayPlayerTile[z].getBuildingId()));
+				}
+			}
+			
+			//Set Backpack
+			var arrayPlayerBackpack = currentPlayer.getBackpack();
+			for(var q:int = 0 ; q < arrayPlayerBackpack.length; q++){
+				arrayPlayerBackpack[q].setItem(iManager.getMatchItem(arrayPlayerBackpack[q].getItemId()));
 			}
 		}
 		

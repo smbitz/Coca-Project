@@ -13,10 +13,6 @@
 			return id;
 		}
 		
-		public function getQuantity():int{
-			return quantity;
-		}
-		
 		public function getItem():Item{
 			return item;
 		}

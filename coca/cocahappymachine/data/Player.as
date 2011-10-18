@@ -22,6 +22,8 @@
 		public function Player(facebookId:String) {
 			this.facebookId = facebookId;
 			isLoad = false;
+			tile = new Array();
+			backpack = new Array();
 		}
 		
 		public function isLoadComplete():Boolean {
@@ -44,7 +46,7 @@
 			var dataXml:XML = new XML(event.target.data);
 			
 			//for each building node
-			for each(var playerData:XML in dataXml.player){
+			for each(var playerData:XML in dataXml){
 				for each(var playerDataAttributes:XML in playerData.attributes()){
 					if (playerDataAttributes.name()=="facebook_id") {
 						facebookId = playerDataAttributes;
@@ -58,10 +60,29 @@
 				}
 				
 				//tile
+				for each(var landAttributes:XML in playerData.land.tile){
+					var newTile:Tile = new Tile();
+					newTile.setDataFromXmlNode(landAttributes);
+					tile.push(newTile);
+				}
+				
 				//backpack
+				for each(var backpackAttributes:XML in playerData.backpack.item){
+					var newItem:Backpack = new Backpack();
+					newItem.setDataFromXmlNode(backpackAttributes);
+					backpack.push(newItem);
+				}
 			}
 			isLoad = true;
 			loadCallback();
+		}
+		
+		public function getTile():Array{
+			return tile;
+		}
+		
+		public function getBackpack():Array{
+			return backpack;
 		}
 		
 		private function onIOError(event:IOErrorEvent){

@@ -66,7 +66,7 @@
 			loadCallback();
 		}
 		
-		public function getItem(id:String):Item{
+		public function getMatchItem(id:String):Item{
 			for each(var matchItemId:Item in item){
 				if(matchItemId.getId()==id){
 					return matchItemId;

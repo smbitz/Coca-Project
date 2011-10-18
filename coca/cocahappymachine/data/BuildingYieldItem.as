@@ -22,18 +22,6 @@
 			return id;
 		}
 		
-		public function getQuantity():Number{
-			return quantity;
-		}
-		
-		public function getChance():Number{
-			return chance;
-		}
-		
-		public function getRandomTime():Number{
-			return randomTime;
-		}
-		
 		public function getItem():Item{
 			return item;
 		}

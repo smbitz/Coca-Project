@@ -70,6 +70,15 @@
 			return building;
 		}
 		
+		public function getMatchBuilding(id:String):Building{
+			for each(var matchBuildingId:Building in building){
+				if(matchBuildingId.getId()==id){
+					return matchBuildingId;
+				}
+			}
+			return null;
+		}
+		
 		private function onIOError(event:IOErrorEvent){
 			trace("building IO Error");
 			load(loadCallback);
