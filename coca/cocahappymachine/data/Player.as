@@ -41,10 +41,25 @@
 	
 		private function onXmlComplete(event:Event){
 			//get list of building node
+			var dataXml:XML = new XML(event.target.data);
+			
 			//for each building node
-				//create new building
-				//set data from xml
-				//add building to array
+			for each(var playerData:XML in dataXml.player){
+				for each(var playerDataAttributes:XML in playerData.attributes()){
+					if (playerDataAttributes.name()=="facebook_id") {
+						facebookId = playerDataAttributes;
+					}else if (playerDataAttributes.name()=="exp") {
+						exp = int(playerDataAttributes);
+					}else if (playerDataAttributes.name()=="money") {
+						money = int(playerDataAttributes);
+					}else if (playerDataAttributes.name()=="is_new") {
+						isNew = Boolean(playerDataAttributes);
+					}
+				}
+				
+				//tile
+				//backpack
+			}
 			isLoad = true;
 			loadCallback();
 		}

@@ -73,9 +73,33 @@
 		
 		private function isAllLoadComplete():Boolean{
 			if(iManager.isLoadComplete() && bManager.isLoadComplete() && currentPlayer.isLoadComplete()){
+				manageData();
 				return true;
 			}
 			return false;
+		}
+		
+		private function manageData(){
+			var arrayOfBuilding = bManager.getBuilding();
+			
+			//for all building
+			for each(var buildingFeatch:Building in arrayOfBuilding){
+				//building.buildItem = iManager.getItem(building.buildItemId);
+				//building.setBuildItem(iManager.getItem(building.getBuildingItemId()));
+				buildingFeatch.setBuildItem(iManager.getItem(buildingFeatch.getBuildItemId()));
+				buildingFeatch.setSupplyItem(iManager.getItem(buildingFeatch.getSupplyId()));
+				
+				var arrayBuildingExtra = buildingFeatch.getExtra();
+				for(var i:int = 0; i < arrayBuildingExtra.length; i++){
+					arrayBuildingExtra[i].setItem(iManager.getItem(arrayBuildingExtra[i].getId()));
+				}
+				
+				var arrayBuildingYield = buildingFeatch.getYieldItem();
+				//trace(arrayBuildingYield.length);
+				for(var j:int = 0; j < arrayBuildingYield.length; j++){
+					
+				}
+			}
 		}
 		
 		private function onAllLoadComplete(){

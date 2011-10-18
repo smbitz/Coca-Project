@@ -10,15 +10,34 @@
 		public function Item() {
 		}
 
-		public function setDataFromXmlNode(var xml:XML){
-			
+		public function setDataFromXmlNode(xml:XML){
+			for each(var itemAttributes:XML in xml.attributes()){
+				if (itemAttributes.name()=="id") {
+					id = itemAttributes;
+				}else if (itemAttributes.name()=="name") {
+					name = itemAttributes;
+				}else if (itemAttributes.name()=="buying_price") {
+					price = int(itemAttributes);
+				}else if (itemAttributes.name()=="item_type") {
+					itemType = itemAttributes;
+				}
+			}
 		}
 		
-		private class ExchangeItem {
-			private var id:String;
-			private var quantity:int;
-			
-			private var item:Item;
+		public function getId():String{
+			return id;
+		}
+		
+		public function getName():String{
+			return name;
+		}
+		
+		public function getPrice():int{
+			return price;
+		}
+		
+		public function getItemType():String{
+			return itemType;
 		}
 	}
 	

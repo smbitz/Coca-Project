@@ -49,12 +49,30 @@
 		
 		private function onXmlComplete(event:Event){
 			//get list of building node
+			var dataXml:XML = new XML(event.target.data);
+			
 			//for each building node
+			for each(var item_root:XML in dataXml.item){
 				//create new building
+				var newItem:Item = new Item();
+				
 				//set data from xml
+				newItem.setDataFromXmlNode(item_root);
+				
 				//add building to array
+				item.push(newItem);
+			}
 			isLoad = true;
 			loadCallback();
+		}
+		
+		public function getItem(id:String):Item{
+			for each(var matchItemId:Item in item){
+				if(matchItemId.getId()==id){
+					return matchItemId;
+				}
+			}
+			return null;
 		}
 		
 		private function onIOError(event:IOErrorEvent){
