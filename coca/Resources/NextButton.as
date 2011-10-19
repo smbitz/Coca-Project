@@ -1,9 +1,9 @@
 ﻿package Resources {
 	
-	import flash.display.MovieClip;
+	import flash.display.SimpleButton;
 	
 	
-	public class NextButton extends MovieClip {
+	public class NextButton extends SimpleButton {
 		
 		
 		public function NextButton() {

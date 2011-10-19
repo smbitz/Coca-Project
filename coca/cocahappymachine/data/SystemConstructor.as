@@ -31,6 +31,10 @@
 			}
 			return instance
 		}
+		
+		public function getCurrentPlayer():Player{
+			return currentPlayer;
+		}
 
 		//construct data by (1)load config (2)load item/building/player
 		public function construct(callback:Function){

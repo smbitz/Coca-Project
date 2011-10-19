@@ -19,11 +19,11 @@
 	public class CocaCode extends MovieClip {
 		
 		private var loadDialog:LoadingDialog;
+		private var state:int;
 		
 		public function CocaCode() {
 			//---- display loading dialog ----
-			loadDialog = new LoadingDialog();
-			this.addChild(loadDialog);
+			startLoading();
 			
 			//---- load data ----
 			/*var obj:Object = LoaderInfo(this.root.loaderInfo).parameters.userFacebookId;
@@ -31,32 +31,34 @@
 			SystemConstructor.getInstance().setFacebookId(facebookId);*/
 			SystemConstructor.getInstance().construct(onSystemComplete);
 			
-			//---- Test Load External Symbol ----
+			//---- Load External Symbol ----
 			var path:URLRequest = new URLRequest("Resources.swf");
 			var context:LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
 			var loader:Loader = new Loader();
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,runtimeAssetsLoadComplete);
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,onSWFLoadComplete);
 			loader.load(path,context);
-			//-----------------------------------
 		}		
 
 		public function onSystemComplete(player:Player){
 			trace("all load complete");
-			//start game
-			this.removeChild(loadDialog);
+			startGame();
 		}
 		
 		//Callback function for Load External Symbol testing
 		//for single instance symbole such as dialog, add them to stage and set visible to false
-		public function runtimeAssetsLoadComplete(event:Event){
+		public function onSWFLoadComplete(event:Event){
 			trace("Asset load Complete");
-			var mc:CouponConfirmDialog = new CouponConfirmDialog();
-			mc.addEventListener(CouponViewDialog.DIALOG_CLOSE, onCouponDialogClose);
-			this.addChild(mc);
 		}
 		
-		public function onCouponDialogClose(event:Event){
-			trace("Coupon Dialog Close");
+		private function startLoading(){
+			loadDialog = new LoadingDialog();
+			this.addChild(loadDialog);			
+		}
+		
+		private function startGame(){
+			this.removeChild(loadDialog);
+			var game:GamePlay = new GamePlay();
+			this.addChild(game);
 		}
 	}
 }

@@ -31,7 +31,6 @@
 		
 		public function onConfirmButtonClick(event:MouseEvent){
 			this.dispatchEvent(new Event(DIALOG_CONFIRM));
-			var e:Event = new Event();
 		}
 	}
 	

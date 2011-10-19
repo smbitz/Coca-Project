@@ -1,9 +1,9 @@
 ﻿package Resources {
 	
-	import flash.display.MovieClip;
+	import flash.display.SimpleButton;
 	
 	
-	public class BackButton extends MovieClip {
+	public class BackButton extends SimpleButton {
 		
 		
 		public function BackButton() {

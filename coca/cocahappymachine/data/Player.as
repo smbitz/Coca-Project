@@ -89,6 +89,15 @@
 			trace("player IO Error");
 			load(loadCallback);
 		}
+		
+		public function isNewGame():Boolean{
+			return isNew;
+		}
+		
+		//start timer which effect to all building
+		public function startTimer(){
+			
+		}
 
 	}
 	
