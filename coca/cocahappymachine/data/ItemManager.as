@@ -66,6 +66,10 @@
 			loadCallback();
 		}
 		
+		public function getItem():Array{
+			return item;
+		}
+		
 		public function getMatchItem(id:String):Item{
 			for each(var matchItemId:Item in item){
 				if(matchItemId.getId()==id){

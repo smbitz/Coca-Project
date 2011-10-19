@@ -37,7 +37,6 @@
 			this.addChild(newspaperDialog);
 			//-------------------------
 			currentPlayer = SystemConstructor.getInstance().getCurrentPlayer();
-			currentPlayer.startTimer();
 			if(currentPlayer.isNewGame()){
 				setStateTutorial();
 			} else {

@@ -9,12 +9,21 @@
 		public function ItemExchangeItem() {
 		}
 		
+		public function setDataFromNode(setId:String,setQuantity:int){
+			id = setId;
+			quantity = setQuantity;
+		}
+		
 		public function getId():String{
 			return id;
 		}
 		
 		public function getItem():Item{
 			return item;
+		}
+		
+		public function setItem(setValue:Item){
+			item = setValue;
 		}
 	}
 	

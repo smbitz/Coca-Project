@@ -22,8 +22,9 @@
 		}
 		
 		public function setDataFromXmlNode(xml:XML){
-			var extraId:String;  // extraId temp.
-			var extraResult:String; // extraResult temp.
+			//Temp.
+			var extraId:String;  
+			var extraResult:int; 
 			
 			var yieldId:String;
 			var yieldQuantity:int;
@@ -45,22 +46,18 @@
 					supplyPeriod = int(buildingAttributes);
 				}else if (buildingAttributes.name()=="build_item") {
 					buildItemId = buildingAttributes;
-				}else if (buildingAttributes.name()=="extra_id") {
-					extraId = buildingAttributes;
-				}else if (buildingAttributes.name()=="extra_result") {
-					extraResult = buildingAttributes;
 				}else if (buildingAttributes.name()=="rotten_period") {
 					rottenPeriod = int(buildingAttributes);
 				}
 			}
 			
 			//Building Extra
-			var arrayExtraId:Array = extraId.split(',');
-			var arrayExtraResult:Array = extraResult.split(',');
-			
-			for(var i:int = 0; i<arrayExtraId.length; i++){
+			for(var a:int = 0; a<xml.extra.length(); a++){
+				extraId = xml.extra[a].attribute("id");
+				extraResult = xml.extra[a].attribute("result");
+				
 				var newExtraBuilding:BuildingExtra = new BuildingExtra();
-				newExtraBuilding.setDataFromNode(arrayExtraId[i],arrayExtraResult[i]);
+				newExtraBuilding.setDataFromNode(extraId,extraResult);
 				extra.push(newExtraBuilding);
 			}
 			
