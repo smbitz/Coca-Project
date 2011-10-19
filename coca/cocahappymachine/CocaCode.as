@@ -14,6 +14,7 @@
 	import Resources.CouponViewDialog;
 	import Resources.CouponConfirmDialog;
 	import flash.display.LoaderInfo;
+	import cocahappymachine.util.DebugConsole;
 	
 	
 	public class CocaCode extends MovieClip {
@@ -50,7 +51,7 @@
 			trace("Asset load Complete");
 		}
 		
-		private function startLoading(){
+		private function startLoading(){			
 			loadDialog = new LoadingDialog();
 			this.addChild(loadDialog);			
 		}
@@ -58,7 +59,9 @@
 		private function startGame(){
 			this.removeChild(loadDialog);
 			var game:GamePlay = new GamePlay();
+			var debugConsole:DebugConsole = new DebugConsole(stage.stageWidth, stage.stageHeight);
 			this.addChild(game);
+			this.addChild(debugConsole);
 		}
 	}
 }

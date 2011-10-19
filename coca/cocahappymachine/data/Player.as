@@ -94,11 +94,21 @@
 			return isNew;
 		}
 		
-		//start timer which effect to all building
-		public function startTimer(){
-			
+		public function update(elapse:int){
+			//update all building progress with elapse
 		}
-
+		
+		public function build(locationX:int, locationY:int, building:Building){
+			//check for all build condition (1) land type (2) required items
+			//if allowed to build
+				//reduce item
+				//build
+			// else if land type correct but not enough item
+				//if enough money for all required item
+					//reduce money
+					//building
+			// else
+				//don't allow to build
+		}
 	}
-	
 }

@@ -5,9 +5,16 @@
 	import Resources.TutorialDialog;
 	import flash.events.Event;
 	import Resources.NewspaperDialog;
+	import cocahappymachine.util.Debug;
+	import flash.utils.Timer;
+	import flash.events.TimerEvent;
+	import cocahappymachine.util.GameTimer;
+	import cocahappymachine.util.GameTimerEvent;
 	
 	public class GamePlay extends MovieClip{
 
+
+		
 		public static const STATE_TUTORIAL:int = 1;
 		public static const STATE_NEWSPAPER:int = 2;
 		public static const STATE_PLAY:int = 3;
@@ -36,6 +43,10 @@
 			} else {
 				setStateNewspaper();		
 			}
+			//---- Start Game ----
+			var t:GameTimer = new GameTimer();
+			t.addEventListener(GameTimer.GAMETIMER_RUN, onRun);
+			t.start();
 		}
 		
 		private function setStateTutorial(){
@@ -53,10 +64,11 @@
 		
 		public function onNewspaperClose(event:Event){
 			newspaperDialog.visible = false;
-			//allow player to play game for the first time :P
 		}
 		
-		
+		public function onRun(event:GameTimerEvent){
+			currentPlayer.update(event.getElapse());
+			Debug.getInstance().debug("run : " + event.getElapse());
+		}
 	}
-	
 }
