@@ -13,6 +13,7 @@
 	import flash.utils.getDefinitionByName;
 	import Resources.CouponViewDialog;
 	import Resources.CouponConfirmDialog;
+	import flash.display.LoaderInfo;
 	
 	
 	public class CocaCode extends MovieClip {
@@ -25,6 +26,9 @@
 			this.addChild(loadDialog);
 			
 			//---- load data ----
+			/*var obj:Object = LoaderInfo(this.root.loaderInfo).parameters.userFacebookId;
+			var facebookId:String = obj.toString();
+			SystemConstructor.getInstance().setFacebookId(facebookId);*/
 			SystemConstructor.getInstance().construct(onSystemComplete);
 			
 			//---- Test Load External Symbol ----

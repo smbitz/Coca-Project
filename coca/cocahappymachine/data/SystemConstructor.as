@@ -9,6 +9,8 @@
 	public class SystemConstructor {
 		
 		private static var instance:SystemConstructor = null;
+		
+		private var facebookId:String;
 
 		private var currentPlayer:Player;
 		private var isLoad:Boolean = false;
@@ -17,6 +19,7 @@
 		private var bManager:BuildingManager;
 
 		public function SystemConstructor() {
+			facebookId = "1001";
 			if(instance != null){
 				throw new Error("Singletone Pattern Implemented, new operation is forbidden");
 			}
@@ -34,9 +37,12 @@
 			constructCallback = callback;
 			Config.getInstance().addCallBack(onConfigComplete);
 		}
+		
+		public function setFacebookId(id:String){
+			facebookId = id;
+		}
 		private function initData() {
 			//retrive all information from HTML
-			var facebookId:String = "1001";
 			iManager = ItemManager.getInstance();
 			bManager = BuildingManager.getInstance();
 			iManager.load(onItemComplete);
@@ -98,6 +104,7 @@
 				
 				var arrayBuildingYield = buildingFeatch.getYieldItem();
 				for(var j:int = 0; j < arrayBuildingYield.length; j++){
+					//Money
 					if(arrayBuildingYield[j].getId()!="money"){
 						arrayBuildingYield[j].setItem(iManager.getMatchItem(arrayBuildingYield[j].getId()));
 					}
