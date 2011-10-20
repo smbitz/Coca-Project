@@ -22,16 +22,17 @@
 					landType = tileAttributes;
 				}else if (tileAttributes.name()=="is_occupy") {
 					isOccupy = Boolean(tileAttributes);
+				}else if (tileAttributes.name()=="building_id") {
+					buildingId = tileAttributes;
+				}else if (tileAttributes.name()=="progress") {
+					progess = int(tileAttributes);
+				}else if (tileAttributes.name()=="supply_left") {
+					supply = int(tileAttributes);
+				}else if (tileAttributes.name()=="extra_id") {
+					extraId = tileAttributes;
+				}else if (tileAttributes.name()=="rotten_period") {
+					rottenPeriod = int(tileAttributes);
 				}
-			}
-			
-			//Get Building Detail
-			for(var i:int = 0; i<xml.building.length(); i++){
-				buildingId = xml.building.attribute("id");
-				progess = xml.building.attribute("progress");
-				supply = xml.building.attribute("supply_left");
-				extraId = xml.building.attribute("extra_id");
-				rottenPeriod = xml.building.attribute("rotten_period");
 			}
 		}
 		

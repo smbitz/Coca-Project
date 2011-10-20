@@ -95,9 +95,6 @@
 			
 			//for all building
 			for each(var buildingFeatch:Building in arrayOfBuilding){
-				//building.buildItem = iManager.getItem(building.buildItemId);
-				//building.setBuildItem(iManager.getItem(building.getBuildingItemId()));
-				
 				buildingFeatch.setBuildItem(iManager.getMatchItem(buildingFeatch.getBuildItemId()));
 				buildingFeatch.setSupplyItem(iManager.getMatchItem(buildingFeatch.getSupplyId()));
 				
@@ -112,6 +109,18 @@
 					if(arrayBuildingYield[j].getId()!="money"){
 						arrayBuildingYield[j].setItem(iManager.getMatchItem(arrayBuildingYield[j].getId()));
 					}
+				}
+			}
+			
+			//Set Item Data
+			var arrayOfItem = iManager.getItem();
+			
+			//For all item
+			//Set exchange item
+			for each(var itemFeatch:Item in arrayOfItem){
+				var arrayItemExchange = itemFeatch.getExchangeItem();
+				for(var a:int = 0; a < arrayItemExchange.length; a++){
+					arrayItemExchange[a].setItem(iManager.getMatchItem(arrayItemExchange[a].getId()));
 				}
 			}
 			
