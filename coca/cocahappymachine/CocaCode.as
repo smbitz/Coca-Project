@@ -27,11 +27,15 @@
 			//---- display loading dialog ----
 			startLoading();
 			
+			var debugConsole:DebugConsole = new DebugConsole(stage.stageWidth, stage.stageHeight);
+			this.addChild(debugConsole);
+			
 			//---- load data ----
 			/*var obj:Object = LoaderInfo(this.root.loaderInfo).parameters.userFacebookId;
 			var facebookId:String = obj.toString();
 			SystemConstructor.getInstance().setFacebookId(facebookId);*/
 			SystemConstructor.getInstance().construct(onSystemComplete);
+			Debug.getInstance().debug("Load Data Complete");
 			
 			//---- Load External Symbol ----
 			var path:URLRequest = new URLRequest("Resources.swf");
@@ -39,9 +43,7 @@
 			var loader:Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,onSWFLoadComplete);
 			loader.load(path,context);
-
-			var debugConsole:DebugConsole = new DebugConsole(stage.stageWidth, stage.stageHeight);
-			this.addChild(debugConsole);
+			Debug.getInstance().debug("Load External Complete");
 		}		
 
 		public function onSystemComplete(player:Player){
@@ -57,13 +59,13 @@
 		
 		private function startLoading(){
 			loadDialog = new LoadingDialog();
-			this.addChild(loadDialog);			
+			//this.addChild(loadDialog);			
 		}
 		
 		private function startGame(){
-			this.removeChild(loadDialog);
+			//this.removeChild(loadDialog);
 			var game:GamePlay = new GamePlay();
-			this.addChild(game);
+			//this.addChild(game);
 		}
 	}
 }

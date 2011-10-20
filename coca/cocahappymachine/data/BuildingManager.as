@@ -6,7 +6,9 @@
 	import flash.net.URLRequest;
 	import cocahappymachine.util.Config;
 	import flash.events.IOErrorEvent;
-
+	import cocahappymachine.util.Debug;
+	import flash.events.SecurityErrorEvent;
+	
 	//load building data from server for using in any part of system.
 	//BuildingManager implement singleton pattern, so don't instantiate it.
 	public class BuildingManager {
@@ -43,6 +45,7 @@
 			urlLoader.dataFormat = URLLoaderDataFormat.TEXT;
 			urlLoader.addEventListener(Event.COMPLETE, onXmlComplete);
 			urlLoader.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
+			urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onSecurityError);
 			var url:String = Config.getInstance().getData("BUILDING_URL");
 			urlLoader.load(new URLRequest(url));
 		}
@@ -64,6 +67,7 @@
 			}
 			isLoad = true;
 			loadCallback();
+			Debug.getInstance().debug("xmlLoad Complete");
 		}
 		
 		public function getBuilding():Array{
@@ -82,8 +86,12 @@
 		private function onIOError(event:IOErrorEvent){
 			trace("building IO Error");
 			load(loadCallback);
+			Debug.getInstance().debug("IOError Event");
 		}
 
+		private function onSecurityError(event:SecurityError){
+			Debug.getInstance().debug("SecurityError Event");
+		}
 	}
 	
 }
