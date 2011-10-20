@@ -4,6 +4,7 @@
 	import cocahappymachine.data.BuildingManager;
 	import cocahappymachine.data.Player;
 	import cocahappymachine.util.Config;
+	import cocahappymachine.util.Debug;
 
 	//Instanctiate all necessary data using in application, then callback to one function
 	public class SystemConstructor {
@@ -62,6 +63,7 @@
 		
 		private function onItemComplete(){
 			trace("item complete");
+			Debug.getInstance().debug("item complete");
 			if( isAllLoadComplete()){
 				onAllLoadComplete();
 			}
@@ -69,6 +71,7 @@
 		
 		private function onBuildingComplete(){
 			trace("building complete");
+			Debug.getInstance().debug("building complete");
 			if( isAllLoadComplete()){
 				onAllLoadComplete();
 			}
@@ -76,6 +79,7 @@
 		
 		private function onPlayerComplete(){
 			trace("player complete");
+			Debug.getInstance().debug("player complete");
 			if( isAllLoadComplete()){
 				onAllLoadComplete();
 			}

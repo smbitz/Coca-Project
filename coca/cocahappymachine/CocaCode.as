@@ -39,20 +39,23 @@
 			var loader:Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,onSWFLoadComplete);
 			loader.load(path,context);
+
+			var debugConsole:DebugConsole = new DebugConsole(stage.stageWidth, stage.stageHeight);
+			this.addChild(debugConsole);
 		}		
 
 		public function onSystemComplete(player:Player){
-			trace("all load complete");
+			Debug.getInstance().debug("all load complete");
 			startGame();
 		}
 		
 		//Callback function for Load External Symbol testing
 		//for single instance symbole such as dialog, add them to stage and set visible to false
 		public function onSWFLoadComplete(event:Event){
-			trace("Asset load Complete");
+			Debug.getInstance().debug("Asset load Complete");
 		}
 		
-		private function startLoading(){			
+		private function startLoading(){
 			loadDialog = new LoadingDialog();
 			this.addChild(loadDialog);			
 		}
@@ -60,9 +63,7 @@
 		private function startGame(){
 			this.removeChild(loadDialog);
 			var game:GamePlay = new GamePlay();
-			var debugConsole:DebugConsole = new DebugConsole(stage.stageWidth, stage.stageHeight);
 			this.addChild(game);
-			this.addChild(debugConsole);
 		}
 	}
 }

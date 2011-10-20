@@ -67,7 +67,6 @@
 		
 		public function onRun(event:GameTimerEvent){
 			currentPlayer.update(event.getElapse());
-			Debug.getInstance().debug("run : " + event.getElapse());
 		}
 	}
 }
