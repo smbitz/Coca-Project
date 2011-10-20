@@ -16,6 +16,8 @@
 	import flash.display.LoaderInfo;
 	import cocahappymachine.util.DebugConsole;
 	import cocahappymachine.util.Debug;
+	import cocahappymachine.util.InputableDebugConsole;
+	import cocahappymachine.util.DebugEvent;
 	
 	
 	public class CocaCode extends MovieClip {
@@ -27,7 +29,7 @@
 			//---- display loading dialog ----
 			startLoading();
 			
-			var debugConsole:DebugConsole = new DebugConsole(stage.stageWidth, stage.stageHeight);
+			var debugConsole:InputableDebugConsole = new InputableDebugConsole(stage.stageWidth, stage.stageHeight);
 			this.addChild(debugConsole);
 			
 			//---- load data ----
@@ -51,21 +53,23 @@
 			startGame();
 		}
 		
-		//Callback function for Load External Symbol testing
-		//for single instance symbole such as dialog, add them to stage and set visible to false
+		//---- Callback function for Load External Symbol testing
+		//---- for single instance symbole such as dialog, 
+		//---- add them to stage and set visible to false
 		public function onSWFLoadComplete(event:Event){
 			Debug.getInstance().debug("Asset load Complete");
 		}
 		
 		private function startLoading(){
 			loadDialog = new LoadingDialog();
-			//this.addChild(loadDialog);			
+			this.addChild(loadDialog);
 		}
 		
 		private function startGame(){
-			//this.removeChild(loadDialog);
+			this.removeChild(loadDialog);
 			var game:GamePlay = new GamePlay();
-			//this.addChild(game);
+			this.addChildAt(game, 0);
 		}
+
 	}
 }
