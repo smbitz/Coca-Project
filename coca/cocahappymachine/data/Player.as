@@ -110,5 +110,36 @@
 			// else
 				//don't allow to build
 		}
+		
+		public function exchange(itemId:String){
+			//send request to server asking for exchange item to coupon
+		}
+		
+		//---- Callback function for exchange() ----//
+		public function onExchangeReply(){
+			//if success
+				//reduce amount of item using for exchange
+				//add coupon item to player backpack
+			//else
+				//respond to player that exchange was rejected
+		}
+		
+		public function couponCodeView(itemId:String){
+			//send request to server asking for the code of coupon
+		}
+		
+		//---- Callback function for couponCodeView() ----//
+		public function onCouponCodeViewReply(){
+			
+		}
+		
+		public function specialCodeInput(code:String){
+			//send request to server asking for the verify code
+		}
+		
+		//---- Callback function for specialCodeInput() ----//
+		public function onSpecialCodeInputReply(){
+			
+		}
 	}
 }
