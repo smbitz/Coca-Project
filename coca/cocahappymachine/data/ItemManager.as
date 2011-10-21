@@ -70,6 +70,15 @@
 			return item;
 		}
 		
+		public function howMoney(id:String):int{
+			for each(var matchItemId:Item in item){
+				if(matchItemId.getId()==id){
+					return matchItemId.getPrice();
+				}
+			}
+			return 0;
+		}
+		
 		public function getMatchItem(id:String):Item{
 			for each(var matchItemId:Item in item){
 				if(matchItemId.getId()==id){

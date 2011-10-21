@@ -21,16 +21,24 @@
 			}
 		}
 		
-		public function getItemId(){
+		public function getItemId():String{
 			return itemId;
+		}
+		
+		public function getItemQty():int{
+			return quantity
+		}
+		
+		public function getItem():Item{
+			return item;
 		}
 		
 		public function setItem(setValue:Item){
 			item = setValue;
 		}
 		
-		public function getItem():Item{
-			return item;
+		public function setItemQty(setValue:int){
+			quantity = setValue;
 		}
 	}
 	

@@ -34,10 +34,14 @@
 			
 			//---- load data ----
 			/*var obj:Object = LoaderInfo(this.root.loaderInfo).parameters.userFacebookId;
+			var facebookName:String = LoaderInfo(this.root.loaderInfo).parameters.userFacebookName.toString();
+			
 			var facebookId:String = obj.toString();
 			SystemConstructor.getInstance().setFacebookId(facebookId);*/
 			SystemConstructor.getInstance().construct(onSystemComplete);
 			Debug.getInstance().debug("Load Data Complete");
+			//Debug.getInstance().debug("This is Facebook Id : " + facebookId);
+			//Debug.getInstance().debug("This is Facebook Name : " + facebookName);
 			
 			//---- Load External Symbol ----
 			var path:URLRequest = new URLRequest("Resources.swf");

@@ -106,12 +106,28 @@
 			return supplyItem;
 		}
 		
+		public function getBuildingType():String{
+			return buildingType;
+		}
+		
+		public function getBuildPeriod():int{
+			return buildPeriod;
+		}
+		
+		public function getRottenPeriod():int{
+			return rottenPeriod;
+		}
+		
 		public function setBuildItem(setValue:Item){
 			buildItem = setValue;
 		}
 		
 		public function setSupplyItem(setValue:Item){
 			supplyItem = setValue;
+		}
+		
+		public function setRottenPeriod(setValue:int){
+			rottenPeriod = setValue;
 		}
 	}
 }

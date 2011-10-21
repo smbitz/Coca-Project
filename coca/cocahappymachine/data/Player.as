@@ -19,11 +19,18 @@
 		private var isLoad:Boolean;
 		private var loadCallback:Function;
 		
+		private var bManager:BuildingManager;
+		
+		public static const TILE_MAX_X:int = 8;
+		public static const TILE_MAX_Y:int = 8;
+		public static const QTY_TO_BUILD:int = 1;
+		
 		public function Player(facebookId:String) {
 			this.facebookId = facebookId;
 			isLoad = false;
 			tile = new Array();
 			backpack = new Array();
+			bManager = BuildingManager.getInstance();
 		}
 		
 		public function isLoadComplete():Boolean {
@@ -81,6 +88,11 @@
 			return tile;
 		}
 		
+		public function getTileByLocate(getTileX, getTileY):Tile{
+			var arrayIndex:int = getTileX + (getTileY * TILE_MAX_X);
+			return tile[arrayIndex];
+		}
+		
 		public function getBackpack():Array{
 			return backpack;
 		}
@@ -96,19 +108,43 @@
 		
 		public function update(elapse:int){
 			//update all building progress with elapse
+			for(var a:int = 0; a<tile.length; a++){
+				tile[a].update(elapse);
+			}
 		}
 		
 		public function build(locationX:int, locationY:int, building:Building){
 			//check for all build condition (1) land type (2) required items
-			//if allowed to build
-				//reduce item
-				//build
-			// else if land type correct but not enough item
-				//if enough money for all required item
-					//reduce money
-					//building
-			// else
-				//don't allow to build
+			var currentTile:Tile = getTileByLocate(locationX, locationY);
+			var moneyItem:int = ItemManager.getInstance().howMoney(building.getBuildItemId());
+
+			if(currentTile.isAllowToBuild(building)){
+				if(this.isItemEnough(building.getBuildItemId(), QTY_TO_BUILD)){
+					for(var c:int; c < backpack.length; c++){
+						if(backpack[c].getItemId()==building.getBuildItemId()){
+							backpack[c].setItemQty(backpack[c].getItemQty()-QTY_TO_BUILD);
+						}
+					}
+					currentTile.build(building);
+				}else if(this.money > moneyItem*QTY_TO_BUILD){
+					this.money -= (moneyItem*QTY_TO_BUILD);
+					currentTile.build(building);
+				}else {
+					//don't allow to build
+				}
+			} else {
+				//don't allow to build	
+			}
+		}
+		
+		public function isItemEnough(itemId:String, quantity:int):Boolean{
+			//check from backpack for enough item in that itemId
+			for(var b:int; b < backpack.length; b++){
+				if(backpack[b].getItemId()==itemId&&backpack[b].getItemQty()>=quantity){
+					return true
+				}
+			}
+			return false;
 		}
 		
 		public function exchange(itemId:String){
