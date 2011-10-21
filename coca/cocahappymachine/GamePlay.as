@@ -32,6 +32,7 @@
 			//---- init interface ----
 			//init FarmMap which consist of playTile, decorated area, market place
 			farmMap = new FarmMap();	//send tile data to farm map for construct map
+			this.addChild(farmMap);
 			//init interface LV, EXP, name, money, option bar, coupon button, special code button
 			
 			//---- init all dialog ----

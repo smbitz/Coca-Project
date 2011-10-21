@@ -1,7 +1,9 @@
 ﻿package Resources {
 	
 	import flash.display.MovieClip;
-	
+	import flash.events.MouseEvent;
+	import flash.events.Event;
+	import flash.display.SimpleButton;
 	
 	public class GetItemDialog extends MovieClip {
 		
