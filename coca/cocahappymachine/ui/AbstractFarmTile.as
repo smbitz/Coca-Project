@@ -4,7 +4,7 @@
 	
 	public class AbstractFarmTile extends MovieClip {
 
-		private var tilData:Tile;
+		private var tileData:Tile;
 		
 		public function AbstractFarmTile() {
 		}
