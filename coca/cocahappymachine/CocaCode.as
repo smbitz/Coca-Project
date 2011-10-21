@@ -18,6 +18,7 @@
 	import cocahappymachine.util.Debug;
 	import cocahappymachine.util.InputableDebugConsole;
 	import cocahappymachine.util.DebugEvent;
+	import cocahappymachine.util.DragManager;
 	
 	
 	public class CocaCode extends MovieClip {
@@ -26,6 +27,7 @@
 		private var state:int;
 		
 		public function CocaCode() {
+			DragManager.getInstance().setStage(this.stage);
 			//---- display loading dialog ----
 			startLoading();
 			
