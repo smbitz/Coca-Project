@@ -116,18 +116,20 @@
 		}
 		
 		public function onTilePurchase(event:FarmMapEvent){
+			//display occupy dialog for confirmming the purchase
 		}
 		
 		public function onTileBuild(event:FarmMapEvent){
-			
+			//display Build panel
 		}
 		
 		public function onTileAddItem(event:FarmMapEvent){
-			
+			//display AddItem panel
 		}
 		
 		public function onTileHarvest(event:FarmMapEvent){
-			
+			//display harvaest animation
+			currentPlayer.harvest(event.getClickedTile());
 		}
 		
 		public function onCouponButtonClick(event:MouseEvent){

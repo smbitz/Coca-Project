@@ -38,6 +38,8 @@
 				tile.y =  int(i / FARMTILE_X) * 50
 				this.addChild(tile);
 			}
+			//for empty tile
+				//create purchase tile on top of 2 x 2 tile
 		}
 		
 		public function onTileClick(event:MouseEvent){

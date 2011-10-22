@@ -140,6 +140,31 @@
 			}
 		}
 		
+		//---- Harvest completed building on that tile ----//
+		public function harvest(t:Tile){
+			
+		}
+		
+		//---- Add item to given tile ----//
+		public function addItemToBuilding(t:Tile, item:Item){
+			
+		}
+		
+		//---- Purchase that tile ----//
+		public function purchase(t:Tile){
+			
+		}
+		
+		//---- Calculate and return money required for purchase tile ----//
+		public function getMoneyRequiredForPurchaseTile():int{
+			return 0;
+		}
+		
+		//---- Calculate and return level required for purchase tile ----//
+		public function getLevelRequiredForPurchaseTile():int{
+			return 0;
+		}
+		
 		public function isItemEnough(itemId:String, quantity:int):Boolean{
 			//check from backpack for enough item in that itemId
 			for(var b:int; b < backpack.length; b++){
