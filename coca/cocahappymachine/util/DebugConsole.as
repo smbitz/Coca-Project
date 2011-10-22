@@ -20,7 +20,7 @@
 			this.stageHeight = stageHeight;
 			
 			bg = new MovieClip();
-			bg.graphics.beginFill(0xAAAAAA, 0.3);
+			bg.graphics.beginFill(0xAAAAAA, 0.5);
 			bg.graphics.drawRoundRect(MARGIN_X, stageHeight - HEIGHT - MARGIN_Y, 
 							stageWidth - MARGIN_X - MARGIN_X,HEIGHT, ROUND_CORNER);
 			bg.graphics.endFill();

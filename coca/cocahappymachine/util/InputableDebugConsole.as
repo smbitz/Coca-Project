@@ -17,7 +17,7 @@
 			super(stageWidth, stageHeight);
 			
 			var bg:MovieClip = new MovieClip();
-			bg.graphics.beginFill(0xAAAAAA, 0.3);
+			bg.graphics.beginFill(0xAAAAAA, 0.5);
 			bg.graphics.drawRoundRect(MARGIN_X, stageHeight, 
 							stageWidth - MARGIN_X - MARGIN_X, INPUT_HEIGHT, 0);
 			bg.graphics.endFill();

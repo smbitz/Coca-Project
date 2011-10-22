@@ -97,6 +97,9 @@
 			return backpack;
 		}
 		
+		public function getMoney():int{
+			return money;
+		}
 		private function onIOError(event:IOErrorEvent){
 			trace("player IO Error");
 			load(loadCallback);

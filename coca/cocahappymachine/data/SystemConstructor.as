@@ -57,12 +57,10 @@
 		
 		}
 		private function onConfigComplete(){
-			trace("config complete");
 			initData();
 		}
 		
 		private function onItemComplete(){
-			trace("item complete");
 			Debug.getInstance().debug("item complete");
 			if( isAllLoadComplete()){
 				onAllLoadComplete();
@@ -70,7 +68,6 @@
 		}
 		
 		private function onBuildingComplete(){
-			trace("building complete");
 			Debug.getInstance().debug("building complete");
 			if( isAllLoadComplete()){
 				onAllLoadComplete();
@@ -78,7 +75,6 @@
 		}
 		
 		private function onPlayerComplete(){
-			trace("player complete");
 			Debug.getInstance().debug("player complete");
 			if( isAllLoadComplete()){
 				onAllLoadComplete();

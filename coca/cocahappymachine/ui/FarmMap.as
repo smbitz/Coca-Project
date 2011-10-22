@@ -14,37 +14,48 @@
 		private static const FARMSIZE_Y:int = 1000;
 		
 		private var farmTile:Array;		//array of AbstractFarmTile
+		private var currentPlayer:Player;
 		
 		public function FarmMap() {
-			//---- get player from (1) passed (2) SystemConstructor
-			var currentPlayer:Player;
 			//---- draw farm bg ----//
 			this.graphics.beginFill(0x55BB55, 1.0);
 			this.graphics.drawRect(0,0, FARMSIZE_X, FARMSIZE_Y);
 			this.graphics.endFill();
 															   
+			DragManager.getInstance().addObject(this);
+		}
+		
+		public function setCurrentPlayer(p:Player){
+			currentPlayer = p;
 			farmTile = new Array(FARMTILE_X * FARMTILE_Y);
 			for(var i:int = 0; i < FARMTILE_X * FARMTILE_Y; i++){
-				var tileDate:Tile = currentPlayer.getTile()[i];
-				//if tileData.getStatus() == STATUS_EMPTY
-					//create empty tile
-				//else
-					//create tile from buldingId and status
-					
-				var tile:AbstractFarmTile = new EmptyFarmTile();
+				var tileData:Tile = currentPlayer.getTile()[i];
+				var tile:AbstractFarmTile = FarmTileBuilder.createFarmTile(tileData);
+				tile.setData(tileData);
 				tile.addEventListener(MouseEvent.CLICK, onTileClick);
 				farmTile.push(tile);
 				tile.x = (i % FARMTILE_X) * 100;
 				tile.y =  int(i / FARMTILE_X) * 50
 				this.addChild(tile);
 			}
-			DragManager.getInstance().addObject(this);
 		}
 		
 		public function onTileClick(event:MouseEvent){
 			var t:AbstractFarmTile = AbstractFarmTile(event.currentTarget);
 			var tileData:Tile = t.getData();
-			var farmEvent:FarmMapEvent = new FarmMapEvent(FarmMapEvent.TILE_CLICK);
+			var farmEvent:FarmMapEvent;
+			var tStatus:int = tileData.getBuildingStatus();
+			//if tileData status is not occupy
+				farmEvent = new FarmMapEvent(FarmMapEvent.TILE_PURCHASE);
+			if(tStatus == Tile.BUILDING_EMPTY){
+				farmEvent = new FarmMapEvent(FarmMapEvent.TILE_BUILD);
+			} else if((tStatus == Tile.BUILDING_PROCESS1) || (tStatus == Tile.BUILDING_PROCESS2)){
+				farmEvent = new FarmMapEvent(FarmMapEvent.TILE_ADDITEM);
+			} else if((tStatus == Tile.BUILDING_COMPLETED) || (tStatus == Tile.BUILDING_ROTTED)){
+				farmEvent = new FarmMapEvent(FarmMapEvent.TILE_HARVEST);
+			} else {
+				throw new Error("cocahappymachine.ui.FarmMap onTileClick() : Unexpected case occur");
+			}
 			farmEvent.setClickedTile(tileData);
 			this.dispatchEvent(farmEvent);
 		}

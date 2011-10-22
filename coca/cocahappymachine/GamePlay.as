@@ -16,20 +16,17 @@
 	import Resources.SpecialCodeButton;
 	import flash.events.MouseEvent;
 	import Resources.MoneyUI;
+	import Resources.SpecialCodeDialog;
+	import Resources.CouponExchangeDialog;
 	
 	public class GamePlay extends MovieClip{
-
-
-		
-		public static const STATE_TUTORIAL:int = 1;
-		public static const STATE_NEWSPAPER:int = 2;
-		public static const STATE_PLAY:int = 3;
-		public static const STATE_SHOP:int = 4;
 		
 		private var currentPlayer:Player;
 		
 		private var tutorialDialog:TutorialDialog;
 		private var newspaperDialog:NewspaperDialog;
+		private var specialCodeDialog:SpecialCodeDialog;
+		private var couponExchangeDialog:CouponExchangeDialog;
 		
 		private var farmMap:FarmMap;
 		private var couponButton:CouponButton;
@@ -37,15 +34,26 @@
 		private var moneyUI:MoneyUI;
 		
 		public function GamePlay() {
+			currentPlayer = SystemConstructor.getInstance().getCurrentPlayer();
 			//---- init interface ----
 			//init FarmMap which consist of playTile, decorated area, market place
-			farmMap = new FarmMap();	//send tile data to farm map for construct map
-			farmMap.addEventListener(FarmMapEvent.TILE_CLICK, onTileClick);
+			farmMap = new FarmMap();
+			farmMap.setCurrentPlayer(currentPlayer);
+			farmMap.addEventListener(FarmMapEvent.TILE_PURCHASE, onTilePurchase);
+			farmMap.addEventListener(FarmMapEvent.TILE_BUILD, onTileBuild);
+			farmMap.addEventListener(FarmMapEvent.TILE_ADDITEM, onTileAddItem);
+			farmMap.addEventListener(FarmMapEvent.TILE_HARVEST, onTileHarvest);
 			couponButton = new CouponButton();
 			couponButton.addEventListener(MouseEvent.CLICK, onCouponButtonClick);
+			couponButton.x = 400;
+			couponButton.y = 50;
 			specialCodeButton = new SpecialCodeButton();
 			specialCodeButton.addEventListener(MouseEvent.CLICK, onSpecialCodeButtonClick);
+			specialCodeButton.x = 400;
+			specialCodeButton.y = 100;
 			moneyUI = new MoneyUI();
+			moneyUI.setMoney(currentPlayer.getMoney());
+			moneyUI.x = 400;
 			this.addChild(farmMap);
 			this.addChild(couponButton);
 			this.addChild(specialCodeButton);
@@ -61,8 +69,16 @@
 			newspaperDialog.visible = false;
 			newspaperDialog.addEventListener(NewspaperDialog.DIALOG_CLOSE, onNewspaperClose);
 			this.addChild(newspaperDialog);
+			specialCodeDialog = new SpecialCodeDialog();
+			specialCodeDialog.visible = false;
+			specialCodeDialog.addEventListener(SpecialCodeDialog.DIALOG_CLOSE, onSpeicalCodeClose);
+			specialCodeDialog.addEventListener(SpecialCodeDialog.DIALOG_CONFIRM, onSpecialCodeConfirm);
+			this.addChild(specialCodeDialog);
+			couponExchangeDialog = new CouponExchangeDialog();
+			couponExchangeDialog.visible = false;
+			couponExchangeDialog.addEventListener(CouponExchangeDialog.DIALOG_CLOSE, onCouponExchangeDialogClose);
+			this.addChild(couponExchangeDialog);
 			//-------------------------
-			currentPlayer = SystemConstructor.getInstance().getCurrentPlayer();
 			if(currentPlayer.isNewGame()){
 				setStateTutorial();
 			} else {
@@ -82,6 +98,10 @@
 			newspaperDialog.visible = true;
 		}
 
+		private function setStateSpecialCode(){
+			specialCodeDialog.visible = true;
+		}
+		
 		public function onTutorialClose(event:Event){
 			tutorialDialog.visible = false;
 			setStateNewspaper();
@@ -95,18 +115,40 @@
 			currentPlayer.update(event.getElapse());
 		}
 		
-		public function onTileClick(event:FarmMapEvent){
-			trace("Tile Click - GamePlay.as");
-			//check tile status
-			//process as status
+		public function onTilePurchase(event:FarmMapEvent){
+		}
+		
+		public function onTileBuild(event:FarmMapEvent){
+			
+		}
+		
+		public function onTileAddItem(event:FarmMapEvent){
+			
+		}
+		
+		public function onTileHarvest(event:FarmMapEvent){
+			
 		}
 		
 		public function onCouponButtonClick(event:MouseEvent){
-			
+			couponExchangeDialog.visible = true;
 		}
 		
 		public function onSpecialCodeButtonClick(event:MouseEvent){
-			
+			setStateSpecialCode();
+		}
+		
+		public function onSpeicalCodeClose(event:Event){
+			specialCodeDialog.visible = false;
+		}
+		
+		public function onSpecialCodeConfirm(event:Event){
+			specialCodeDialog.visible = false;
+			//currentPlayer.exchange(itemId);
+		}
+		
+		public function onCouponExchangeDialogClose(event:Event){
+			couponExchangeDialog.visible = false;
 		}
 	}
 }
