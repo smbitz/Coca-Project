@@ -129,5 +129,15 @@
 		public function setRottenPeriod(setValue:int){
 			rottenPeriod = setValue;
 		}
+		
+		//---- return extra item1  ----//
+		public function getExtraItem1():Item{
+			return null;
+		}
+		
+		//---- return extra item1  ----//
+		public function getExtraItem2():Item{
+			return null;
+		}
 	}
 }

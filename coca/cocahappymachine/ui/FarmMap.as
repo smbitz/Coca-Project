@@ -5,8 +5,12 @@
 	import cocahappymachine.util.DragManager;
 	import cocahappymachine.data.Player;
 	import cocahappymachine.data.Tile;
+	import Resources.Shop;
+	import flash.events.Event;
 	
 	public class FarmMap extends MovieClip{
+		
+		public static const SHOP_CLICK:String = "SHOP_CLICK";
 
 		private static const FARMTILE_X:int = 8;
 		private static const FARMTILE_Y:int = 8;
@@ -14,6 +18,7 @@
 		private static const FARMSIZE_Y:int = 1000;
 		
 		private var farmTile:Array;		//array of AbstractFarmTile
+		private var shop:Shop;
 		private var currentPlayer:Player;
 		
 		public function FarmMap() {
@@ -23,6 +28,10 @@
 			this.graphics.endFill();
 															   
 			DragManager.getInstance().addObject(this);
+			
+			shop = new Shop();
+			shop.addEventListener(MouseEvent.CLICK, onShopClick);
+			this.addChild(shop);
 		}
 		
 		public function setCurrentPlayer(p:Player){
@@ -60,6 +69,10 @@
 			}
 			farmEvent.setClickedTile(tileData);
 			this.dispatchEvent(farmEvent);
+		}
+		
+		public function onShopClick(event:MouseEvent){
+			this.dispatchEvent(new Event(SHOP_CLICK));
 		}
 	}
 }
