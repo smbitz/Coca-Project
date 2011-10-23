@@ -39,15 +39,15 @@
 				}else if (buildingAttributes.name()=="building_type") {
 					buildingType = buildingAttributes;
 				}else if (buildingAttributes.name()=="build_period") {
-					buildPeriod = int(buildingAttributes);
+					buildPeriod = ((int(buildingAttributes)*60)*1000);
 				}else if (buildingAttributes.name()=="supply_id") {
 					supplyId = buildingAttributes;
 				}else if (buildingAttributes.name()=="supply_period") {
-					supplyPeriod = int(buildingAttributes);
+					supplyPeriod = ((int(buildingAttributes)*60)*1000);
 				}else if (buildingAttributes.name()=="build_item") {
 					buildItemId = buildingAttributes;
 				}else if (buildingAttributes.name()=="rotten_period") {
-					rottenPeriod = int(buildingAttributes);
+					rottenPeriod = ((int(buildingAttributes)*60)*1000);
 				}
 			}
 			
