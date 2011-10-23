@@ -21,7 +21,6 @@
 		}
 		
 		public function onCloseButtonClick(event:MouseEvent){
-			this.visible = false;
 			this.dispatchEvent(new Event(DIALOG_CLOSE));
 		}
 		

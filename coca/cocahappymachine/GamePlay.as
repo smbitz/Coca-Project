@@ -18,6 +18,8 @@
 	import Resources.MoneyUI;
 	import Resources.SpecialCodeDialog;
 	import Resources.CouponExchangeDialog;
+	import Resources.BuildPanel;
+	import Resources.AddItemPanel;
 	
 	public class GamePlay extends MovieClip{
 		
@@ -27,6 +29,8 @@
 		private var newspaperDialog:NewspaperDialog;
 		private var specialCodeDialog:SpecialCodeDialog;
 		private var couponExchangeDialog:CouponExchangeDialog;
+		private var buildPanel:BuildPanel;
+		private var addItemPanel:AddItemPanel;
 		
 		private var farmMap:FarmMap;
 		private var couponButton:CouponButton;
@@ -78,6 +82,18 @@
 			couponExchangeDialog.visible = false;
 			couponExchangeDialog.addEventListener(CouponExchangeDialog.DIALOG_CLOSE, onCouponExchangeDialogClose);
 			this.addChild(couponExchangeDialog);
+			buildPanel = new BuildPanel();
+			buildPanel.visible = false;
+			buildPanel.addEventListener(BuildPanel.DIALOG_CLOSE, onBuildPanelClose);
+			this.addChild(buildPanel);
+			addItemPanel = new AddItemPanel();
+			addItemPanel.visible = false;
+			addItemPanel.addEventListener(AddItemPanel.DIALOG_CLOSE, onAddItemPanelClose);
+			addItemPanel.addEventListener(AddItemPanel.SUPPLYITEM_CLICK, onSupplyItem);
+			addItemPanel.addEventListener(AddItemPanel.EXTRAITEM1_CLICK, onExtraItem1);
+			addItemPanel.addEventListener(AddItemPanel.EXTRAITEM2_CLICK, onExtraItem2);
+			addItemPanel.addEventListener(AddItemPanel.MOVE_CLICK, onMoveBuilding);
+			this.addChild(addItemPanel);
 			//-------------------------
 			if(currentPlayer.isNewGame()){
 				setStateTutorial();
@@ -121,10 +137,12 @@
 		
 		public function onTileBuild(event:FarmMapEvent){
 			//display Build panel
+			buildPanel.visible =true;
 		}
 		
 		public function onTileAddItem(event:FarmMapEvent){
 			//display AddItem panel
+			addItemPanel.visible = true;
 		}
 		
 		public function onTileHarvest(event:FarmMapEvent){
@@ -151,6 +169,34 @@
 		
 		public function onCouponExchangeDialogClose(event:Event){
 			couponExchangeDialog.visible = false;
+		}
+		
+		public function onBuildPanelClose(event:Event){
+			buildPanel.visible = false;
+		}
+		
+		public function onAddItemPanelClose(event:Event){
+			addItemPanel.visible = false;
+		}
+		
+		public function onSupplyItem(event:Event){
+			trace("supply");
+			//currentPlayer.supplyItem();
+		}
+		
+		public function onExtraItem1(event:Event){
+			trace("extra 1");			
+			//currentPlayer.extraItem();
+		}
+	
+		public function onExtraItem2(event:Event){
+			trace("extra 2");
+			//currentPlayer.extraItem();
+		}
+		
+		public function onMoveBuilding(event:Event){
+			trace("move");
+			//start move state (allow player to select move destination tile
 		}
 	}
 }

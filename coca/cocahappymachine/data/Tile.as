@@ -48,6 +48,7 @@
 		
 		public function getBuildingStatus():int{
 			if(building){
+				return BUILDING_PROCESS1;
 				if(progess<=(building.getBuildPeriod()*0.5)){
 					//if progress <= 50%
 					return BUILDING_PROCESS1;

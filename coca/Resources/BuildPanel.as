@@ -3,17 +3,14 @@
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import flash.events.Event;
-	import flash.display.SimpleButton;
 	
-	public class CouponExchangeDialog extends MovieClip {
+	public class BuildPanel extends MovieClip {
 		
 		public static const DIALOG_CLOSE:String = "DIALOG_CLOSE";
+
+		public var closeButton:MovieClip;
 		
-		public var closeButton:SimpleButton;
-		public var leftButton:SimpleButton;
-		public var rightButton:SimpleButton;
-		
-		public function CouponExchangeDialog() {
+		public function BuildPanel() {
 			closeButton.addEventListener(MouseEvent.CLICK, onCloseButtonClick);
 		}
 		

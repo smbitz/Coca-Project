@@ -205,5 +205,17 @@
 		public function onSpecialCodeInputReply(){
 			
 		}
+		
+		//---- Supply item to targetTile
+		public function supplyItem(targetTile:Tile){
+			//reduce item quantity or reduce money if player don't have that item
+			//building parameter change to effect supply item
+		}
+		
+		//---- add extraItem to targetTile
+		public function extraItem(targetTile:Tile, extraItem:Item){
+			//reduce item quantity (extra item can't purchase)
+			//building paramter change to effect extra item
+		}
 	}
 }

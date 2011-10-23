@@ -13,7 +13,9 @@
 				return new EmptyFarmTile();
 			} else {
 				var tile:AbstractFarmTile = new EmptyFarmTile();	
-				tile.visible = false;
+				tile.graphics.beginFill(0x00FF00, 0.7);
+				tile.graphics.drawRect(0,0, 20,20);
+				tile.graphics.endFill();
 				return tile;
 			}
 		}
