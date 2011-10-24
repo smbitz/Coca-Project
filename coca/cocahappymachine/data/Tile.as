@@ -7,6 +7,7 @@
 		public static const BUILDING_PROCESS2:int = 3;
 		public static const BUILDING_COMPLETED:int = 4;
 		public static const BUILDING_ROTTED:int = 5;
+		public static const BUILDING_NOTOCCUPY:int = 6;
 		
 		private var landType:String;
 		private var isOccupy:Boolean;
@@ -47,6 +48,9 @@
 		}
 		
 		public function getBuildingStatus():int{
+			if(!isOccupy){
+				return BUILDING_NOTOCCUPY;
+			}
 			if(building){
 				return BUILDING_PROCESS1;
 				if(progress<=(building.getBuildPeriod()*0.5)){

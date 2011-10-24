@@ -7,6 +7,7 @@
 	import cocahappymachine.data.Tile;
 	import Resources.Shop;
 	import flash.events.Event;
+	import Resources.PurchaseTile;
 	
 	public class FarmMap extends MovieClip{
 		
@@ -36,19 +37,36 @@
 		
 		public function setCurrentPlayer(p:Player){
 			currentPlayer = p;
+			var tileData:Tile;
 			farmTile = new Array(FARMTILE_X * FARMTILE_Y);
-			for(var i:int = 0; i < FARMTILE_X * FARMTILE_Y; i++){
-				var tileData:Tile = currentPlayer.getTile()[i];
+			//---- Create Tile ----//
+			for(var loop1:int = 0; loop1 < FARMTILE_X * FARMTILE_Y; loop1++){
+				tileData = currentPlayer.getTile()[loop1];
 				var tile:AbstractFarmTile = FarmTileBuilder.createFarmTile(tileData);
 				tile.setData(tileData);
 				tile.addEventListener(MouseEvent.CLICK, onTileClick);
 				farmTile.push(tile);
-				tile.x = (i % FARMTILE_X) * 100;
-				tile.y =  int(i / FARMTILE_X) * 50
+				tile.x = (loop1 % FARMTILE_X) * 100;
+				tile.y =  int(loop1 / FARMTILE_X) * 50
 				this.addChild(tile);
 			}
-			//for empty tile
-				//create purchase tile on top of 2 x 2 tile
+			//---- Create PurchaseTile on top of tile ----//
+			for(var loop2:int = 0; loop2 < FARMTILE_X * FARMTILE_Y; loop2++){
+				tileData = currentPlayer.getTile()[loop2];
+				var tStatus = tileData.getBuildingStatus();
+				if(tStatus == Tile.BUILDING_NOTOCCUPY){
+					var tX:int = loop2 % FARMTILE_X;
+					var tY:int = loop2 / FARMTILE_X;
+					if((tX % 2 == 0) && (tY % 2 == 0)){
+						var purchaseTile:PurchaseTile = new PurchaseTile();
+						purchaseTile.setData(tileData);
+						purchaseTile.x = (loop2 % FARMTILE_X) * 100;
+						purchaseTile.y =  int(loop2 / FARMTILE_X) * 50
+						purchaseTile.addEventListener(MouseEvent.CLICK, onPurchaseTileClick);
+						this.addChild(purchaseTile);						
+					}
+				}
+			}
 		}
 		
 		public function onTileClick(event:MouseEvent){
@@ -56,8 +74,6 @@
 			var tileData:Tile = t.getData();
 			var farmEvent:FarmMapEvent;
 			var tStatus:int = tileData.getBuildingStatus();
-			//if tileData status is not occupy
-				farmEvent = new FarmMapEvent(FarmMapEvent.TILE_PURCHASE);
 			if(tStatus == Tile.BUILDING_EMPTY){
 				farmEvent = new FarmMapEvent(FarmMapEvent.TILE_BUILD);
 			} else if((tStatus == Tile.BUILDING_PROCESS1) || (tStatus == Tile.BUILDING_PROCESS2)){
@@ -67,6 +83,14 @@
 			} else {
 				throw new Error("cocahappymachine.ui.FarmMap onTileClick() : Unexpected case occur");
 			}
+			farmEvent.setClickedTile(tileData);
+			this.dispatchEvent(farmEvent);
+		}
+		
+		public function onPurchaseTileClick(event:MouseEvent){
+			var t:AbstractFarmTile = AbstractFarmTile(event.currentTarget);
+			var tileData:Tile = t.getData();
+			var farmEvent:FarmMapEvent = new FarmMapEvent(FarmMapEvent.TILE_PURCHASE);
 			farmEvent.setClickedTile(tileData);
 			this.dispatchEvent(farmEvent);
 		}

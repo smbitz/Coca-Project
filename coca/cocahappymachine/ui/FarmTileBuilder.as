@@ -9,7 +9,9 @@
 		}
 
 		public static function createFarmTile(tileData:Tile):AbstractFarmTile{
-			if(tileData.getBuildingStatus() == Tile.BUILDING_EMPTY){
+			if(tileData.getBuildingStatus() == Tile.BUILDING_NOTOCCUPY){
+				return new EmptyFarmTile();
+			} else if(tileData.getBuildingStatus() == Tile.BUILDING_EMPTY){
 				return new EmptyFarmTile();
 			} else {
 				var tile:AbstractFarmTile = new EmptyFarmTile();	

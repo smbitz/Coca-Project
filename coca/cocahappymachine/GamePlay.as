@@ -23,6 +23,7 @@
 	import cocahappymachine.ui.AddItemEvent;
 	import cocahappymachine.data.Tile;
 	import cocahappymachine.data.Item;
+	import Resources.OccupyDialog;
 	
 	public class GamePlay extends MovieClip{
 		
@@ -32,6 +33,7 @@
 		private var newspaperDialog:NewspaperDialog;
 		private var specialCodeDialog:SpecialCodeDialog;
 		private var couponExchangeDialog:CouponExchangeDialog;
+		private var occupyDialog:OccupyDialog;
 		private var buildPanel:BuildPanel;
 		private var addItemPanel:AddItemPanel;
 		
@@ -90,6 +92,11 @@
 			buildPanel.visible = false;
 			buildPanel.addEventListener(BuildPanel.DIALOG_CLOSE, onBuildPanelClose);
 			this.addChild(buildPanel);
+			occupyDialog = new OccupyDialog();
+			occupyDialog.visible = false;
+			occupyDialog.addEventListener(OccupyDialog.DIALOG_CLOSE, onOccupyClose);
+			occupyDialog.addEventListener(OccupyDialog.DIALOG_CONFIRM, onOccupyConfirm);
+			this.addChild(occupyDialog);
 			addItemPanel = new AddItemPanel();
 			addItemPanel.visible = false;
 			addItemPanel.addEventListener(AddItemPanel.DIALOG_CLOSE, onAddItemPanelClose);
@@ -136,7 +143,8 @@
 		}
 		
 		public function onTilePurchase(event:FarmMapEvent){
-			//display occupy dialog for confirmming the purchase
+			occupyDialog.visible = true;
+			//set data to occupyDialog
 		}
 		
 		public function onTileBuild(event:FarmMapEvent){
@@ -207,6 +215,15 @@
 		public function onMoveBuilding(event:AddItemEvent){
 			trace("move");
 			//start move state (allow player to select move destination tile
+		}
+		
+		public function onOccupyClose(event:Event){
+			occupyDialog.visible = false;
+		}
+		
+		public function onOccupyConfirm(event:Event){
+			occupyDialog.visible = false;
+			//process occupy
 		}
 	}
 }

@@ -88,6 +88,16 @@
 			load(loadCallback);
 			Debug.getInstance().debug("IOError Event");
 		}
+		
+		public function getBuildingForLandType(landType:String):Array {
+			//if land type is "land" then
+				//get all building with type "vege" or "meat"
+			// else if land type is "sea" then
+				//get all building with type "sea"
+			// else
+				//throw error
+			return null;
+		}
 
 		private function onSecurityError(event:SecurityError){
 			Debug.getInstance().debug("SecurityError Event");

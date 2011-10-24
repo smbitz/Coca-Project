@@ -36,7 +36,9 @@
 		}
 		
 		public function onCloseButtonClick(event:MouseEvent){
-			this.dispatchEvent(new Event(DIALOG_CLOSE));
+			if(event.currentTarget == event.target){
+				this.dispatchEvent(new Event(DIALOG_CLOSE));
+			}
 		}
 		
 		public function onSupplyItemClick(event:MouseEvent){
