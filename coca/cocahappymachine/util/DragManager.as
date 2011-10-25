@@ -3,16 +3,24 @@
 	import flash.events.MouseEvent;
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.utils.Timer;
+	import flash.events.TimerEvent;
 	
 	public class DragManager {
 
+		private static const DRAG_CHECK_INTERVAL:Number = 200;
+		
 		private static var instance:DragManager;
+		
 		private var stage:Stage;
 		private var isDrag:Boolean;
 		private var dragObject:Array;		//array of DragableObject
 		private var draggingObject:MovieClip;
 		private var pointX:Number;
 		private var pointY:Number;
+		private var dragCheckX:Number;
+		private var dragCheckY:Number;
+		private var dragCheckTimer:Timer;
 		
 		public function DragManager() {
 			dragObject = new Array();
@@ -35,7 +43,9 @@
 		}
 		
 		public function onMouseUp(event:MouseEvent){
-			isDrag = false;
+			if(draggingObject){
+				draggingObject.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			}
 		}
 		
 		public function addObject(obj:MovieClip){
@@ -44,7 +54,6 @@
 			}
 			dragObject.push(obj);
 			obj.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-			obj.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
 		public function removeObject(obj:MovieClip){
@@ -52,21 +61,29 @@
 		}
 		
 		public function onMouseDown(event:MouseEvent){
-			isDrag = true;
 			draggingObject = MovieClip(event.currentTarget);
 			pointX = event.stageX;
 			pointY = event.stageY;
+			dragCheckX = event.stageX;
+			dragCheckY = event.stageY;
+			draggingObject.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			isDrag = false;
 		}
 		
 		public function onEnterFrame(event:Event){
-			if(isDrag){
-				var moveX:Number = (stage.mouseX - pointX) / 3;
-				var moveY:Number = (stage.mouseY - pointY) / 3;
-				draggingObject.x += moveX;
-				draggingObject.y += moveY;
-				pointX += moveX;
-				pointY += moveY;
+			var moveX:Number = (stage.mouseX - pointX) / 3;
+			var moveY:Number = (stage.mouseY - pointY) / 3;
+			draggingObject.x += moveX;
+			draggingObject.y += moveY;
+			pointX += moveX;
+			pointY += moveY;
+			if((Math.abs(dragCheckX - stage.mouseX) > 20) || (Math.abs(dragCheckY - stage.mouseY) > 20)){
+				isDrag = true;
 			}
+		}
+		
+		public function isDragging():Boolean{
+			return isDrag;
 		}
 	}
 }

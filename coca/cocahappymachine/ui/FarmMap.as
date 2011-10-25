@@ -70,29 +70,33 @@
 		}
 		
 		public function onTileClick(event:MouseEvent){
-			var t:AbstractFarmTile = AbstractFarmTile(event.currentTarget);
-			var tileData:Tile = t.getData();
-			var farmEvent:FarmMapEvent;
-			var tStatus:int = tileData.getBuildingStatus();
-			if(tStatus == Tile.BUILDING_EMPTY){
-				farmEvent = new FarmMapEvent(FarmMapEvent.TILE_BUILD);
-			} else if((tStatus == Tile.BUILDING_PROCESS1) || (tStatus == Tile.BUILDING_PROCESS2)){
-				farmEvent = new FarmMapEvent(FarmMapEvent.TILE_ADDITEM);
-			} else if((tStatus == Tile.BUILDING_COMPLETED) || (tStatus == Tile.BUILDING_ROTTED)){
-				farmEvent = new FarmMapEvent(FarmMapEvent.TILE_HARVEST);
-			} else {
-				throw new Error("cocahappymachine.ui.FarmMap onTileClick() : Unexpected case occur");
+			if(!DragManager.getInstance().isDragging()){
+				var t:AbstractFarmTile = AbstractFarmTile(event.currentTarget);
+				var tileData:Tile = t.getData();
+				var farmEvent:FarmMapEvent;
+				var tStatus:int = tileData.getBuildingStatus();
+				if(tStatus == Tile.BUILDING_EMPTY){
+					farmEvent = new FarmMapEvent(FarmMapEvent.TILE_BUILD);
+				} else if((tStatus == Tile.BUILDING_PROCESS1) || (tStatus == Tile.BUILDING_PROCESS2)){
+					farmEvent = new FarmMapEvent(FarmMapEvent.TILE_ADDITEM);
+				} else if((tStatus == Tile.BUILDING_COMPLETED) || (tStatus == Tile.BUILDING_ROTTED)){
+					farmEvent = new FarmMapEvent(FarmMapEvent.TILE_HARVEST);
+				} else {
+					throw new Error("cocahappymachine.ui.FarmMap onTileClick() : Unexpected case occur");
+				}
+				farmEvent.setClickedTile(tileData);
+				this.dispatchEvent(farmEvent);
 			}
-			farmEvent.setClickedTile(tileData);
-			this.dispatchEvent(farmEvent);
 		}
 		
 		public function onPurchaseTileClick(event:MouseEvent){
-			var t:AbstractFarmTile = AbstractFarmTile(event.currentTarget);
-			var tileData:Tile = t.getData();
-			var farmEvent:FarmMapEvent = new FarmMapEvent(FarmMapEvent.TILE_PURCHASE);
-			farmEvent.setClickedTile(tileData);
-			this.dispatchEvent(farmEvent);
+			if(!DragManager.getInstance().isDragging()){
+				var t:AbstractFarmTile = AbstractFarmTile(event.currentTarget);
+				var tileData:Tile = t.getData();
+				var farmEvent:FarmMapEvent = new FarmMapEvent(FarmMapEvent.TILE_PURCHASE);
+				farmEvent.setClickedTile(tileData);
+				this.dispatchEvent(farmEvent);
+			}
 		}
 		
 		public function onShopClick(event:MouseEvent){
