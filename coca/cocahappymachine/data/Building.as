@@ -130,6 +130,10 @@
 			rottenPeriod = setValue;
 		}
 		
+		public function setSupplyPeriod(setValue:int){
+			supplyPeriod = setValue;
+		}
+		
 		//---- return extra item1  ----//
 		public function getExtraItem1():Item{
 			return null;
