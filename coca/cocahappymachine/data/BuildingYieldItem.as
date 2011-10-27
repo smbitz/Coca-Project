@@ -19,15 +19,27 @@
 		}
 		
 		public function getId():String{
-			return id;
+			return this.id;
 		}
 		
 		public function getItem():Item{
-			return item;
+			return this.item;
+		}
+		
+		public function getQuantity():int{
+			return this.quantity;
+		}
+		
+		public function getChance():int{
+			return this.chance;
+		}
+		
+		public function getRandomTime():int{
+			return this.randomTime;
 		}
 		
 		public function setItem(setValue:Item){
-			item = setValue;
+			this.item = setValue;
 		}
 	}
 	

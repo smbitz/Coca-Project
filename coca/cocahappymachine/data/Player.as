@@ -6,6 +6,7 @@
 	import flash.net.URLRequest;
 	import cocahappymachine.util.Config;
 	import flash.events.IOErrorEvent;
+	import cocahappymachine.util.Debug;
 	
 	public class Player {
 
@@ -23,14 +24,16 @@
 		
 		public static const TILE_MAX_X:int = 8;
 		public static const TILE_MAX_Y:int = 8;
-		public static const QTY_TO_BUILD:int = 1;
+		private static const QTY_TO_BUILD:int = 1;
+		private static const QTY_USE_SUPPLY:int = 1;
+		private static const QTY_USE_EXTRA:int = 1;
 		
 		public function Player(facebookId:String) {
 			this.facebookId = facebookId;
 			isLoad = false;
 			tile = new Array();
 			backpack = new Array();
-			bManager = BuildingManager.getInstance();
+			bManager = BuildingManager.getInstance()
 		}
 		
 		public function isLoadComplete():Boolean {
@@ -75,7 +78,7 @@
 				
 				//backpack
 				for each(var backpackAttributes:XML in playerData.backpack.item){
-					var newItem:Backpack = new Backpack();
+					var newItem:ItemQuantityPair = new ItemQuantityPair();
 					newItem.setDataFromXmlNode(backpackAttributes);
 					backpack.push(newItem);
 				}
@@ -114,6 +117,15 @@
 			for(var a:int = 0; a<tile.length; a++){
 				tile[a].update(elapse);
 			}
+			
+			/*//test
+			var arrayBuilding:Array = BuildingManager.getInstance().getBuilding();
+			//trace(arrayBuilding.length);
+			this.build(2, 2, BuildingManager.getInstance().getBuilding()[0]); //tile[18]
+			//this.supplyItem(tile[18]);
+			//trace(tile[18].length);
+			this.supplyItem(tile[18]);
+			//this.extraItem(tile[18], BuildingManager.getInstance().getBuilding()[0].getExtra()[0].getItem());*/
 		}
 		
 		public function build(locationX:int, locationY:int, building:Building){
@@ -129,7 +141,7 @@
 						}
 					}
 					currentTile.build(building);
-				}else if(this.money > moneyItem*QTY_TO_BUILD){
+				}else if(this.money >= moneyItem*QTY_TO_BUILD){
 					this.money -= (moneyItem*QTY_TO_BUILD);
 					currentTile.build(building);
 				}else {
@@ -152,13 +164,62 @@
 		
 		//---- Harvest completed building on that tile ----//
 		public function harvest(t:Tile){
-			var arrayYieldItem:Array = t.getBuilding().getYieldItem();
+			//Harvest Yield Item
+			var getYieldItem:Array = t.getBuilding().generateYieldItem();
+			
+			for each(var arrayGetYieldItem in getYieldItem){
+				var yieldItemId:String = arrayGetYieldItem.getItem().getId();
+				var itemPositionBackpack:int = searchBackpackItem(yieldItemId);
+				
+				if(itemPositionBackpack>=0){
+					var currentBackpackQty:int = this.backpack[itemPositionBackpack].getItemQty();
+					var yieldItemQty:int = arrayGetYieldItem.getItem().getItemQty();
+					
+					this.backpack[itemPositionBackpack].setItemQty(currentBackpackQty+yieldItemQty);
+				}else{
+					var b:ItemQuantityPair = new ItemQuantityPair();
+					b.setItemQty(arrayGetYieldItem.getItem().getItemQty());
+					b.setItem(arrayGetYieldItem.getItem());
+					b.setItemId(arrayGetYieldItem.getItem().getId())
+					this.backpack.push();
+				}
+			}
+			
+			//Harvest Money
+			var getYieldMoney:int = t.getBuilding().generateYieldMoney();
+			
+			this.money += getYieldMoney;
+			
+			//Clear Tile
+			t.setBuildingId("NULL");
+			t.setProgress(0);
+			t.setSupply(0);
+			t.setExtraId("NULL");
+			t.setRottenPeriod(0);
 		}
 		
 		//---- Purchase that tile ----//
 		public function purchase(t:Tile){
 			//calculate
-			t.setIsOccupy(true);
+			for(var i:int = 0; i < tile.length; i++){
+				if(tile[i] == t){
+					tile[i].setIsOccupy(true);
+					tile[i + 1].setIsOccupy(true);
+					tile[i + TILE_MAX_X].setIsOccupy(true);
+					tile[i + TILE_MAX_X + 1].setIsOccupy(true);
+				}
+			}
+			
+			//money
+			var totalPlayerFarm:int = 0;
+			for each(var arrayTile:Array in tile){
+				if(arrayTile.getIsOccupy()==true){
+					totalPlayerFarm++;
+				}
+			}
+			
+			var moneyToPurchase = 500 + (500 * (totalPlayerFarm ^ 2) );
+			this.money -= moneyToPurchase;
 		}
 		
 		//---- Calculate and return money required for purchase tile ----//
@@ -216,56 +277,22 @@
 		public function supplyItem(targetTile:Tile):Boolean{
 			//reduce item quantity or reduce money if player don't have that item
 			//building parameter change to effect supply item
-			var buildingType:String = targetTile.getBuilding().getBuildingType();
-			
-			if(buildingType=="vege"){
-				var moneyVegeSupply:int = ItemManager.getInstance().howMoney("160"); //BUG
+			var supplyItemId:String = targetTile.getBuilding().getSupplyId();
+			var moneySupply:int = ItemManager.getInstance().howMoney(supplyItemId);
 				
-				//BUG
-				if(isItemEnough("160", 1)){
-					var searchVegeSupply:int = this.searchBackpackItem("160"); //BUG
-					var currentVegeQty:int = this.backpack[searchVegeSupply].getItemQty();
-					
-					this.backpack[searchVegeSupply].setItemQty(currentVegeQty-1);
-//					targetTile.setSupply(14400000);
-					return true;
-				}else if(this.money > moneyVegeSupply){
-					this.money -= moneyVegeSupply;
-//					targetTile.setSupply(14400000);
+			if(isItemEnough(supplyItemId, QTY_USE_SUPPLY)){
+				var searchSupply:int = this.searchBackpackItem(supplyItemId);
+				var currentQty:int = this.backpack[searchSupply].getItemQty();
+				
+				if(searchSupply>=0){
+					this.backpack[searchSupply].setItemQty(currentQty-1);
+					targetTile.setSupply(targetTile.getBuilding().getBuildPeriod());
 					return true;
 				}
-			}else if(buildingType=="meat"){
-				var moneyMeatSupply:int = ItemManager.getInstance().howMoney("170"); //BUG
-				
-				//BUG
-				if(isItemEnough("170", 1)){
-					var searchMeatSupply:int = this.searchBackpackItem("170"); //BUG
-					var currentMeatQty:int = this.backpack[searchMeatSupply].getItemQty();
-					
-					this.backpack[searchMeatSupply].setItemQty(currentMeatQty-1);
-//					targetTile.setSupply(14400000);
-					return true;
-				}else if(this.money > moneyMeatSupply){
-					this.money -= moneyVegeSupply;
-//					targetTile.setSupply(14400000);
-					return true;
-				}
-			}else if(buildingType=="sea"){
-				var moneySeaSupply:int = ItemManager.getInstance().howMoney("180");	//BUG
-				
-				//BUG
-				if(isItemEnough("180", 1)){
-					var searchSeaSupply:int = this.searchBackpackItem("180"); //BUG
-					var currentSeaQty:int = this.backpack[searchSeaSupply].getItemQty();
-					
-					this.backpack[searchSeaSupply].setItemQty(currentSeaQty-1);
-//					targetTile.setSupply(14400000);
-					return true;
-				}else if(this.money > moneySeaSupply){
-					this.money -= moneyVegeSupply;
-//					targetTile.setSupply(14400000);
-					return true;
-				}
+			}else if(this.money > moneySupply){
+				this.money -= moneySupply;
+					targetTile.setSupply(targetTile.getBuilding().getBuildPeriod());
+				return true;
 			}
 			return false;
 		}
@@ -274,40 +301,16 @@
 		public function extraItem(targetTile:Tile, extraItem:Item):Boolean{
 			//reduce item quantity (extra item can't purchase)
 			//building paramter change to effect extra item
-			var buildingType:String = targetTile.getBuilding().getBuildingType();
+			var extraItemId1:String = targetTile.getBuilding().getExtraItem1().getId();
+			var extraItemId2:String = targetTile.getBuilding().getExtraItem2().getId();
 			
-			if(buildingType=="vege"){
-				//BUG
-				if(extraItem.getId()=="7010"||extraItem.getId()=="7020"){
-					if(isItemEnough(extraItem.getId(), 1)){
-						var searchVegeExtra:int = this.searchBackpackItem(extraItem.getId());
-						var currentVegeExtraQty:int = this.backpack[searchVegeExtra].getItemQty();
-						
-						this.backpack[searchVegeExtra].setItemQty(currentVegeExtraQty-1);
-						targetTile.setExtraId(extraItem.getId());
-						return true;
-					}
-				}
-			}else if(buildingType=="meat"){
-				//BUG
-				if(extraItem.getId()=="7030"||extraItem.getId()=="7040"){
-					if(isItemEnough(extraItem.getId(), 1)){
-						var searchMeatExtra:int = this.searchBackpackItem(extraItem.getId());
-						var currentMeatExtraQty:int = this.backpack[searchMeatExtra].getItemQty();
-						
-						this.backpack[searchMeatExtra].setItemQty(currentMeatExtraQty-1);
-						targetTile.setExtraId(extraItem.getId());
-						return true;
-					}
-				}
-			}else if(buildingType=="sea"){
-				//BUG
-				if(extraItem.getId()=="7050"||extraItem.getId()=="7060"){
-					if(isItemEnough(extraItem.getId(), 1)){
-						var searchSeaExtra:int = this.searchBackpackItem(extraItem.getId());
-						var currentSeaExtraQty:int = this.backpack[searchSeaExtra].getItemQty();
-						
-						this.backpack[searchSeaExtra].setItemQty(currentSeaExtraQty-1);
+			if(extraItem.getId()==extraItemId1||extraItem.getId()==extraItemId2){
+				if(isItemEnough(extraItem.getId(), QTY_USE_EXTRA)){
+					var searchExtra:int = this.searchBackpackItem(extraItem.getId());
+					var currentExtraQty:int = this.backpack[searchExtra].getItemQty();
+					
+					if(searchExtra>=0){
+						this.backpack[searchExtra].setItemQty(currentExtraQty-1);
 						targetTile.setExtraId(extraItem.getId());
 						return true;
 					}

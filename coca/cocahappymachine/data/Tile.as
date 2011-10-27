@@ -106,6 +106,10 @@
 			return this.building;
 		}
 		
+		public function getIsOccupy():Boolean{
+			return this.isOccupy;
+		}
+		
 		public function setBuilding(setValue:Building){
 			this.building = setValue;
 		}
@@ -120,6 +124,18 @@
 		
 		public function setIsOccupy(setValue:Boolean){
 			this.isOccupy = setValue;
+		}
+		
+		public function setBuildingId(setValue:String){
+			this.buildingId = setValue;
+		}
+		
+		public function setProgress(setValue:int){
+			this.progress = setValue;
+		}
+		
+		public function setRottenPeriod(setValue:int){
+			this.rottenPeriod = setValue;
 		}
 		
 		//player.build(1, 1, "1");

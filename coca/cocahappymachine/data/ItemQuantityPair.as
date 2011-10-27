@@ -1,13 +1,14 @@
 ﻿package cocahappymachine.data {
 	
-	public class Backpack {
+	//ItemQuantityPair
+	public class ItemQuantityPair {
 
 		private var itemId:String;
 		private var quantity:int;
 		
 		private var item:Item;
 		
-		public function Backpack() {
+		public function ItemQuantityPair() {
 		}
 
 		public function setDataFromXmlNode(xml:XML){
@@ -22,23 +23,27 @@
 		}
 		
 		public function getItemId():String{
-			return itemId;
+			return this.itemId;
 		}
 		
 		public function getItemQty():int{
-			return quantity
+			return this.quantity
 		}
 		
 		public function getItem():Item{
-			return item;
+			return this.item;
+		}
+		
+		public function setItemId(setValue:String){
+			this.itemId = setValue;
 		}
 		
 		public function setItem(setValue:Item){
-			item = setValue;
+			this.item = setValue;
 		}
 		
 		public function setItemQty(setValue:int){
-			quantity = setValue;
+			this.quantity = setValue;
 		}
 	}
 	
