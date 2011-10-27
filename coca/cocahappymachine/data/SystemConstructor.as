@@ -5,6 +5,7 @@
 	import cocahappymachine.data.Player;
 	import cocahappymachine.util.Config;
 	import cocahappymachine.util.Debug;
+	import cocahappymachine.audio.AudioManager;
 
 	//Instanctiate all necessary data using in application, then callback to one function
 	public class SystemConstructor {
@@ -18,6 +19,7 @@
 		private var constructCallback:Function;
 		private var iManager:ItemManager;
 		private var bManager:BuildingManager;
+		private var aManager:AudioManager;
 
 		public function SystemConstructor() {
 			facebookId = "1001";
@@ -48,6 +50,8 @@
 		}
 		private function initData() {
 			//retrive all information from HTML
+			aManager = AudioManager.getInstance();
+			aManager.load(onAudioComplete);
 			iManager = ItemManager.getInstance();
 			bManager = BuildingManager.getInstance();
 			iManager.load(onItemComplete);
@@ -58,6 +62,11 @@
 		}
 		private function onConfigComplete(){
 			initData();
+		}
+		
+		private function onAudioComplete(){
+			Debug.getInstance().debug("Audio complete");
+
 		}
 		
 		private function onItemComplete(){
@@ -82,7 +91,7 @@
 		}
 		
 		private function isAllLoadComplete():Boolean{
-			if(iManager.isLoadComplete() && bManager.isLoadComplete() && currentPlayer.isLoadComplete()){
+			if(iManager.isLoadComplete() && bManager.isLoadComplete() && currentPlayer.isLoadComplete() && aManager.isLoadComplete()){
 				manageData();
 				return true;
 			}
