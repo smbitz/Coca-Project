@@ -142,12 +142,6 @@
 		
 		//---- Harvest completed building on that tile ----//
 		public function harvest(t:Tile){
-			
-		}
-		
-		//---- Add item to given tile ----//
-		public function addItemToBuilding(t:Tile, item:Item){
-			
 		}
 		
 		//---- Purchase that tile ----//
