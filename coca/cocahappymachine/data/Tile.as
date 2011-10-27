@@ -118,6 +118,10 @@
 			this.extraId = setValue;
 		}
 		
+		public function setIsOccupy(setValue:Boolean){
+			this.isOccupy = setValue;
+		}
+		
 		//player.build(1, 1, "1");
 		public function build(building:Building){
 			this.buildingId = building.getId();

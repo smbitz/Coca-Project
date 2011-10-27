@@ -157,7 +157,7 @@
 		
 		//---- Purchase that tile ----//
 		public function purchase(t:Tile){
-			
+			t.setIsOccupy(true);
 		}
 		
 		//---- Calculate and return money required for purchase tile ----//
