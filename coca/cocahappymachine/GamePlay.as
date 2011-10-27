@@ -24,6 +24,7 @@
 	import cocahappymachine.data.Tile;
 	import cocahappymachine.data.Item;
 	import Resources.OccupyDialog;
+	import cocahappymachine.audio.AudioManager;
 	
 	public class GamePlay extends MovieClip{
 		
