@@ -99,15 +99,27 @@
 		}
 		
 		public function getBuildingId():String{
-			return buildingId;
-		}
-		
-		public function setBuilding(setValue:Building){
-			building = setValue;
+			return this.buildingId;
 		}
 		
 		public function getBuilding():Building{
-			return building;
+			return this.building;
+		}
+		
+		public function setBuilding(setValue:Building){
+			this.building = setValue;
+		}
+		
+		public function setSupply(setValue:int){
+			this.supply = setValue;
+		}
+		
+		public function setExtraId(setValue:String){
+			this.extraId = setValue;
+		}
+		
+		public function setIsOccupy(setValue:Boolean){
+			this.isOccupy = setValue;
 		}
 		
 		//player.build(1, 1, "1");
