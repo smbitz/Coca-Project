@@ -140,10 +140,6 @@
 			}
 		}
 		
-<<<<<<< HEAD
-		//---- Harvest completed building on that tile ----//
-		public function harvest(t:Tile){
-=======
 		//---- Search item in player's backpack ----//
 		private function searchBackpackItem(searchItemId:String):int{
 			for(var c:int; c < this.backpack.length; c++){
@@ -157,11 +153,11 @@
 		//---- Harvest completed building on that tile ----//
 		public function harvest(t:Tile){
 			var arrayYieldItem:Array = t.getBuilding().getYieldItem();
->>>>>>> 4090c6424f7514531457d6a81032e18614155755
 		}
 		
 		//---- Purchase that tile ----//
 		public function purchase(t:Tile){
+			//calculate
 			t.setIsOccupy(true);
 		}
 		
@@ -223,48 +219,51 @@
 			var buildingType:String = targetTile.getBuilding().getBuildingType();
 			
 			if(buildingType=="vege"){
-				var moneyVegeSupply:int = ItemManager.getInstance().howMoney("160");
+				var moneyVegeSupply:int = ItemManager.getInstance().howMoney("160"); //BUG
 				
+				//BUG
 				if(isItemEnough("160", 1)){
-					var searchVegeSupply:int = this.searchBackpackItem("160");
+					var searchVegeSupply:int = this.searchBackpackItem("160"); //BUG
 					var currentVegeQty:int = this.backpack[searchVegeSupply].getItemQty();
 					
 					this.backpack[searchVegeSupply].setItemQty(currentVegeQty-1);
-					targetTile.setSupply(14400000);
+//					targetTile.setSupply(14400000);
 					return true;
 				}else if(this.money > moneyVegeSupply){
 					this.money -= moneyVegeSupply;
-					targetTile.setSupply(14400000);
+//					targetTile.setSupply(14400000);
 					return true;
 				}
 			}else if(buildingType=="meat"){
-				var moneyMeatSupply:int = ItemManager.getInstance().howMoney("170");
+				var moneyMeatSupply:int = ItemManager.getInstance().howMoney("170"); //BUG
 				
+				//BUG
 				if(isItemEnough("170", 1)){
-					var searchMeatSupply:int = this.searchBackpackItem("170");
+					var searchMeatSupply:int = this.searchBackpackItem("170"); //BUG
 					var currentMeatQty:int = this.backpack[searchMeatSupply].getItemQty();
 					
 					this.backpack[searchMeatSupply].setItemQty(currentMeatQty-1);
-					targetTile.setSupply(14400000);
+//					targetTile.setSupply(14400000);
 					return true;
 				}else if(this.money > moneyMeatSupply){
 					this.money -= moneyVegeSupply;
-					targetTile.setSupply(14400000);
+//					targetTile.setSupply(14400000);
 					return true;
 				}
 			}else if(buildingType=="sea"){
-				var moneySeaSupply:int = ItemManager.getInstance().howMoney("180");
+				var moneySeaSupply:int = ItemManager.getInstance().howMoney("180");	//BUG
 				
+				//BUG
 				if(isItemEnough("180", 1)){
-					var searchSeaSupply:int = this.searchBackpackItem("180");
+					var searchSeaSupply:int = this.searchBackpackItem("180"); //BUG
 					var currentSeaQty:int = this.backpack[searchSeaSupply].getItemQty();
 					
 					this.backpack[searchSeaSupply].setItemQty(currentSeaQty-1);
-					targetTile.setSupply(14400000);
+//					targetTile.setSupply(14400000);
 					return true;
 				}else if(this.money > moneySeaSupply){
 					this.money -= moneyVegeSupply;
-					targetTile.setSupply(14400000);
+//					targetTile.setSupply(14400000);
 					return true;
 				}
 			}
@@ -278,6 +277,7 @@
 			var buildingType:String = targetTile.getBuilding().getBuildingType();
 			
 			if(buildingType=="vege"){
+				//BUG
 				if(extraItem.getId()=="7010"||extraItem.getId()=="7020"){
 					if(isItemEnough(extraItem.getId(), 1)){
 						var searchVegeExtra:int = this.searchBackpackItem(extraItem.getId());
@@ -289,6 +289,7 @@
 					}
 				}
 			}else if(buildingType=="meat"){
+				//BUG
 				if(extraItem.getId()=="7030"||extraItem.getId()=="7040"){
 					if(isItemEnough(extraItem.getId(), 1)){
 						var searchMeatExtra:int = this.searchBackpackItem(extraItem.getId());
@@ -300,6 +301,7 @@
 					}
 				}
 			}else if(buildingType=="sea"){
+				//BUG
 				if(extraItem.getId()=="7050"||extraItem.getId()=="7060"){
 					if(isItemEnough(extraItem.getId(), 1)){
 						var searchSeaExtra:int = this.searchBackpackItem(extraItem.getId());

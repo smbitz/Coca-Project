@@ -143,5 +143,22 @@
 		public function getExtraItem2():Item{
 			return null;
 		}
+		
+		public function generateYieldItem():Item {
+			//for all yieldItem
+				//generate each item
+				//var random = Math.random() * 100
+				//if random < 50
+					//get item
+					//add to array
+				//else
+					//do not get item
+			//return array
+			return null;
+		}
+		
+		public function generateYieldMoney():int {
+			return 0;
+		}
 	}
 }
