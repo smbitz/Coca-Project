@@ -140,30 +140,30 @@
 		
 		//---- return extra item1  ----//
 		public function getExtraItem1():Item{
-			var extraItem1:Item = ItemManager.getInstance().getMatchItem(extra[0].getId());
+			var extraItem1:Item = extra[0].getItem();
 			return extraItem1;
 		}
 		
 		//---- return extra item1  ----//
 		public function getExtraItem2():Item{
-			var extraItem2:Item = ItemManager.getInstance().getMatchItem(extra[1].getId());
+			var extraItem2:Item = extra[1].getItem();
 			return extraItem2;
 		}
 		
 		public function generateYieldItem():Array {
-			var totalYieldItem:Array;
+			var totalYieldItem:Array = new Array();
 			
 			for each(var arrayOfYieldItem:BuildingYieldItem in yieldItem){
 				if(arrayOfYieldItem.getId()!="money"){
 					for(var c:int = 0; c < arrayOfYieldItem.getRandomTime(); c++){
 						var randomChance:int = Math.random()*100;
 						if(randomChance < arrayOfYieldItem.getChance()){
-							var itemToPush = ItemManager.getInstance().getMatchItem(arrayOfYieldItem.getId());
+							var itemToPush = arrayOfYieldItem.getItem();
 							
-							var b:ItemQuantityPair = new ItemQuantityPair();
-							b.setItemQty(arrayOfYieldItem.getQuantity());
-							b.setItem(itemToPush);
-							totalYieldItem.push(b);
+							var newItemPair:ItemQuantityPair = new ItemQuantityPair();
+							newItemPair.setItemQty(arrayOfYieldItem.getQuantity());
+							newItemPair.setItem(itemToPush);
+							totalYieldItem.push(newItemPair);
 						}
 					}
 				}

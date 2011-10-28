@@ -158,7 +158,7 @@
 			//Harvest Yield Item
 			var getYieldItem:Array = t.getBuilding().generateYieldItem();
 			
-			for each(var arrayGetYieldItem in getYieldItem){
+			/*for each(var arrayGetYieldItem:Array in getYieldItem){
 				var yieldItemId:String = arrayGetYieldItem.getItem().getId();
 				var itemPositionBackpack:int = searchBackpackItem(yieldItemId);
 				
@@ -174,20 +174,14 @@
 					b.setItemId(arrayGetYieldItem.getItem().getId())
 					this.backpack.push(b);
 				}
-			}
+			}*/
 			
 			//Harvest Money
 			var getYieldMoney:int = t.getBuilding().generateYieldMoney();
-			
 			this.money += getYieldMoney;
 			
 			//Clear Tile
-			t.setBuildingId("NULL");
-			t.setProgress(0);
-			t.setSupply(0);
-			t.setExtraId("NULL");
-			t.setBuilding(null);
-			t.setRottenPeriod(0);
+			t.clearTile();
 		}
 		
 		//---- Purchase that tile ----//

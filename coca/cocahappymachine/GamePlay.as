@@ -26,6 +26,8 @@
 	import Resources.OccupyDialog;
 	import cocahappymachine.audio.AudioManager;
 	import cocahappymachine.ui.AbstractFarmTile;
+	import cocahappymachine.data.BuildingManager;
+	import cocahappymachine.data.ItemManager;
 	
 	public class GamePlay extends MovieClip{
 		
@@ -119,6 +121,16 @@
 			t.start();
 			
 			AudioManager.getInstance().playBG("MUSIC_1");
+			
+			//Test System
+			var arrayBuilding:Array = BuildingManager.getInstance().getBuilding();
+			var arrayItem:Array = ItemManager.getInstance().getItem();
+			
+			currentPlayer.build(2, 2, arrayBuilding[0]); //tile[18]
+			
+			//currentPlayer.supplyItem(currentPlayer.getTile()[18]);
+			//currentPlayer.extraItem(currentPlayer.getTile()[18], arrayItem[52]);
+			currentPlayer.harvest(currentPlayer.getTile()[18]);
 		}
 		
 		private function setStateTutorial(){

@@ -159,7 +159,15 @@
 				   return false;
 			   }
 		}
-
+		
+		public function clearTile(){
+			this.buildingId = "NULL";
+			this.progress = 0;
+			this.supply = 0;
+			this.extraId = "NULL";
+			this.building = null;
+			this.rottenPeriod = 0;
+		}
 	}
 	
 }
