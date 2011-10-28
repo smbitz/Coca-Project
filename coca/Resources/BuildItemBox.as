@@ -8,6 +8,7 @@
 	public class BuildItemBox extends MovieClip {
 		
 		private var id:String;
+		private var isBuildable:Boolean;
 		
 		public var titleField:TextField;
 		
@@ -25,6 +26,19 @@
 		
 		public function setTitle(title:String){
 			titleField.text = title;
+		}
+		
+		public function setBuildable(isBuildable:Boolean){
+			this.isBuildable = isBuildable;
+			if(!isBuildable){
+				this.graphics.beginFill(0xFF0000, 1);
+				this.graphics.drawRect(-15, 0, 15, 15);
+				this.graphics.endFill();
+			}
+		}
+		
+		public function getBuildable():Boolean{
+			return isBuildable;
 		}
 	}
 }
