@@ -29,6 +29,7 @@
 		private static const QTY_USE_EXTRA:int = 1;
 		private static const BUY_EACH_AREA:int = 4;
 		private static const ROTTED_ITEM_QTY_PERCENT:Number = 0.5;
+		private static const QTY_START_FARM_PLAYER:int = 16;
 		
 		public function Player(facebookId:String) {
 			this.facebookId = facebookId;
@@ -209,8 +210,9 @@
 		//---- Purchase that tile ----//
 		public function purchase(t:Tile){
 			var moneyToPurchase:int = getMoneyRequiredForPurchaseTile();
+			var levelToPurchase:int = 50 + ( 50 * (Math.pow(getLevelRequiredForPurchaseTile(), 2)) );
 			
-			if(this.money>moneyToPurchase){
+			if(this.money>moneyToPurchase&&this.exp>levelToPurchase){
 				//Calculate money
 				this.money -= moneyToPurchase;
 				
@@ -235,6 +237,7 @@
 					totalPlayerFarm++;
 				}
 			}
+			totalPlayerFarm -= QTY_START_FARM_PLAYER;
 			totalPlayerFarm = totalPlayerFarm/BUY_EACH_AREA;
 			return totalPlayerFarm;
 		}
