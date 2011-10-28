@@ -224,7 +224,7 @@
 			}
 		}
 		
-		public function getCurrentPlayerFarm():int{
+		private function getCurrentPlayerFarm():int{
 			var totalPlayerFarm:int = 0;
 			for each(var arrayTile:Tile in tile){
 				if(arrayTile.getIsOccupy()==true){
