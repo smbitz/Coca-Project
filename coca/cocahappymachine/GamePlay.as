@@ -26,6 +26,9 @@
 	import Resources.OccupyDialog;
 	import cocahappymachine.audio.AudioManager;
 	import cocahappymachine.ui.AbstractFarmTile;
+	import cocahappymachine.data.Building;
+	import Resources.BuildItemBox;
+	import cocahappymachine.data.BuildingManager;
 	
 	public class GamePlay extends MovieClip{
 		
@@ -40,6 +43,7 @@
 		private var addItemPanel:AddItemPanel;
 		
 		private var farmMap:FarmMap;
+		private var activeTile:AbstractFarmTile;
 		private var couponButton:CouponButton;
 		private var specialCodeButton:SpecialCodeButton;
 		private var moneyUI:MoneyUI;
@@ -147,22 +151,40 @@
 		}
 		
 		public function onTilePurchase(event:FarmMapEvent){
+			activeTile = event.getClickedTile();
 			occupyDialog.visible = true;
-			//set data to occupyDialog
+			var level:int = currentPlayer.getLevelRequiredForPurchaseTile();
+			var money:int = currentPlayer.getMoneyRequiredForPurchaseTile();
+			occupyDialog.setData(level, money, false, false);
 		}
 		
 		public function onTileBuild(event:FarmMapEvent){
-			//display Build panel
+			activeTile = event.getClickedTile();
 			buildPanel.visible =true;
+			var tile:Tile = event.getClickedTile().getData();
+			var buildingList:Array = BuildingManager.getInstance().getBuildingForLandType(tile.getLandType());
+			var itemBox:Array = createBuildItemBox(buildingList);
+			buildPanel.setBuildItemBox(itemBox);
+		}
+		
+		public function createBuildItemBox(buildingArray:Array):Array{
+			var boxArray:Array = new Array();
+			for each(var building:Building in buildingArray){
+				var box:BuildItemBox = new BuildItemBox();
+				box.setTitle(building.getName());
+				boxArray.push(box);
+			}
+			return boxArray;
 		}
 		
 		public function onTileAddItem(event:FarmMapEvent){
+			activeTile = event.getClickedTile();
 			addItemPanel.setTile(event.getClickedTile().getData());
 			addItemPanel.visible = true;
 		}
 		
 		public function onTileHarvest(event:FarmMapEvent){
-			//display harvaest animation
+			activeTile = event.getClickedTile();
 			currentPlayer.harvest(event.getClickedTile().getData());
 			farmMap.updateTile(event.getClickedTile());
 		}
@@ -228,7 +250,7 @@
 		
 		public function onOccupyConfirm(event:Event){
 			occupyDialog.visible = false;
-			//process occupy
+			currentPlayer.purchase(activeTile.getData());
 		}
 	}
 }

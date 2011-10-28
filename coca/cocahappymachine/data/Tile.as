@@ -103,6 +103,10 @@
 			return this.buildingId;
 		}
 		
+		public function getLandType():String{
+			return this.landType;
+		}
+		
 		public function getBuilding():Building{
 			return this.building;
 		}

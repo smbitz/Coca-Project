@@ -204,12 +204,13 @@
 			
 			//money
 			var totalPlayerFarm:int = 0;
-			for each(var arrayTile:Array in tile){
+			for each(var arrayTile:Tile in tile){
 				if(arrayTile.getIsOccupy()==true){
 					totalPlayerFarm++;
 				}
 			}
 			
+			//---- Benz : change to function getMoneyRequiredForPurchaseTile() ----//
 			var moneyToPurchase = 500 + (500 * (totalPlayerFarm ^ 2) );
 			this.money -= moneyToPurchase;
 		}
