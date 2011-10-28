@@ -345,6 +345,15 @@
 		
 		//---- Check is player have enough money / item to build this building
 		public function enoughResourceToBuild(building:Building):Boolean{
+			var moneyItem:int = ItemManager.getInstance().howMoney(building.getBuildItemId());
+			trace(building.getBuildItemId());
+			if(this.isItemEnough(building.getBuildItemId(), QTY_TO_BUILD)){
+				//IF Check Item
+				return true;
+			}else if(this.money>(moneyItem*QTY_TO_BUILD)){
+				//ELSE IF Check Money
+				return true;
+			}
 			return false;
 		}
 	}

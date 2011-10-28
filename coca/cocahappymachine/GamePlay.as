@@ -131,7 +131,8 @@
 			var arrayBuilding:Array = BuildingManager.getInstance().getBuilding();
 			var arrayItem:Array = ItemManager.getInstance().getItem();
 			
-			currentPlayer.build(2, 2, arrayBuilding[0]); //tile[18]
+			trace(currentPlayer.enoughResourceToBuild(arrayBuilding[0]));
+			//currentPlayer.build(2, 2, arrayBuilding[0]); //tile[18]
 			
 			//currentPlayer.supplyItem(currentPlayer.getTile()[18]);
 			//currentPlayer.extraItem(currentPlayer.getTile()[18], arrayItem[52]);
