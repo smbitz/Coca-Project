@@ -27,13 +27,15 @@
 		private static const QTY_TO_BUILD:int = 1;
 		private static const QTY_USE_SUPPLY:int = 1;
 		private static const QTY_USE_EXTRA:int = 1;
+		private static const BUY_EACH_AREA:int = 4;
+		private static const ROTTED_ITEM_QTY_PERCENT:Number = 0.5;
 		
 		public function Player(facebookId:String) {
 			this.facebookId = facebookId;
 			isLoad = false;
 			tile = new Array();
 			backpack = new Array();
-			bManager = BuildingManager.getInstance()
+			bManager = BuildingManager.getInstance();
 		}
 		
 		public function isLoadComplete():Boolean {
@@ -155,68 +157,96 @@
 		
 		//---- Harvest completed building on that tile ----//
 		public function harvest(t:Tile){
-			//Harvest Yield Item
-			var getYieldItem:Array = t.getBuilding().generateYieldItem();
-			
-			/*for each(var arrayGetYieldItem:Array in getYieldItem){
-				var yieldItemId:String = arrayGetYieldItem.getItem().getId();
-				var itemPositionBackpack:int = searchBackpackItem(yieldItemId);
+			if(t.getBuildingStatus()==Tile.BUILDING_COMPLETED||t.getBuildingStatus()==Tile.BUILDING_ROTTED){
+				//Harvest Yield Item
+				var getYieldItem:Array = t.getBuilding().generateYieldItem();
 				
-				if(itemPositionBackpack>=0){
-					var currentBackpackQty:int = this.backpack[itemPositionBackpack].getItemQty();
-					var yieldItemQty:int = arrayGetYieldItem.getItem().getItemQty();
+				for each(var arrayGetYieldItem:ItemQuantityPair in getYieldItem){
+					var yieldItemId:String = arrayGetYieldItem.getItem().getId();
+					var itemPositionBackpack:int = searchBackpackItem(yieldItemId);
 					
-					this.backpack[itemPositionBackpack].setItemQty(currentBackpackQty+yieldItemQty);
-				}else{
-					var b:ItemQuantityPair = new ItemQuantityPair();
-					b.setItemQty(arrayGetYieldItem.getItem().getItemQty());
-					b.setItem(arrayGetYieldItem.getItem());
-					b.setItemId(arrayGetYieldItem.getItem().getId())
-					this.backpack.push(b);
+					if(itemPositionBackpack>=0){
+						var currentBackpackQty:int = this.backpack[itemPositionBackpack].getItemQty();
+						var yieldItemQty:int = arrayGetYieldItem.getItemQty();
+						
+						//If tile rotted get 50% of item quantity.
+						if(t.getBuildingStatus()==Tile.BUILDING_ROTTED){
+							yieldItemQty = yieldItemQty*ROTTED_ITEM_QTY_PERCENT;
+						}
+						
+						this.backpack[itemPositionBackpack].setItemQty(currentBackpackQty+yieldItemQty);
+					}else{
+						var yieldNewItemQty:int = arrayGetYieldItem.getItemQty();
+						
+						//If tile rotted get 50% of item quantity.
+						if(t.getBuildingStatus()==Tile.BUILDING_ROTTED){
+							yieldNewItemQty = yieldNewItemQty*ROTTED_ITEM_QTY_PERCENT;
+						}
+						
+						var b:ItemQuantityPair = new ItemQuantityPair();
+						b.setItemQty(yieldNewItemQty);
+						b.setItem(arrayGetYieldItem.getItem());
+						b.setItemId(arrayGetYieldItem.getItem().getId())
+						this.backpack.push(b);
+					}
 				}
-			}*/
-			
-			//Harvest Money
-			var getYieldMoney:int = t.getBuilding().generateYieldMoney();
-			this.money += getYieldMoney;
-			
-			//Clear Tile
-			t.clearTile();
+				
+				//Harvest Money
+				var getYieldMoney:int = t.getBuilding().generateYieldMoney();
+				this.money += getYieldMoney;
+				
+				//Clear Tile
+				t.clearTile();
+			}else{
+				throw new Error("Unexpected from harvest in Player.as");
+			}
 		}
 		
 		//---- Purchase that tile ----//
 		public function purchase(t:Tile){
-			//calculate
-			for(var i:int = 0; i < tile.length; i++){
-				if(tile[i] == t){
-					tile[i].setIsOccupy(true);
-					tile[i + 1].setIsOccupy(true);
-					tile[i + TILE_MAX_X].setIsOccupy(true);
-					tile[i + TILE_MAX_X + 1].setIsOccupy(true);
-				}
-			}
+			var moneyToPurchase:int = getMoneyRequiredForPurchaseTile();
 			
-			//money
+			if(this.money>moneyToPurchase){
+				//Calculate money
+				this.money -= moneyToPurchase;
+				
+				//Change tile Status
+				for(var i:int = 0; i < tile.length; i++){
+					if(tile[i] == t){
+						tile[i].setIsOccupy(true);
+						tile[i + 1].setIsOccupy(true);
+						tile[i + TILE_MAX_X].setIsOccupy(true);
+						tile[i + TILE_MAX_X + 1].setIsOccupy(true);
+					}
+				}
+			}else{
+				throw new Error("Unexpected from purchase in Player.as");
+			}
+		}
+		
+		public function getCurrentPlayerFarm():int{
 			var totalPlayerFarm:int = 0;
 			for each(var arrayTile:Tile in tile){
 				if(arrayTile.getIsOccupy()==true){
 					totalPlayerFarm++;
 				}
 			}
-			
-			//---- Benz : change to function getMoneyRequiredForPurchaseTile() ----//
-			var moneyToPurchase = 500 + (500 * (totalPlayerFarm ^ 2) );
-			this.money -= moneyToPurchase;
+			totalPlayerFarm = totalPlayerFarm/BUY_EACH_AREA;
+			return totalPlayerFarm;
 		}
 		
 		//---- Calculate and return money required for purchase tile ----//
 		public function getMoneyRequiredForPurchaseTile():int{
-			return 0;
+			var currentPlayerFarm:int = getCurrentPlayerFarm();
+			var requireMoney:int = 500 + (500 * (Math.pow(currentPlayerFarm, 2)) );
+			return requireMoney;
 		}
 		
 		//---- Calculate and return level required for purchase tile ----//
 		public function getLevelRequiredForPurchaseTile():int{
-			return 0;
+			var currentPlayerFarm:int = getCurrentPlayerFarm();
+			var requireLevel:int = 5 * currentPlayerFarm;
+			return requireLevel;
 		}
 		
 		public function isItemEnough(itemId:String, quantity:int):Boolean{

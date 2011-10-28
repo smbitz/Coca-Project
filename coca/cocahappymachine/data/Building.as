@@ -158,7 +158,7 @@
 					for(var c:int = 0; c < arrayOfYieldItem.getRandomTime(); c++){
 						var randomChance:int = Math.random()*100;
 						if(randomChance < arrayOfYieldItem.getChance()){
-							var itemToPush = arrayOfYieldItem.getItem();
+							var itemToPush:Item = arrayOfYieldItem.getItem();
 							
 							var newItemPair:ItemQuantityPair = new ItemQuantityPair();
 							newItemPair.setItemQty(arrayOfYieldItem.getQuantity());

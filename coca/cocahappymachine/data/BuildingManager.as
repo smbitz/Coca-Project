@@ -90,13 +90,29 @@
 		}
 		
 		public function getBuildingForLandType(landType:String):Array {
+			var arrayBuildingFromLand:Array = new Array();
 			//if land type is "land" then
+			if(landType=="land"){
 				//get all building with type "vege" or "meat"
+				for each(var arrayLandBuilding:Building in building){
+					if(arrayLandBuilding.getBuildingType()=="vege"||arrayLandBuilding.getBuildingType()=="meat"){
+						arrayBuildingFromLand.push(arrayLandBuilding);
+					}
+				}
+			}else if(landType=="sea"){
 			// else if land type is "sea" then
 				//get all building with type "sea"
+				for each(var arraySeaBuilding:Building in building){
+					if(arraySeaBuilding.getBuildingType()=="sea"){
+						arrayBuildingFromLand.push(arraySeaBuilding);
+					}
+				}
+			}else{
 			// else
 				//throw error
-			return null;
+				throw new Error("Unexpected from getBuildingForLandType in BuildingManager.as");
+			}
+			return arrayBuildingFromLand;
 		}
 
 		private function onSecurityError(event:SecurityError){
