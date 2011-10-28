@@ -47,7 +47,7 @@
 				tile.addEventListener(MouseEvent.CLICK, onTileClick);
 				farmTile.push(tile);
 				tile.x = (loop1 % FARMTILE_X) * 100;
-				tile.y =  int(loop1 / FARMTILE_X) * 50
+				tile.y =  int(loop1 / FARMTILE_X) * 50;
 				this.addChild(tile);
 			}
 			//---- Create PurchaseTile on top of tile ----//
@@ -78,13 +78,14 @@
 				if(tStatus == Tile.BUILDING_EMPTY){
 					farmEvent = new FarmMapEvent(FarmMapEvent.TILE_BUILD);
 				} else if((tStatus == Tile.BUILDING_PROCESS1) || (tStatus == Tile.BUILDING_PROCESS2)){
-					farmEvent = new FarmMapEvent(FarmMapEvent.TILE_ADDITEM);
+					farmEvent = new FarmMapEvent(FarmMapEvent.TILE_HARVEST);
+//					farmEvent = new FarmMapEvent(FarmMapEvent.TILE_ADDITEM);
 				} else if((tStatus == Tile.BUILDING_COMPLETED) || (tStatus == Tile.BUILDING_ROTTED)){
 					farmEvent = new FarmMapEvent(FarmMapEvent.TILE_HARVEST);
 				} else {
 					throw new Error("cocahappymachine.ui.FarmMap onTileClick() : Unexpected case occur");
 				}
-				farmEvent.setClickedTile(tileData);
+				farmEvent.setClickedTile(t);
 				this.dispatchEvent(farmEvent);
 			}
 		}
@@ -94,13 +95,26 @@
 				var t:AbstractFarmTile = AbstractFarmTile(event.currentTarget);
 				var tileData:Tile = t.getData();
 				var farmEvent:FarmMapEvent = new FarmMapEvent(FarmMapEvent.TILE_PURCHASE);
-				farmEvent.setClickedTile(tileData);
+				farmEvent.setClickedTile(t);
 				this.dispatchEvent(farmEvent);
 			}
 		}
 		
 		public function onShopClick(event:MouseEvent){
 			this.dispatchEvent(new Event(SHOP_CLICK));
+		}
+		
+		public function updateTile(tile:AbstractFarmTile){
+			var childIndex:int = this.getChildIndex(tile);
+			this.removeChild(tile);
+			var arrayIndex:int = farmTile.indexOf(tile);
+			var newTile:AbstractFarmTile = FarmTileBuilder.createFarmTile(tile.getData());
+			newTile.x = tile.x;
+			newTile.y =  tile.y;
+			newTile.setData(tile.getData());
+			newTile.addEventListener(MouseEvent.CLICK, onTileClick);
+			farmTile[arrayIndex] = newTile;
+			this.addChildAt(newTile, childIndex);
 		}
 	}
 }

@@ -149,7 +149,7 @@
 		public function generateYieldItem():Array {
 			var totalYieldItem:Array;
 			
-			for each(var arrayOfYieldItem:Array in yieldItem){
+			for each(var arrayOfYieldItem:BuildingYieldItem in yieldItem){
 				if(arrayOfYieldItem.getId()!="money"){
 					for(var c:int = 0; c < arrayOfYieldItem.getRandomTime(); c++){
 						var randomChance:int = Math.random()*100;
@@ -170,7 +170,7 @@
 		public function generateYieldMoney():int {
 			var totalYieldMoney = 0;
 			
-			for each(var arrayOfYieldItem:Array in yieldItem){
+			for each(var arrayOfYieldItem:BuildingYieldItem in yieldItem){
 				if(arrayOfYieldItem.getId()=="money"){
 					for(var b:int = 0; b < arrayOfYieldItem.getRandomTime(); b++){
 						var randomChance:int = Math.random()*100;

@@ -9,17 +9,17 @@
 		public static const TILE_ADDITEM:String = "TILE_ADDITEM";
 		public static const TILE_HARVEST:String = "TILE_HARVEST";
 		
-		private var clickedTile:Tile;
+		private var clickedTile:AbstractFarmTile;
 		
 		public function FarmMapEvent(type:String) {
 			super(type);
 		}
 
-		public function setClickedTile(t:Tile){
+		public function setClickedTile(t:AbstractFarmTile){
 			clickedTile = t;
 		}
 		
-		public function getClickedTile():Tile{
+		public function getClickedTile():AbstractFarmTile{
 			return clickedTile;
 		}
 	}

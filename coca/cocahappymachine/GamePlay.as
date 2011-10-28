@@ -25,6 +25,7 @@
 	import cocahappymachine.data.Item;
 	import Resources.OccupyDialog;
 	import cocahappymachine.audio.AudioManager;
+	import cocahappymachine.ui.AbstractFarmTile;
 	
 	public class GamePlay extends MovieClip{
 		
@@ -116,6 +117,8 @@
 			var t:GameTimer = new GameTimer();
 			t.addEventListener(GameTimer.GAMETIMER_RUN, onRun);
 			t.start();
+			
+			AudioManager.getInstance().playBG("MUSIC_1");
 		}
 		
 		private function setStateTutorial(){
@@ -154,13 +157,14 @@
 		}
 		
 		public function onTileAddItem(event:FarmMapEvent){
-			addItemPanel.setTile(event.getClickedTile());
+			addItemPanel.setTile(event.getClickedTile().getData());
 			addItemPanel.visible = true;
 		}
 		
 		public function onTileHarvest(event:FarmMapEvent){
 			//display harvaest animation
-			currentPlayer.harvest(event.getClickedTile());
+			currentPlayer.harvest(event.getClickedTile().getData());
+			farmMap.updateTile(event.getClickedTile());
 		}
 		
 		public function onShopClick(event:Event){
