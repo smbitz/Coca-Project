@@ -186,6 +186,7 @@
 			t.setProgress(0);
 			t.setSupply(0);
 			t.setExtraId("NULL");
+			t.setBuilding(null);
 			t.setRottenPeriod(0);
 		}
 		
