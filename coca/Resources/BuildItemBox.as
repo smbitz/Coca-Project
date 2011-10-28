@@ -2,11 +2,14 @@
 	
 	import flash.display.MovieClip;
 	import cocahappymachine.data.Building;
+	import flash.text.TextField;
 	
 	
 	public class BuildItemBox extends MovieClip {
 		
 		private var id:String;
+		
+		public var titleField:TextField;
 		
 		public function BuildItemBox() {
 		}
@@ -18,6 +21,10 @@
 		
 		public function getBuildingId():String{
 			return id;
+		}
+		
+		public function setTitle(title:String){
+			titleField.text = title;
 		}
 	}
 }

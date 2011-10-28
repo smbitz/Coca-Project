@@ -20,8 +20,13 @@
 		
 		//---- boxList is an array of BuildItemBox using for select item to build
 		public function setBuildItemBox(boxList:Array){		
-			//count boxList then create paging for all item in box list
-			//add each item to panel
+			var loop:int = 0;
+			for each(var box:BuildItemBox in boxList){
+				box.x = 20;
+				box.y = loop * 50;
+				this.addChild(box);
+				loop++;
+			}
 		}
 		
 		public function onItemBoxClick(event:MouseEvent){
