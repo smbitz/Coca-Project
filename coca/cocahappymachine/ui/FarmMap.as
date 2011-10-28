@@ -78,8 +78,7 @@
 				if(tStatus == Tile.BUILDING_EMPTY){
 					farmEvent = new FarmMapEvent(FarmMapEvent.TILE_BUILD);
 				} else if((tStatus == Tile.BUILDING_PROCESS1) || (tStatus == Tile.BUILDING_PROCESS2)){
-					farmEvent = new FarmMapEvent(FarmMapEvent.TILE_HARVEST);
-//					farmEvent = new FarmMapEvent(FarmMapEvent.TILE_ADDITEM);
+					farmEvent = new FarmMapEvent(FarmMapEvent.TILE_ADDITEM);
 				} else if((tStatus == Tile.BUILDING_COMPLETED) || (tStatus == Tile.BUILDING_ROTTED)){
 					farmEvent = new FarmMapEvent(FarmMapEvent.TILE_HARVEST);
 				} else {

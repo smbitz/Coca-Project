@@ -120,12 +120,8 @@
 				tile[a].update(elapse);
 			}
 		}
-		
-		public function build(locationX:int, locationY:int, building:Building){
-			//check for all build condition (1) land type (2) required items
-			var currentTile:Tile = getTileByLocate(locationX, locationY);
+		public function build(currentTile:Tile, building:Building){
 			var moneyItem:int = ItemManager.getInstance().howMoney(building.getBuildItemId());
-
 			if(currentTile.isAllowToBuild(building)){
 				if(this.isItemEnough(building.getBuildItemId(), QTY_TO_BUILD)){
 					for(var c:int; c < backpack.length; c++){
@@ -133,16 +129,24 @@
 							backpack[c].setItemQty(backpack[c].getItemQty()-QTY_TO_BUILD);
 						}
 					}
+					trace("Build Item");
 					currentTile.build(building);
 				}else if(this.money >= moneyItem*QTY_TO_BUILD){
 					this.money -= (moneyItem*QTY_TO_BUILD);
 					currentTile.build(building);
+					trace("Build Money");
 				}else {
-					//don't allow to build
+					throw new Error("Unexpected Behavior, NO MONEY TO BUILD on build function Plaer.as");
 				}
 			} else {
-				//don't allow to build	
-			}
+				throw new Error("Unexpected Behavior, CAN'T BUILD SELECTED BUILDING " +
+								"on build function Plaer.as");
+			}			
+		}
+		
+		public function buildByLocation(locationX:int, locationY:int, building:Building){
+			var currentTile:Tile = getTileByLocate(locationX, locationY);
+			this.build(currentTile, building);
 		}
 		
 		//---- Search item in player's backpack ----//
@@ -333,6 +337,11 @@
 					}
 				}
 			}
+			return false;
+		}
+		
+		//---- Check is player have enough money / item to build this building
+		public function enoughResourceToBuild(building:Building):Boolean{
 			return false;
 		}
 	}

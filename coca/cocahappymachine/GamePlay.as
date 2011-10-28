@@ -30,6 +30,7 @@
 	import Resources.BuildItemBox;
 	import cocahappymachine.data.BuildingManager;
 	import cocahappymachine.data.ItemManager;
+	import cocahappymachine.ui.BuildEvent;
 	
 	public class GamePlay extends MovieClip{
 		
@@ -98,6 +99,7 @@
 			buildPanel = new BuildPanel();
 			buildPanel.visible = false;
 			buildPanel.addEventListener(BuildPanel.DIALOG_CLOSE, onBuildPanelClose);
+			buildPanel.addEventListener(BuildPanel.BUILD, onBuildPanelBuild);
 			this.addChild(buildPanel);
 			occupyDialog = new OccupyDialog();
 			occupyDialog.visible = false;
@@ -183,7 +185,9 @@
 			var boxArray:Array = new Array();
 			for each(var building:Building in buildingArray){
 				var box:BuildItemBox = new BuildItemBox();
+				box.setBuildingId(building.getId());
 				box.setTitle(building.getName());
+				box.setBuildable(currentPlayer.enoughResourceToBuild(building));
 				boxArray.push(box);
 			}
 			return boxArray;
@@ -263,6 +267,15 @@
 		public function onOccupyConfirm(event:Event){
 			occupyDialog.visible = false;
 			currentPlayer.purchase(activeTile.getData());
+			farmMap.removeChild(activeTile);
+		}
+		
+		public function onBuildPanelBuild(event:BuildEvent){
+			buildPanel.visible = false;
+			var buildId:String = event.getBuildingId();
+			var b:Building = BuildingManager.getInstance().getMatchBuilding(buildId);
+			currentPlayer.build(activeTile.getData(), b);
+			farmMap.updateTile(activeTile);
 		}
 	}
 }
