@@ -117,15 +117,6 @@
 			for(var a:int = 0; a<tile.length; a++){
 				tile[a].update(elapse);
 			}
-			
-			/*//test
-			var arrayBuilding:Array = BuildingManager.getInstance().getBuilding();
-			//trace(arrayBuilding.length);
-			this.build(2, 2, BuildingManager.getInstance().getBuilding()[0]); //tile[18]
-			//this.supplyItem(tile[18]);
-			//trace(tile[18].length);
-			this.supplyItem(tile[18]);
-			//this.extraItem(tile[18], BuildingManager.getInstance().getBuilding()[0].getExtra()[0].getItem());*/
 		}
 		
 		public function build(locationX:int, locationY:int, building:Building){
@@ -181,7 +172,7 @@
 					b.setItemQty(arrayGetYieldItem.getItem().getItemQty());
 					b.setItem(arrayGetYieldItem.getItem());
 					b.setItemId(arrayGetYieldItem.getItem().getId())
-					this.backpack.push();
+					this.backpack.push(b);
 				}
 			}
 			
@@ -286,12 +277,12 @@
 				
 				if(searchSupply>=0){
 					this.backpack[searchSupply].setItemQty(currentQty-1);
-					targetTile.setSupply(targetTile.getBuilding().getBuildPeriod());
+					targetTile.setSupply(targetTile.getBuilding().getSupplyPeriod());
 					return true;
 				}
 			}else if(this.money > moneySupply){
 				this.money -= moneySupply;
-					targetTile.setSupply(targetTile.getBuilding().getBuildPeriod());
+				targetTile.setSupply(targetTile.getBuilding().getSupplyPeriod());
 				return true;
 			}
 			return false;
@@ -303,7 +294,7 @@
 			//building paramter change to effect extra item
 			var extraItemId1:String = targetTile.getBuilding().getExtraItem1().getId();
 			var extraItemId2:String = targetTile.getBuilding().getExtraItem2().getId();
-			
+
 			if(extraItem.getId()==extraItemId1||extraItem.getId()==extraItemId2){
 				if(isItemEnough(extraItem.getId(), QTY_USE_EXTRA)){
 					var searchExtra:int = this.searchBackpackItem(extraItem.getId());

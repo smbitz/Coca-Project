@@ -52,7 +52,6 @@
 				return BUILDING_NOTOCCUPY;
 			}
 			if(building){
-				return BUILDING_PROCESS1;
 				if(progress<=(building.getBuildPeriod()*0.5)){
 					//if progress <= 50%
 					return BUILDING_PROCESS1;
@@ -82,6 +81,7 @@
 						this.progress += elapse;
 						this.supply -= elapse;
 					}
+					buildingStatus = this.getBuildingStatus();
 				} else if(buildingStatus == BUILDING_PROCESS2){
 					//update elapse with progress
 					if(this.supply>0){
@@ -92,6 +92,7 @@
 				} else if(buildingStatus == BUILDING_COMPLETED){
 					//update elapse with rotten
 					this.rottenPeriod -= elapse;
+					buildingStatus = this.getBuildingStatus();
 				} else if(buildingStatus == BUILDING_ROTTED){
 					//update elapse with nothing
 				}
@@ -144,7 +145,9 @@
 			this.progress = 0;
 			this.supply = 0;
 			this.extraId = "NULL";
-			this.rottenPeriod = building.getBuildPeriod();
+			this.rottenPeriod = building.getRottenPeriod();
+			
+			this.setBuilding(BuildingManager.getInstance().getMatchBuilding(this.buildingId));
 		}
 		
 		public function isAllowToBuild(building:Building):Boolean{

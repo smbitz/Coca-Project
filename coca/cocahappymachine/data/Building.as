@@ -66,7 +66,7 @@
 				yieldId = xml.yield_item[j].attribute("id");
 				yieldQuantity = xml.yield_item[j].attribute("quantity");
 				yieldChance = xml.yield_item[j].attribute("chance");
-				yieldRandomTime = xml.yield_item[j].attribute("randomTime");
+				yieldRandomTime = xml.yield_item[j].attribute("random_time");
 				
 				var newYieldItem:BuildingYieldItem = new BuildingYieldItem();
 				newYieldItem.setDataFromNode(yieldId,yieldQuantity,yieldChance,yieldRandomTime);
@@ -75,63 +75,67 @@
 		}
 		
 		public function getId():String{
-			return id;
+			return this.id;
 		}
 		
 		public function getName():String{
-			return name;
+			return this.name;
 		}
 		
 		public function getSupplyId():String{
-			return supplyId;
+			return this.supplyId;
 		}
 		
 		public function getBuildItemId():String{
-			return buildItemId;
+			return this.buildItemId;
 		}
 		
 		public function getExtra():Array{
-			return extra;
+			return this.extra;
 		}
 		
 		public function getYieldItem():Array{
-			return yieldItem;
+			return this.yieldItem;
 		}
 		
 		public function getBuildItem():Item{
-			return buildItem;
+			return this.buildItem;
 		}
 		
 		public function getSupplyItem():Item{
-			return supplyItem;
+			return this.supplyItem;
 		}
 		
 		public function getBuildingType():String{
-			return buildingType;
+			return this.buildingType;
 		}
 		
 		public function getBuildPeriod():int{
-			return buildPeriod;
+			return this.buildPeriod;
 		}
 		
 		public function getRottenPeriod():int{
-			return rottenPeriod;
+			return this.rottenPeriod;
+		}
+		
+		public function getSupplyPeriod():int{
+			return this.supplyPeriod;
 		}
 		
 		public function setBuildItem(setValue:Item){
-			buildItem = setValue;
+			this.buildItem = setValue;
 		}
 		
 		public function setSupplyItem(setValue:Item){
-			supplyItem = setValue;
+			this.supplyItem = setValue;
 		}
 		
 		public function setRottenPeriod(setValue:int){
-			rottenPeriod = setValue;
+			this.rottenPeriod = setValue;
 		}
 		
 		public function setSupplyPeriod(setValue:int){
-			supplyPeriod = setValue;
+			this.supplyPeriod = setValue;
 		}
 		
 		//---- return extra item1  ----//
@@ -149,7 +153,7 @@
 		public function generateYieldItem():Array {
 			var totalYieldItem:Array;
 			
-			for each(var arrayOfYieldItem:Array in yieldItem){
+			for each(var arrayOfYieldItem:BuildingYieldItem in yieldItem){
 				if(arrayOfYieldItem.getId()!="money"){
 					for(var c:int = 0; c < arrayOfYieldItem.getRandomTime(); c++){
 						var randomChance:int = Math.random()*100;
@@ -170,7 +174,7 @@
 		public function generateYieldMoney():int {
 			var totalYieldMoney = 0;
 			
-			for each(var arrayOfYieldItem:Array in yieldItem){
+			for each(var arrayOfYieldItem:BuildingYieldItem in yieldItem){
 				if(arrayOfYieldItem.getId()=="money"){
 					for(var b:int = 0; b < arrayOfYieldItem.getRandomTime(); b++){
 						var randomChance:int = Math.random()*100;
