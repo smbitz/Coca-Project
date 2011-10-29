@@ -344,7 +344,7 @@
 		}
 		
 		//---- Check is player have enough money / item to build this building
-		public function enoughResourceToBuild(building:Building):Boolean{
+		public function isEnoughResourceToBuild(building:Building):Boolean{
 			var moneyItem:int = ItemManager.getInstance().howMoney(building.getBuildItemId());
 			trace(building.getBuildItemId());
 			if(this.isItemEnough(building.getBuildItemId(), QTY_TO_BUILD)){
@@ -354,6 +354,23 @@
 				//ELSE IF Check Money
 				return true;
 			}
+			return false;
+		}
+		
+		//---- Check for player have item / money using for supply ----//
+		public function isAllowToSupply(activeTile:Tile):Boolean{
+			return false;
+		}
+		
+		//---- Check for player extra condition (1) player must have that item ----//
+		//---- (2) tile didn't extra yet ----//
+		public function isAllowToExtra1(activeTile:Tile):Boolean{
+			return false;
+		}
+		
+		//---- Check for player extra condition (1) player must have that item ----//
+		//---- (2) tile didn't extra yet ----//
+		public function isAllowToExtra2(activeTile:Tile):Boolean{
 			return false;
 		}
 	}

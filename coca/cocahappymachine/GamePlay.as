@@ -20,7 +20,6 @@
 	import Resources.CouponExchangeDialog;
 	import Resources.BuildPanel;
 	import Resources.AddItemPanel;
-	import cocahappymachine.ui.AddItemEvent;
 	import cocahappymachine.data.Tile;
 	import cocahappymachine.data.Item;
 	import Resources.OccupyDialog;
@@ -188,7 +187,7 @@
 				var box:BuildItemBox = new BuildItemBox();
 				box.setBuildingId(building.getId());
 				box.setTitle(building.getName());
-				box.setBuildable(currentPlayer.enoughResourceToBuild(building));
+				box.setBuildable(currentPlayer.isEnoughResourceToBuild(building));
 				boxArray.push(box);
 			}
 			return boxArray;
@@ -196,7 +195,11 @@
 		
 		public function onTileAddItem(event:FarmMapEvent){
 			activeTile = event.getClickedTile();
-			addItemPanel.setTile(event.getClickedTile().getData());
+			//change to each data
+			var isSupply:Boolean = currentPlayer.isAllowToSupply(activeTile.getData());
+			var isExtra1:Boolean = currentPlayer.isAllowToExtra1(activeTile.getData());
+			var isExtra2:Boolean = currentPlayer.isAllowToExtra2(activeTile.getData());
+			addItemPanel.setButtonState(isSupply, isExtra1, isExtra2, true);
 			addItemPanel.visible = true;
 		}
 		
@@ -240,23 +243,24 @@
 			addItemPanel.visible = false;
 		}
 		
-		public function onSupplyItem(event:AddItemEvent){
-			currentPlayer.supplyItem(event.getClickedTile());
+		public function onSupplyItem(event:Event){
+			addItemPanel.visible = false;
+			currentPlayer.supplyItem(activeTile.getData());
 		}
 		
-		public function onExtraItem1(event:AddItemEvent){
-			var t:Tile = event.getClickedTile();
-			var i:Item = t.getBuilding().getExtraItem1();
-			currentPlayer.extraItem(t, i);
+		public function onExtraItem1(event:Event){
+			addItemPanel.visible = false;
+			var i:Item = activeTile.getData().getBuilding().getExtraItem1();
+			currentPlayer.extraItem(activeTile.getData(), i);
 		}
 	
-		public function onExtraItem2(event:AddItemEvent){
-			var t:Tile = event.getClickedTile();
-			var i:Item = t.getBuilding().getExtraItem2();
-			currentPlayer.extraItem(t, i);
+		public function onExtraItem2(event:Event){
+			addItemPanel.visible = false;
+			var i:Item = activeTile.getData().getBuilding().getExtraItem2();
+			currentPlayer.extraItem(activeTile.getData(), i);
 		}
 		
-		public function onMoveBuilding(event:AddItemEvent){
+		public function onMoveBuilding(event:Event){
 			trace("move");
 			//start move state (allow player to select move destination tile
 		}

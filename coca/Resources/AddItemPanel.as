@@ -4,7 +4,6 @@
 	import flash.events.MouseEvent;
 	import flash.events.Event;
 	import flash.display.SimpleButton;
-	import cocahappymachine.ui.AddItemEvent;
 	import cocahappymachine.data.Tile;
 	
 	public class AddItemPanel extends MovieClip {
@@ -21,8 +20,6 @@
 		public var extraItem2Button:ExtraItemButton;
 		public var moveButton:MoveButton;
 		
-		private var tile:Tile;
-		
 		public function AddItemPanel() {
 			closeButton.addEventListener(MouseEvent.CLICK, onCloseButtonClick);
 			supplyItemButton.addEventListener(MouseEvent.CLICK, onSupplyItemClick);
@@ -31,8 +28,11 @@
 			moveButton.addEventListener(MouseEvent.CLICK, onMoveClick);
 		}
 		
-		public function setTile(t:Tile){
-			tile = t;
+		public function setButtonState(supply:Boolean, extra1:Boolean, extra2:Boolean, move:Boolean){
+			supplyItemButton.visible = supply;
+			extraItem1Button.visible = extra1;
+			extraItem2Button.visible = extra2;
+			moveButton.visible = move;
 		}
 		
 		public function onCloseButtonClick(event:MouseEvent){
@@ -42,27 +42,19 @@
 		}
 		
 		public function onSupplyItemClick(event:MouseEvent){
-			var e:AddItemEvent = new AddItemEvent(SUPPLYITEM_CLICK);
-			e.setClickedTile(tile);
-			this.dispatchEvent(e);
+			this.dispatchEvent(new Event(SUPPLYITEM_CLICK));
 		}
 		
 		public function onExtraItem1Click(event:MouseEvent){
-			var e:AddItemEvent = new AddItemEvent(EXTRAITEM1_CLICK);
-			e.setClickedTile(tile);
-			this.dispatchEvent(e);
+			this.dispatchEvent(new Event(EXTRAITEM1_CLICK));
 		}
 		
 		public function onExtraItem2Click(event:MouseEvent){
-			var e:AddItemEvent = new AddItemEvent(EXTRAITEM2_CLICK);
-			e.setClickedTile(tile);
-			this.dispatchEvent(e);
+			this.dispatchEvent(new Event(EXTRAITEM2_CLICK));
 		}
 		
 		public function onMoveClick(event:MouseEvent){
-			var e:AddItemEvent = new AddItemEvent(MOVE_CLICK);
-			e.setClickedTile(tile);
-			this.dispatchEvent(e);
+			this.dispatchEvent(new Event(MOVE_CLICK));
 		}
 	}
 }
