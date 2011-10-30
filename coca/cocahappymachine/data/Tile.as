@@ -115,6 +115,10 @@
 			return this.isOccupy;
 		}
 		
+		public function getExtraId():String{
+			return this.extraId;
+		}
+		
 		public function setBuilding(setValue:Building){
 			this.building = setValue;
 		}

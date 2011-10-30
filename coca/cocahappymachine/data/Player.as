@@ -21,6 +21,7 @@
 		private var loadCallback:Function;
 		
 		private var bManager:BuildingManager;
+		private var iManager:ItemManager;
 		
 		public static const TILE_MAX_X:int = 8;
 		public static const TILE_MAX_Y:int = 8;
@@ -37,6 +38,7 @@
 			tile = new Array();
 			backpack = new Array();
 			bManager = BuildingManager.getInstance();
+			iManager = ItemManager.getInstance();
 		}
 		
 		public function isLoadComplete():Boolean {
@@ -122,7 +124,7 @@
 			}
 		}
 		public function build(currentTile:Tile, building:Building){
-			var moneyItem:int = ItemManager.getInstance().howMoney(building.getBuildItemId());
+			var moneyItem:int = iManager.howMoney(building.getBuildItemId());
 			if(currentTile.isAllowToBuild(building)){
 				if(this.isItemEnough(building.getBuildItemId(), QTY_TO_BUILD)){
 					for(var c:int; c < backpack.length; c++){
@@ -302,7 +304,7 @@
 			//reduce item quantity or reduce money if player don't have that item
 			//building parameter change to effect supply item
 			var supplyItemId:String = targetTile.getBuilding().getSupplyId();
-			var moneySupply:int = ItemManager.getInstance().howMoney(supplyItemId);
+			var moneySupply:int = iManager.howMoney(supplyItemId);
 				
 			if(isItemEnough(supplyItemId, QTY_USE_SUPPLY)){
 				var searchSupply:int = this.searchBackpackItem(supplyItemId);
@@ -345,8 +347,8 @@
 		
 		//---- Check is player have enough money / item to build this building
 		public function isEnoughResourceToBuild(building:Building):Boolean{
-			var moneyItem:int = ItemManager.getInstance().howMoney(building.getBuildItemId());
-			trace(building.getBuildItemId());
+			var moneyItem:int = iManager.howMoney(building.getBuildItemId());
+
 			if(this.isItemEnough(building.getBuildItemId(), QTY_TO_BUILD)){
 				//IF Check Item
 				return true;
@@ -359,18 +361,36 @@
 		
 		//---- Check for player have item / money using for supply ----//
 		public function isAllowToSupply(activeTile:Tile):Boolean{
+			var buildSupplyId:String = activeTile.getBuilding().getSupplyId();
+			var moneyToBuySupply:int = iManager.howMoney(buildSupplyId);
+			
+			if(this.isItemEnough(buildSupplyId, QTY_USE_SUPPLY)){
+				return true;
+			}else if(this.money>(moneyToBuySupply*QTY_USE_SUPPLY)){
+				return true;
+			}
 			return false;
 		}
 		
 		//---- Check for player extra condition (1) player must have that item ----//
 		//---- (2) tile didn't extra yet ----//
 		public function isAllowToExtra1(activeTile:Tile):Boolean{
+			var requireExtraId:String = activeTile.getBuilding().getExtraItem1().getId();
+			
+			if(this.isItemEnough(requireExtraId, QTY_USE_EXTRA)&&activeTile.getExtraId()=="NULL"){
+				return true;
+			}
 			return false;
 		}
 		
 		//---- Check for player extra condition (1) player must have that item ----//
 		//---- (2) tile didn't extra yet ----//
 		public function isAllowToExtra2(activeTile:Tile):Boolean{
+			var requireExtraId:String = activeTile.getBuilding().getExtraItem2().getId();
+			
+			if(this.isItemEnough(requireExtraId, QTY_USE_EXTRA)&&activeTile.getExtraId()=="NULL"){
+				return true;
+			}
 			return false;
 		}
 	}
