@@ -376,7 +376,7 @@
 		//---- (2) tile didn't extra yet ----//
 		public function isAllowToExtra1(activeTile:Tile):Boolean{
 			var requireExtraId:String = activeTile.getBuilding().getExtraItem1().getId();
-			
+
 			if(this.isItemEnough(requireExtraId, QTY_USE_EXTRA)&&activeTile.getExtraId()=="NULL"){
 				return true;
 			}
@@ -387,7 +387,7 @@
 		//---- (2) tile didn't extra yet ----//
 		public function isAllowToExtra2(activeTile:Tile):Boolean{
 			var requireExtraId:String = activeTile.getBuilding().getExtraItem2().getId();
-			
+
 			if(this.isItemEnough(requireExtraId, QTY_USE_EXTRA)&&activeTile.getExtraId()=="NULL"){
 				return true;
 			}
