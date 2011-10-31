@@ -7,6 +7,7 @@
 	import cocahappymachine.util.Config;
 	import flash.events.IOErrorEvent;
 	import cocahappymachine.util.Debug;
+	import flash.net.URLRequestMethod;
 	
 	public class Player {
 
@@ -416,6 +417,33 @@
 			destinationTile.setBuilding(moveTile.getBuilding());
 			
 			moveTile.clearTile();
+		}
+		
+		//---- Update Player data to Server ----//
+		public function updateToServer(){
+			var xml:XML = new XML("<test value='test'></test>");
+			var urlRequest:URLRequest = new URLRequest(Config.getInstance().getData("PLAYER_UPDATE_URL"));
+			urlRequest.data = xml;
+			urlRequest.contentType = "text/xml";
+			urlRequest.method = URLRequestMethod.POST;
+			var loader:URLLoader = new URLLoader();
+			loader.addEventListener(Event.COMPLETE, onUpdateToServerComplete);
+			loader.addEventListener(IOErrorEvent.IO_ERROR, onUpdateToServerFail);
+			loader.load(urlRequest);
+			//<?php  
+			//	if (isset($GLOBALS["HTTP_RAW_POST_DATA"])){  
+			//	    $xml = xmldoc($GLOBALS["HTTP_RAW_POST_DATA"]);  
+			//		echo($GLOBALS["HTTP_RAW_POST_DATA"]);  
+			//	}  
+			//?>
+		}
+		
+		public function onUpdateToServerComplete(event:Event){
+			trace("Player Update To Server Complete");			
+		}
+		
+		public function onUpdateToServerFail(event:IOErrorEvent){
+			trace("Player Update To Server IO Error");
 		}
 	}
 }

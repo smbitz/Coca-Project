@@ -2,6 +2,7 @@
     <string name="ITEM_URL" value="http://uatcoca.cakethai.com/cocaproject/xml/item.xml" />
     <string name="BUILDING_URL" value="http://uatcoca.cakethai.com/cocaproject/xml/building.xml" />
     <string name="PLAYER_URL" value="http://uatcoca.cakethai.com/cocaproject/xml/player.xml" />
+	<string name="PLAYER_UPDATE_URL" value="http://uatcoca.cakethai.com/cocaproject/player_update.php" />
 	
 	<string name="AUDIO_LIST" value="MUSIC_1,MUSIC_2" />
 	<string name="MUSIC_1" value="http://uatcoca.cakethai.com/cocaproject/music/bgmusic1.mp3" />
