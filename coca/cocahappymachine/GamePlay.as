@@ -30,8 +30,12 @@
 	import cocahappymachine.data.BuildingManager;
 	import cocahappymachine.data.ItemManager;
 	import cocahappymachine.ui.BuildEvent;
+	import cocahappymachine.ui.FarmTileBuilder;
 	
 	public class GamePlay extends MovieClip{
+		
+		private static const PLAYSTATE_NORMAL = 1;
+		private static const PLAYSTATE_MOVING = 2;
 		
 		private var currentPlayer:Player;
 		
@@ -45,9 +49,11 @@
 		
 		private var farmMap:FarmMap;
 		private var activeTile:AbstractFarmTile;
+		private var movingTile:AbstractFarmTile;
 		private var couponButton:CouponButton;
 		private var specialCodeButton:SpecialCodeButton;
 		private var moneyUI:MoneyUI;
+		private var playState:int;
 		
 		public function GamePlay() {
 			currentPlayer = SystemConstructor.getInstance().getCurrentPlayer();
@@ -55,11 +61,6 @@
 			//init FarmMap which consist of playTile, decorated area, market place
 			farmMap = new FarmMap();
 			farmMap.setCurrentPlayer(currentPlayer);
-			farmMap.addEventListener(FarmMapEvent.TILE_PURCHASE, onTilePurchase);
-			farmMap.addEventListener(FarmMapEvent.TILE_BUILD, onTileBuild);
-			farmMap.addEventListener(FarmMapEvent.TILE_ADDITEM, onTileAddItem);
-			farmMap.addEventListener(FarmMapEvent.TILE_HARVEST, onTileHarvest);
-			farmMap.addEventListener(FarmMap.SHOP_CLICK, onShopClick);
 			couponButton = new CouponButton();
 			couponButton.addEventListener(MouseEvent.CLICK, onCouponButtonClick);
 			couponButton.x = 400;
@@ -120,6 +121,7 @@
 				setStateNewspaper();		
 			}
 			//---- Start Game ----
+			setPlayStateNormal();
 			var t:GameTimer = new GameTimer();
 			t.addEventListener(GameTimer.GAMETIMER_RUN, onRun);
 			t.start();
@@ -139,6 +141,32 @@
 			//currentPlayer.extraItem(currentPlayer.getTile()[18], arrayItem[52]);
 			//currentPlayer.harvest(currentPlayer.getTile()[18]);
 			//currentPlayer.purchase(currentPlayer.getTile()[0]);*/
+		}
+		
+		private function setPlayStateNormal(){
+			playState = PLAYSTATE_NORMAL;
+			if(movingTile != null){
+				this.removeChild(movingTile);
+			}
+			farmMap.addEventListener(FarmMapEvent.TILE_PURCHASE, onTilePurchase);
+			farmMap.addEventListener(FarmMapEvent.TILE_BUILD, onTileBuild);
+			farmMap.addEventListener(FarmMapEvent.TILE_ADDITEM, onTileAddItem);
+			farmMap.addEventListener(FarmMapEvent.TILE_HARVEST, onTileHarvest);
+			farmMap.addEventListener(FarmMap.SHOP_CLICK, onShopClick);
+			farmMap.removeEventListener(FarmMapEvent.MOVE_DESTINATION, onMoveDestination);
+		}
+		
+		private function setPlayStateMoving(){
+			playState = PLAYSTATE_MOVING;
+			movingTile = FarmTileBuilder.createFarmTile(activeTile.getData());
+			movingTile.alpha = 0.7;
+			this.addChild(movingTile);
+			farmMap.addEventListener(FarmMapEvent.MOVE_DESTINATION, onMoveDestination);
+			farmMap.removeEventListener(FarmMapEvent.TILE_PURCHASE, onTilePurchase);
+			farmMap.removeEventListener(FarmMapEvent.TILE_BUILD, onTileBuild);
+			farmMap.removeEventListener(FarmMapEvent.TILE_ADDITEM, onTileAddItem);
+			farmMap.removeEventListener(FarmMapEvent.TILE_HARVEST, onTileHarvest);
+			farmMap.removeEventListener(FarmMap.SHOP_CLICK, onShopClick);
 		}
 		
 		private function setStateTutorial(){
@@ -164,6 +192,10 @@
 		
 		public function onRun(event:GameTimerEvent){
 			currentPlayer.update(event.getElapse());
+			if(playState == PLAYSTATE_MOVING){
+				movingTile.x = this.mouseX;
+				movingTile.y = this.mouseY;
+			}
 		}
 		
 		public function onTilePurchase(event:FarmMapEvent){
@@ -264,7 +296,8 @@
 		
 		public function onMoveBuilding(event:Event){
 			trace("move");
-			//start move state (allow player to select move destination tile
+			addItemPanel.visible = false;
+			setPlayStateMoving();
 		}
 		
 		public function onOccupyClose(event:Event){
@@ -283,6 +316,17 @@
 			var b:Building = BuildingManager.getInstance().getMatchBuilding(buildId);
 			currentPlayer.build(activeTile.getData(), b);
 			farmMap.updateTile(activeTile);
+		}
+		
+		public function onMoveDestination(event:FarmMapEvent){
+			trace("Move Destination");
+			setPlayStateNormal();
+			var destinationTile:Tile = event.getClickedTile().getData();
+			if(currentPlayer.isMoveable(activeTile.getData(), destinationTile)){
+				currentPlayer.moveTile(activeTile.getData(), destinationTile);
+				farmMap.updateTile(activeTile);
+				farmMap.updateTile(event.getClickedTile());
+			}
 		}
 	}
 }

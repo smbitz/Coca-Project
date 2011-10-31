@@ -393,5 +393,16 @@
 			}
 			return false;
 		}
+		
+		//---- Check for possible move condtion (1) destinationTile and moveTile must be the same land type
+		//---- (2) destination must not have building on it ----//
+		public function isMoveable(moveTile:Tile, destinationTile:Tile):Boolean{
+			return false;
+		}
+		
+		//---- proceed move tile ----//
+		public function moveTile(moveTile:Tile, destinationTile:Tile){
+			
+		}
 	}
 }

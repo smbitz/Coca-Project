@@ -6,7 +6,10 @@
 
 		private var tileData:Tile;
 		
-		public function AbstractFarmTile() {
+		public function AbstractFarmTile(t:AbstractFarmTile=null) {
+			if(t != null){
+				tileData = t.getData()
+			}
 		}
 
 		public function setData(t:Tile){
