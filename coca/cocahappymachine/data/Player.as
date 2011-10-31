@@ -8,6 +8,7 @@
 	import flash.events.IOErrorEvent;
 	import cocahappymachine.util.Debug;
 	import flash.net.URLRequestMethod;
+	import flash.net.FileReference;
 	
 	public class Player {
 
@@ -421,7 +422,22 @@
 		
 		//---- Update Player data to Server ----//
 		public function updateToServer(){
-			var xml:XML = new XML("<test value='test'></test>");
+			var allBackpackItem:String = "";
+			var allTileData:String = "";
+
+			//getBackpackItem
+			for each(var backpackItem:ItemQuantityPair in this.backpack){
+				allBackpackItem += '<item id="'+backpackItem.getItemId()+'" quantity="'+backpackItem.getItemQty()+'"/>';
+			}
+			
+			//getTileData
+			for each(var tileData:Tile in this.tile){
+				allTileData += '<tile land_type="'+tileData.getLandType()+'" is_occupy="'+tileData.getIsOccupy()+'" building_id="'+tileData.getBuildingId()+'" progress="'+tileData.getProgress()+'" supply_left="'+tileData.getSupply()+'" extra_id="'+tileData.getExtraId()+'" rotten_period="'+tileData.getRottenPeriod()+'"/>';
+			}
+			
+			var dataToAdd:String = '<player facebook_id="'+this.facebookId+'" exp="'+this.exp+'" money="'+this.money+'" is_new="'+this.isNew+'"><land>'+allTileData+'</land><backpack>'+allBackpackItem+'</backpack></player>';
+			
+			var xml:XML = new XML(dataToAdd);
 			var urlRequest:URLRequest = new URLRequest(Config.getInstance().getData("PLAYER_UPDATE_URL"));
 			urlRequest.data = xml;
 			urlRequest.contentType = "text/xml";
@@ -436,6 +452,10 @@
 			//		echo($GLOBALS["HTTP_RAW_POST_DATA"]);  
 			//	}  
 			//?>
+			
+			/*var fr:FileReference = new FileReference();
+			//fr.data = xml;
+			fr.save(xml , "test.xml");*/
 		}
 		
 		public function onUpdateToServerComplete(event:Event){

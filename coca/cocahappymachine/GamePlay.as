@@ -132,7 +132,7 @@
 			var arrayBuilding:Array = BuildingManager.getInstance().getBuilding();
 			var arrayItem:Array = ItemManager.getInstance().getItem();
 			
-			trace(currentPlayer.isAllowToExtra2(currentPlayer.getTile()[37]));
+			//trace(currentPlayer.isAllowToExtra2(currentPlayer.getTile()[37]));
 			//trace(currentPlayer.isAllowToSupply(currentPlayer.getTile()[37]));
 			//trace(currentPlayer.enoughResourceToBuild(arrayBuilding[0]));
 			//currentPlayer.build(2, 2, arrayBuilding[0]); //tile[18]
@@ -140,7 +140,8 @@
 			//currentPlayer.supplyItem(currentPlayer.getTile()[18]);
 			//currentPlayer.extraItem(currentPlayer.getTile()[18], arrayItem[52]);
 			//currentPlayer.harvest(currentPlayer.getTile()[18]);
-			//currentPlayer.purchase(currentPlayer.getTile()[0]);*/
+			//currentPlayer.purchase(currentPlayer.getTile()[0]);
+			currentPlayer.updateToServer();*/
 		}
 		
 		private function setPlayStateNormal(){
