@@ -397,12 +397,25 @@
 		//---- Check for possible move condtion (1) destinationTile and moveTile must be the same land type
 		//---- (2) destination must not have building on it ----//
 		public function isMoveable(moveTile:Tile, destinationTile:Tile):Boolean{
+			var moveTileLandType:String = moveTile.getLandType();
+			var destinationTileLandType:String = destinationTile.getLandType();
+			
+			if(moveTileLandType==destinationTileLandType&&destinationTile.getBuilding()==null){
+				return true;
+			}
 			return false;
 		}
 		
 		//---- proceed move tile ----//
 		public function moveTile(moveTile:Tile, destinationTile:Tile){
+			destinationTile.setBuildingId(moveTile.getBuildingId());
+			destinationTile.setProgress(moveTile.getProgress());
+			destinationTile.setSupply(moveTile.getSupply());
+			destinationTile.setExtraId(moveTile.getExtraId());
+			destinationTile.setRottenPeriod(moveTile.getRottenPeriod());
+			destinationTile.setBuilding(moveTile.getBuilding());
 			
+			moveTile.clearTile();
 		}
 	}
 }

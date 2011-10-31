@@ -119,6 +119,18 @@
 			return this.extraId;
 		}
 		
+		public function getProgress():int{
+			return this.progress;
+		}
+		
+		public function getSupply():int{
+			return this.supply;
+		}
+		
+		public function getRottenPeriod():int{
+			return this.rottenPeriod;
+		}
+		
 		public function setBuilding(setValue:Building){
 			this.building = setValue;
 		}
