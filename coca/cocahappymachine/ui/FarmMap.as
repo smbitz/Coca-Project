@@ -86,6 +86,9 @@
 				}
 				farmEvent.setClickedTile(t);
 				this.dispatchEvent(farmEvent);
+				var moveEvent:FarmMapEvent = new FarmMapEvent(FarmMapEvent.MOVE_DESTINATION);
+				moveEvent.setClickedTile(t);
+				this.dispatchEvent(moveEvent);
 			}
 		}
 		

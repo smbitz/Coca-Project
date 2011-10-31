@@ -8,6 +8,7 @@
 		public static const TILE_BUILD:String = "TILE_BUILD";
 		public static const TILE_ADDITEM:String = "TILE_ADDITEM";
 		public static const TILE_HARVEST:String = "TILE_HARVEST";
+		public static const MOVE_DESTINATION:String = "MOVE_DESTINATION";
 		
 		private var clickedTile:AbstractFarmTile;
 		
