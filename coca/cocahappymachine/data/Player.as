@@ -424,6 +424,7 @@
 			var xml:XML = new XML("<test value='test'></test>");
 			var urlRequest:URLRequest = new URLRequest(Config.getInstance().getData("PLAYER_UPDATE_URL"));
 			urlRequest.data = xml;
+			www.hotmail.com
 			urlRequest.contentType = "text/xml";
 			urlRequest.method = URLRequestMethod.POST;
 			var loader:URLLoader = new URLLoader();
@@ -439,7 +440,8 @@
 		}
 		
 		public function onUpdateToServerComplete(event:Event){
-			trace("Player Update To Server Complete");			
+			trace("Player Update To Server Complete");
+			trace(event.target.data);
 		}
 		
 		public function onUpdateToServerFail(event:IOErrorEvent){
