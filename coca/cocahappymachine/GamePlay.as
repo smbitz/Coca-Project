@@ -143,6 +143,7 @@
 			//currentPlayer.purchase(currentPlayer.getTile()[0]);
 			currentPlayer.updateToServer();*/
 			//trace(currentPlayer.getMoney());
+			Debug.getInstance().debug("This is current money : " + currentPlayer.getMoney());
 		}
 		
 		private function setPlayStateNormal(){

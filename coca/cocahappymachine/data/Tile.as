@@ -38,7 +38,7 @@
 				}else if (tileAttributes.name()=="progress") {
 					progress = (int(tileAttributes)*1000);
 				}else if (tileAttributes.name()=="supply_left") {
-					supply = int(tileAttributes);
+					supply = (int(tileAttributes)*1000);
 				}else if (tileAttributes.name()=="extra_id") {
 					extraId = tileAttributes;
 				}else if (tileAttributes.name()=="rotten_period") {

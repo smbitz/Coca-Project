@@ -440,9 +440,9 @@
 				allBackpackItem += '<item id="'+backpackItem.getItemId()+'" quantity="'+backpackItem.getItemQty()+'"/>';
 			}
 			
-			//getTileData
+			//getTileData and change millisec to sec.
 			for each(var tileData:Tile in this.tile){
-				allTileData += '<tile land_type="'+tileData.getLandType()+'" is_occupy="'+tileData.getIsOccupy()+'" building_id="'+tileData.getBuildingId()+'" progress="'+tileData.getProgress()+'" supply_left="'+tileData.getSupply()+'" extra_id="'+tileData.getExtraId()+'" rotten_period="'+tileData.getRottenPeriod()+'"/>';
+				allTileData += '<tile land_type="'+tileData.getLandType()+'" is_occupy="'+tileData.getIsOccupy()+'" building_id="'+tileData.getBuildingId()+'" progress="'+(tileData.getProgress()/1000)+'" supply_left="'+(tileData.getSupply()/1000)+'" extra_id="'+tileData.getExtraId()+'" rotten_period="'+(tileData.getRottenPeriod()/1000)+'"/>';
 			}
 			
 			var dataToAdd:String = '<player facebook_id="'+this.facebookId+'" exp="'+this.exp+'" money="'+this.money+'" is_new="'+this.isNew+'"><land>'+allTileData+'</land><backpack>'+allBackpackItem+'</backpack></player>';
