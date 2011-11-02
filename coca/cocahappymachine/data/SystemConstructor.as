@@ -22,7 +22,7 @@
 		private var aManager:AudioManager;
 
 		public function SystemConstructor() {
-			facebookId = "1001";
+			facebookId = "100111";
 			if(instance != null){
 				throw new Error("Singletone Pattern Implemented, new operation is forbidden");
 			}

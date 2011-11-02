@@ -226,7 +226,7 @@
 			var moneyToPurchase:int = getMoneyRequiredForPurchaseTile();
 			var levelToPurchase:int = getLevelRequiredForPurchaseTile();
 			
-			if(this.money>moneyToPurchase&&this.exp>=levelToPurchase){
+			if(this.money>moneyToPurchase&&this.getLevel()>=levelToPurchase){
 				//Calculate money
 				this.money -= moneyToPurchase;
 				
@@ -474,7 +474,15 @@
 		
 		//---- calculate and return player level ----//
 		public function getLevel():int{
-			return 999;
+			var currentPlayerLevel:int;
+			var expForNextLevel:int;
+			
+			while(this.exp>=expForNextLevel){
+				currentPlayerLevel++;
+				expForNextLevel = 50+(50*(Math.pow(currentPlayerLevel, 2)));
+			}
+			
+			return currentPlayerLevel;
 		}
 	}
 }

@@ -52,13 +52,13 @@
 				return BUILDING_NOTOCCUPY;
 			}
 			if(building){
-				if(progress<=(building.getBuildPeriod()*0.5)){
-					//if progress <= 50%
+				if(progress>=(building.getBuildPeriod()*0.5)){
+					//if progress >= 0 - 50%
 					return BUILDING_PROCESS1;
-				} else if(progress>(building.getBuildPeriod()*0.5)&&progress<building.getBuildPeriod()){
-					//if progress >50% AND < 100%
+				} else if(progress<(building.getBuildPeriod()*0.5)&&progress>0){
+					//if progress > 50% AND < 100%
 					return BUILDING_PROCESS2;
-				} else if(progress>=building.getBuildPeriod()&&rottenPeriod>0){
+				} else if(progress<=0&&rottenPeriod>0){
 					//if progress >= 100% (but not rotted)
 					return BUILDING_COMPLETED;
 				} else {
@@ -78,14 +78,14 @@
 				} else if(buildingStatus == BUILDING_PROCESS1){
 					//update elapse with progress
 					if(this.supply>0){
-						this.progress += elapse;
+						this.progress -= elapse;
 						this.supply -= elapse;
 					}
 					buildingStatus = this.getBuildingStatus();
 				} else if(buildingStatus == BUILDING_PROCESS2){
 					//update elapse with progress
 					if(this.supply>0){
-						this.progress += elapse;
+						this.progress -= elapse;
 						this.supply -= elapse;
 					}
 					buildingStatus = this.getBuildingStatus();
@@ -162,7 +162,7 @@
 		//player.build(1, 1, "1");
 		public function build(building:Building){
 			this.buildingId = building.getId();
-			this.progress = 0;
+			this.progress = building.getBuildPeriod();
 			this.supply = 0;
 			this.extraId = "NULL";
 			this.rottenPeriod = building.getRottenPeriod();
