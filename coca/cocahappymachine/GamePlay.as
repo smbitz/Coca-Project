@@ -142,6 +142,7 @@
 			//currentPlayer.harvest(currentPlayer.getTile()[18]);
 			//currentPlayer.purchase(currentPlayer.getTile()[0]);
 			currentPlayer.updateToServer();*/
+			//trace(currentPlayer.getMoney());
 		}
 		
 		private function setPlayStateNormal(){
@@ -236,12 +237,14 @@
 			var isExtra2:Boolean = currentPlayer.isAllowToExtra2(activeTile.getData());
 			addItemPanel.setButtonState(isSupply, isExtra1, isExtra2, true);
 			addItemPanel.visible = true;
+			currentPlayer.updateToServer();
 		}
 		
 		public function onTileHarvest(event:FarmMapEvent){
 			activeTile = event.getClickedTile();
 			currentPlayer.harvest(event.getClickedTile().getData());
 			farmMap.updateTile(event.getClickedTile());
+			currentPlayer.updateToServer();
 		}
 		
 		public function onShopClick(event:Event){
@@ -281,24 +284,28 @@
 		public function onSupplyItem(event:Event){
 			addItemPanel.visible = false;
 			currentPlayer.supplyItem(activeTile.getData());
+			currentPlayer.updateToServer();
 		}
 		
 		public function onExtraItem1(event:Event){
 			addItemPanel.visible = false;
 			var i:Item = activeTile.getData().getBuilding().getExtraItem1();
 			currentPlayer.extraItem(activeTile.getData(), i);
+			currentPlayer.updateToServer();
 		}
 	
 		public function onExtraItem2(event:Event){
 			addItemPanel.visible = false;
 			var i:Item = activeTile.getData().getBuilding().getExtraItem2();
 			currentPlayer.extraItem(activeTile.getData(), i);
+			currentPlayer.updateToServer();
 		}
 		
 		public function onMoveBuilding(event:Event){
 			trace("move");
 			addItemPanel.visible = false;
 			setPlayStateMoving();
+			currentPlayer.updateToServer();
 		}
 		
 		public function onOccupyClose(event:Event){
@@ -309,6 +316,7 @@
 			occupyDialog.visible = false;
 			currentPlayer.purchase(activeTile.getData());
 			farmMap.removeChild(activeTile);
+			currentPlayer.updateToServer();
 		}
 		
 		public function onBuildPanelBuild(event:BuildEvent){
@@ -317,6 +325,7 @@
 			var b:Building = BuildingManager.getInstance().getMatchBuilding(buildId);
 			currentPlayer.build(activeTile.getData(), b);
 			farmMap.updateTile(activeTile);
+			currentPlayer.updateToServer();
 		}
 		
 		public function onMoveDestination(event:FarmMapEvent){

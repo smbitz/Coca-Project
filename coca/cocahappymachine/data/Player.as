@@ -9,6 +9,7 @@
 	import cocahappymachine.util.Debug;
 	import flash.net.URLRequestMethod;
 	import flash.net.FileReference;
+	import flash.net.URLVariables;
 	
 	public class Player {
 
@@ -55,7 +56,16 @@
 			urlLoader.addEventListener(Event.COMPLETE, onXmlComplete);
 			urlLoader.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
 			var url:String = Config.getInstance().getData("PLAYER_URL");
-			urlLoader.load(new URLRequest(url));
+			var urlRequest:URLRequest = new URLRequest(url);
+			urlRequest.method = URLRequestMethod.POST;
+			
+			//Add facebook id to url.
+			var variables:URLVariables = new URLVariables();
+			variables.facebook_id = facebookId;
+			
+			urlRequest.data = variables;
+			
+			urlLoader.load(urlRequest);
 		}
 	
 		private function onXmlComplete(event:Event){
@@ -214,9 +224,9 @@
 		//---- Purchase that tile ----//
 		public function purchase(t:Tile){
 			var moneyToPurchase:int = getMoneyRequiredForPurchaseTile();
-			var levelToPurchase:int = 50 + ( 50 * (Math.pow(getLevelRequiredForPurchaseTile(), 2)) );
+			var levelToPurchase:int = getLevelRequiredForPurchaseTile();
 			
-			if(this.money>moneyToPurchase&&this.exp>levelToPurchase){
+			if(this.money>moneyToPurchase&&this.exp>=levelToPurchase){
 				//Calculate money
 				this.money -= moneyToPurchase;
 				
