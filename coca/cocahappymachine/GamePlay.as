@@ -194,6 +194,7 @@
 		
 		public function onRun(event:GameTimerEvent){
 			currentPlayer.update(event.getElapse());
+			moneyUI.setMoney(currentPlayer.getMoney());
 			if(playState == PLAYSTATE_MOVING){
 				movingTile.x = this.mouseX;
 				movingTile.y = this.mouseY;
@@ -205,7 +206,15 @@
 			occupyDialog.visible = true;
 			var level:int = currentPlayer.getLevelRequiredForPurchaseTile();
 			var money:int = currentPlayer.getMoneyRequiredForPurchaseTile();
-			occupyDialog.setData(level, money, false, false);
+			var isLevelEnough:Boolean = false;
+			var isMoneyEnough:Boolean = false;
+			if(level <= currentPlayer.getLevel()){
+				isLevelEnough = true;
+			}
+			if(money <= currentPlayer.getMoney()){
+				isMoneyEnough = true;
+			}
+			occupyDialog.setData(level, money, isLevelEnough, isMoneyEnough);
 		}
 		
 		public function onTileBuild(event:FarmMapEvent){

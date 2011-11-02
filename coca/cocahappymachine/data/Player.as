@@ -471,5 +471,10 @@
 		public function onUpdateToServerFail(event:IOErrorEvent){
 			trace("Player Update To Server IO Error");
 		}
+		
+		//---- calculate and return player level ----//
+		public function getLevel():int{
+			return 999;
+		}
 	}
 }
