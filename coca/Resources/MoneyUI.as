@@ -1,18 +1,19 @@
 ﻿package Resources {
 	
 	import flash.display.MovieClip;
+	import flash.text.TextField;
 	
 	
 	public class MoneyUI extends MovieClip {
 		
-		private var money:int;
+		public var moneyField:TextField;
 		
 		public function MoneyUI() {
 			// constructor code
 		}
 		
 		public function setMoney(m:int){
-			money = m;
+			moneyField.text = m.toString();
 		}
 	}
 }
