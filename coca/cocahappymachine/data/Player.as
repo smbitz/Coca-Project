@@ -452,14 +452,10 @@
 			//		echo($GLOBALS["HTTP_RAW_POST_DATA"]);  
 			//	}  
 			//?>
-			
-			/*var fr:FileReference = new FileReference();
-			//fr.data = xml;
-			fr.save(xml , "test.xml");*/
 		}
 		
 		public function onUpdateToServerComplete(event:Event){
-			trace("Player Update To Server Complete");			
+			trace("Player Update To Server Complete");
 		}
 		
 		public function onUpdateToServerFail(event:IOErrorEvent){
