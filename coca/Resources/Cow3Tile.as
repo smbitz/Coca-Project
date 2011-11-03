@@ -2,10 +2,10 @@
 	
 	import cocahappymachine.ui.AbstractFarmTile;
 	
-	public class Chicken1Tile extends AbstractFarmTile {
+	public class Cow3Tile extends AbstractFarmTile {
 		
 		
-		public function Chicken1Tile() {
+		public function Cow3Tile() {
 			// constructor code
 		}
 	}
