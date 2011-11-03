@@ -282,10 +282,28 @@
 		
 		public function exchange(itemId:String){
 			//send request to server asking for exchange item to coupon
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.dataFormat = URLLoaderDataFormat.TEXT;
+			urlLoader.addEventListener(Event.COMPLETE, onExchangeReply);
+			urlLoader.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
+			var url:String = Config.getInstance().getData("GENERATE_COUPON_URL");
+			var urlRequest:URLRequest = new URLRequest(url);
+			urlRequest.method = URLRequestMethod.POST;
+			
+			//Add facebook_id and item_id to url.
+			var variables:URLVariables = new URLVariables();
+			variables.facebook_id = facebookId;
+			variables.item_id = itemId;
+			
+			urlRequest.data = variables;
+			
+			urlLoader.load(urlRequest);
 		}
 		
 		//---- Callback function for exchange() ----//
-		public function onExchangeReply(){
+		public function onExchangeReply(event:Event){
+			var couponId:String = event.target.data.toString();
+			
 			//if success
 				//reduce amount of item using for exchange
 				//add coupon item to player backpack
@@ -295,20 +313,64 @@
 		
 		public function couponCodeView(itemId:String){
 			//send request to server asking for the code of coupon
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.dataFormat = URLLoaderDataFormat.TEXT;
+			urlLoader.addEventListener(Event.COMPLETE, onCouponCodeViewReply);
+			urlLoader.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
+			var url:String = Config.getInstance().getData("VIEW_COUPON_URL");
+			var urlRequest:URLRequest = new URLRequest(url);
+			urlRequest.method = URLRequestMethod.POST;
+			
+			//Add facebook_id and item_id to url.
+			var variables:URLVariables = new URLVariables();
+			variables.facebook_id = facebookId;
+			variables.item_id = itemId;
+			
+			urlRequest.data = variables;
+			
+			urlLoader.load(urlRequest);
 		}
 		
 		//---- Callback function for couponCodeView() ----//
-		public function onCouponCodeViewReply(){
+		public function onCouponCodeViewReply(event:Event){
+			var couponId:String = event.target.data.toString();
 			
+			if(couponId=="Fail"){
+				
+			}else{
+				
+			}
 		}
 		
 		public function specialCodeInput(code:String){
 			//send request to server asking for the verify code
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.dataFormat = URLLoaderDataFormat.TEXT;
+			urlLoader.addEventListener(Event.COMPLETE, onSpecialCodeInputReply);
+			urlLoader.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
+			var url:String = Config.getInstance().getData("USE_SPECIAL_CODE_URL");
+			var urlRequest:URLRequest = new URLRequest(url);
+			urlRequest.method = URLRequestMethod.POST;
+			
+			//Add facebook_id and item_id to url.
+			var variables:URLVariables = new URLVariables();
+			variables.special_id = code;
+			variables.facebook_id = facebookId;
+			
+			urlRequest.data = variables;
+			
+			urlLoader.load(urlRequest);
 		}
 		
 		//---- Callback function for specialCodeInput() ----//
-		public function onSpecialCodeInputReply(){
+		public function onSpecialCodeInputReply(event:Event){
+			var resultInput:String = event.target.data.toString();
 			
+			if(resultInput=="Success"){
+				//Random item.
+			}else{
+				
+			}
 		}
 		
 		//---- Supply item to targetTile

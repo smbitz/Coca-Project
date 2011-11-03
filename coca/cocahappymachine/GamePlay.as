@@ -144,6 +144,7 @@
 			currentPlayer.updateToServer();*/
 			//trace(currentPlayer.getMoney());
 			//Debug.getInstance().debug("This is current money : " + currentPlayer.getMoney());
+			//currentPlayer.specialCodeInput("5010");
 		}
 		
 		private function setPlayStateNormal(){

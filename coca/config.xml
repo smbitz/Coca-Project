@@ -1,8 +1,11 @@
 ﻿<config>
     <string name="ITEM_URL" value="http://uatcoca.cakethai.com/cocaproject/xml/item.xml" />
     <string name="BUILDING_URL" value="http://uatcoca.cakethai.com/cocaproject/xml/building.xml" />
-    <string name="PLAYER_URL" value="http://uatcoca.cakethai.com/cocaproject/get_player_xml.php" />
-	<string name="PLAYER_UPDATE_URL" value="http://uatcoca.cakethai.com/cocaproject/player_update.php" />
+    <string name="PLAYER_URL" value="http://uatcoca.cakethai.com/cocaproject/php/get_player_xml.php" />
+	<string name="PLAYER_UPDATE_URL" value="http://uatcoca.cakethai.com/cocaproject/php/player_update.php" />
+	<string name="GENERATE_COUPON_URL" value="http://uatcoca.cakethai.com/cocaproject/php/coupon/generate_coupon.php" />
+	<string name="VIEW_COUPON_URL" value="http://uatcoca.cakethai.com/cocaproject/php/coupon/view_coupon.php" />
+	<string name="USE_SPECIAL_CODE_URL" value="http://uatcoca.cakethai.com/cocaproject/php/specialCode/use_special_code.php" />
 	
 	<string name="AUDIO_LIST" value="MUSIC_1,MUSIC_2" />
 	<string name="MUSIC_1" value="http://uatcoca.cakethai.com/cocaproject/music/bgmusic1.mp3" />
