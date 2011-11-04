@@ -518,12 +518,6 @@
 			loader.addEventListener(Event.COMPLETE, onUpdateToServerComplete);
 			loader.addEventListener(IOErrorEvent.IO_ERROR, onUpdateToServerFail);
 			loader.load(urlRequest);
-			//<?php  
-			//	if (isset($GLOBALS["HTTP_RAW_POST_DATA"])){  
-			//	    $xml = xmldoc($GLOBALS["HTTP_RAW_POST_DATA"]);  
-			//		echo($GLOBALS["HTTP_RAW_POST_DATA"]);  
-			//	}  
-			//?>
 		}
 		
 		public function onUpdateToServerComplete(event:Event){

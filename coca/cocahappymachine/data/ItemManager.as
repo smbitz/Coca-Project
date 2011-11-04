@@ -70,6 +70,11 @@
 			return item;
 		}
 		
+		//---- get array of item which have the same type as requested ----//
+		public function getItemByType(type:String):Array{
+			return null;
+		}
+		
 		public function howMoney(id:String):int{
 			for each(var matchItemId:Item in item){
 				if(matchItemId.getId()==id){

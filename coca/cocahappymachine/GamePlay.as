@@ -31,6 +31,7 @@
 	import cocahappymachine.data.ItemManager;
 	import cocahappymachine.ui.BuildEvent;
 	import cocahappymachine.ui.FarmTileBuilder;
+	import Resources.CouponExchangeItemBox2;
 	
 	public class GamePlay extends MovieClip{
 		
@@ -95,6 +96,8 @@
 			couponExchangeDialog = new CouponExchangeDialog();
 			couponExchangeDialog.visible = false;
 			couponExchangeDialog.addEventListener(CouponExchangeDialog.DIALOG_CLOSE, onCouponExchangeDialogClose);
+			couponExchangeDialog.addEventListener(CouponExchangeDialog.VIEW_CODE, onCouponExchangeViewCode);
+			couponExchangeDialog.addEventListener(CouponExchangeDialog.EXCHANGE, onCouponExchangeExchange);
 			this.addChild(couponExchangeDialog);
 			buildPanel = new BuildPanel();
 			buildPanel.visible = false;
@@ -242,7 +245,6 @@
 		
 		public function onTileAddItem(event:FarmMapEvent){
 			activeTile = event.getClickedTile();
-			//change to each data
 			var isSupply:Boolean = currentPlayer.isAllowToSupply(activeTile.getData());
 			var isExtra1:Boolean = currentPlayer.isAllowToExtra1(activeTile.getData());
 			var isExtra2:Boolean = currentPlayer.isAllowToExtra2(activeTile.getData());
@@ -265,6 +267,18 @@
 		
 		public function onCouponButtonClick(event:MouseEvent){
 			couponExchangeDialog.visible = true;
+			var itemBoxList:Array = new Array();
+			var couponItemList:Array = ItemManager.getInstance().getItemType("coupon");
+			for each(var item:Item in couponItemList){
+				var box:MovieClip;
+				if(currentPlayer.isItemEnough(item.getId(), 1)){
+					box = new CouponExchangeItemBox2();
+				} else {
+					box = new CouponExchangeItemBox1();
+				}
+				itemBoxList.push(box);
+			}
+			couponExchangeDialog.setItemBox(itemBoxList);
 		}
 		
 		public function onSpecialCodeButtonClick(event:MouseEvent){
@@ -277,7 +291,7 @@
 		
 		public function onSpecialCodeConfirm(event:Event){
 			specialCodeDialog.visible = false;
-			//currentPlayer.exchange(itemId);
+			currentPlayer.specialCodeInput(specialCodeDialog.getCode());
 		}
 		
 		public function onCouponExchangeDialogClose(event:Event){
@@ -348,6 +362,14 @@
 				farmMap.updateTile(activeTile);
 				farmMap.updateTile(event.getClickedTile());
 			}
+		}
+		
+		public function onCouponExchangeViewCode(event:Event){
+			trace("view code");
+		}
+		
+		public function onCouponExchangeExchange(event:Event){
+			trace("exchange");
 		}
 	}
 }
