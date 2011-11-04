@@ -334,7 +334,7 @@
 		//---- Callback function for couponCodeView() ----//
 		public function onCouponCodeViewReply(event:Event){
 			var couponId:String = event.target.data.toString();
-			
+
 			if(couponId=="Fail"){
 				
 			}else{
@@ -354,7 +354,7 @@
 			
 			//Add facebook_id and item_id to url.
 			var variables:URLVariables = new URLVariables();
-			variables.special_id = code;
+			variables.special_code = code;
 			variables.facebook_id = facebookId;
 			
 			urlRequest.data = variables;
