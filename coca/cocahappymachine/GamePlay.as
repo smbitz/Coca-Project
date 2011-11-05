@@ -32,6 +32,7 @@
 	import cocahappymachine.ui.BuildEvent;
 	import cocahappymachine.ui.FarmTileBuilder;
 	import Resources.CouponExchangeItemBox2;
+	import Resources.CouponExchangeItemBox1;
 	
 	public class GamePlay extends MovieClip{
 		
@@ -148,6 +149,10 @@
 			//trace(currentPlayer.getMoney());
 			//Debug.getInstance().debug("This is current money : " + currentPlayer.getMoney());
 			//currentPlayer.couponCodeView("5010");
+			/*var testArray:Array = ItemManager.getInstance().getItemByType("special");
+			for each(var showArray:Item in testArray){
+				trace(showArray.getItemType(), showArray.getName());
+			}*/
 		}
 		
 		private function setPlayStateNormal(){
@@ -268,7 +273,7 @@
 		public function onCouponButtonClick(event:MouseEvent){
 			couponExchangeDialog.visible = true;
 			var itemBoxList:Array = new Array();
-			var couponItemList:Array = ItemManager.getInstance().getItemType("coupon");
+			var couponItemList:Array = ItemManager.getInstance().getItemByType("coupon");
 			for each(var item:Item in couponItemList){
 				var box:MovieClip;
 				if(currentPlayer.isItemEnough(item.getId(), 1)){

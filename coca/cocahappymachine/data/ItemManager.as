@@ -72,7 +72,16 @@
 		
 		//---- get array of item which have the same type as requested ----//
 		public function getItemByType(type:String):Array{
-			return null;
+			var itemArrayByType:Array = new Array();
+			var allItemArray:Array = this.item;
+			
+			for each(var allItem:Item in allItemArray){
+				if(allItem.getItemType()==type){
+					itemArrayByType.push(allItem);
+				}
+			}
+			
+			return itemArrayByType;
 		}
 		
 		public function howMoney(id:String):int{

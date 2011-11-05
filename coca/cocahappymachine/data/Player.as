@@ -335,7 +335,7 @@
 		public function onCouponCodeViewReply(event:Event){
 			var couponId:String = event.target.data.toString();
 
-			if(couponId=="Fail"){
+			if(couponId=="fail"){
 				
 			}else{
 				
@@ -366,7 +366,7 @@
 		public function onSpecialCodeInputReply(event:Event){
 			var resultInput:String = event.target.data.toString();
 			
-			if(resultInput=="Success"){
+			if(resultInput=="success"){
 				//Random item.
 			}else{
 				
@@ -494,22 +494,23 @@
 		
 		//---- Update Player data to Server ----//
 		public function updateToServer(){
-			var allBackpackItem:String = "";
-			var allTileData:String = "";
-
-			//getBackpackItem
-			for each(var backpackItem:ItemQuantityPair in this.backpack){
-				allBackpackItem += '<item id="'+backpackItem.getItemId()+'" quantity="'+backpackItem.getItemQty()+'"/>';
-			}
-			
+			//Create player xml.
+			var xml:XML = <player facebook_id={this.facebookId} exp={this.exp} money={this.money} is_new={this.isNew}/>;
+			var xmlLand:XML = <land/>;
 			//getTileData and change millisec to sec.
 			for each(var tileData:Tile in this.tile){
-				allTileData += '<tile land_type="'+tileData.getLandType()+'" is_occupy="'+tileData.getIsOccupy()+'" building_id="'+tileData.getBuildingId()+'" progress="'+(tileData.getProgress()/1000)+'" supply_left="'+(tileData.getSupply()/1000)+'" extra_id="'+tileData.getExtraId()+'" rotten_period="'+(tileData.getRottenPeriod()/1000)+'"/>';
+				xmlLand.appendChild(<tile land_type={tileData.getLandType()} is_occupy={tileData.getIsOccupy()} building_id={tileData.getBuildingId()} progress={(tileData.getProgress()/1000)} supply_left={(tileData.getSupply()/1000)} extra_id={tileData.getExtraId()} rotten_period={(tileData.getRottenPeriod()/1000)}/>);
 			}
 			
-			var dataToAdd:String = '<player facebook_id="'+this.facebookId+'" exp="'+this.exp+'" money="'+this.money+'" is_new="'+this.isNew+'"><land>'+allTileData+'</land><backpack>'+allBackpackItem+'</backpack></player>';
+			//getBackpackItem
+			var xmlBackpack:XML = <backpack/>;
+			for each(var backpackItem:ItemQuantityPair in this.backpack){
+				xmlBackpack.appendChild(<item id={backpackItem.getItemId()} quantity={backpackItem.getItemQty()}/>);
+			}
 			
-			var xml:XML = new XML(dataToAdd);
+			xml.appendChild(xmlLand);
+			xml.appendChild(xmlBackpack);
+
 			var urlRequest:URLRequest = new URLRequest(Config.getInstance().getData("PLAYER_UPDATE_URL"));
 			urlRequest.data = xml;
 			urlRequest.contentType = "text/xml";

@@ -29,7 +29,7 @@
 			for each(var box:BuildItemBox in boxList){
 				box.x = 70 * loop;
 				box.y = 50;
-				if(box is CouponExchangeDialog1){
+				if(box is CouponExchangeItemBox1){
 					box.addEventListener(MouseEvent.CLICK, onBox1Click);	
 				} else {
 					box.addEventListener(MouseEvent.CLICK, onBox2Click);	
