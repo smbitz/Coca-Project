@@ -4,6 +4,7 @@
 	import flash.events.MouseEvent;
 	import flash.events.Event;
 	import flash.display.SimpleButton;
+	import cocahappymachine.ui.CouponEvent;
 	
 	public class CouponExchangeDialog extends MovieClip {
 		
@@ -55,11 +56,25 @@
 		}
 		
 		public function onBox1Click(event:MouseEvent){
-			this.dispatchEvent(new Event(EXCHANGE));
+			var e:CouponEvent = new CouponEvent(EXCHANGE)
+			if(event.target is CouponExchangeItemBox1){
+				var box:CouponExchangeItemBox1 = CouponExchangeItemBox1(event.target);
+				e.setItemId(box.getItemId());
+			} else {
+				throw new Error("unexpected : onBox1Click in CouponExchangeDialog.as");
+			}
+			this.dispatchEvent(e);
 		}
 		
 		public function onBox2Click(event:MouseEvent){
-			this.dispatchEvent(new Event(VIEW_CODE));
+			var e:CouponEvent = new CouponEvent(VIEW_CODE)
+			if(event.target is CouponExchangeItemBox1){
+				var box:CouponExchangeItemBox2 = CouponExchangeItemBox2(event.target);				
+				e.setItemId(box.getItemId());
+			} else {
+				throw new Error("unexpected : onBox2Click in CouponExchangeDialog.as");
+			}
+			this.dispatchEvent(e);
 		}
 	}
 }

@@ -541,5 +541,11 @@
 			
 			return currentPlayerLevel;
 		}
+		
+		//---- find sellable item which owned by player ----//
+		//---- return array of ItemQuantityPair ----//
+		public function getSellableItem():Array{
+			return null;
+		}
 	}
 }
