@@ -33,6 +33,11 @@
 	import cocahappymachine.ui.FarmTileBuilder;
 	import Resources.CouponExchangeItemBox2;
 	import Resources.CouponExchangeItemBox1;
+	import Resources.ShopDialog;
+	import cocahappymachine.ui.CouponEvent;
+	import cocahappymachine.data.ItemQuantityPair;
+	import Resources.ShopBuyItemBox;
+	import Resources.ShopSellItemBox;
 	
 	public class GamePlay extends MovieClip{
 		
@@ -48,6 +53,7 @@
 		private var occupyDialog:OccupyDialog;
 		private var buildPanel:BuildPanel;
 		private var addItemPanel:AddItemPanel;
+		private var shopDialog:ShopDialog;
 		
 		private var farmMap:FarmMap;
 		private var activeTile:AbstractFarmTile;
@@ -118,6 +124,12 @@
 			addItemPanel.addEventListener(AddItemPanel.EXTRAITEM2_CLICK, onExtraItem2);
 			addItemPanel.addEventListener(AddItemPanel.MOVE_CLICK, onMoveBuilding);
 			this.addChild(addItemPanel);
+			shopDialog = new ShopDialog();
+			shopDialog.addEventListener(ShopDialog.DIALOG_CLOSE, onShopDialogClose);
+			shopDialog.addEventListener(ShopDialog.BUY, onShopDialogBuy);
+			shopDialog.addEventListener(ShopDialog.SELL, onShopDialogSell);
+			shopDialog.visible = false;
+			this.addChild(shopDialog);
 			//-------------------------
 			if(currentPlayer.isNewGame()){
 				setStateTutorial();
@@ -267,7 +279,21 @@
 		
 		public function onShopClick(event:Event){
 			trace("shop click");
-			//display shop dialog
+			shopDialog.visible = true;
+			var buyItem:Array = ItemManager.getInstance().getItemByType("normal");	//array of item
+			var sellItem:Array = currentPlayer.getSellableItem();					//array of ItemQuantityPair
+			var buyBoxList:Array = new Array();
+			var sellBoxList:Array = new Array();
+			for each(var item:Item in buyItem){
+				var buyBox:ShopBuyItemBox = new ShopBuyItemBox();
+				buyBoxList.push(buyBox);
+			}
+			for each(var backpack:ItemQuantityPair in sellItem){
+				var sellBox:ShopSellItemBox = new ShopSellItemBox();
+				sellBoxList.push(sellBox);
+			}
+			shopDialog.setBuyItemBox(buyBoxList);
+			shopDialog.setSellItemBox(sellBoxList);
 		}
 		
 		public function onCouponButtonClick(event:MouseEvent){
@@ -278,8 +304,10 @@
 				var box:MovieClip;
 				if(currentPlayer.isItemEnough(item.getId(), 1)){
 					box = new CouponExchangeItemBox2();
+					CouponExchangeItemBox2(box).setItemId(item.getId());
 				} else {
 					box = new CouponExchangeItemBox1();
+					CouponExchangeItemBox1(box).setItemId(item.getId());
 				}
 				itemBoxList.push(box);
 			}
@@ -369,12 +397,24 @@
 			}
 		}
 		
-		public function onCouponExchangeViewCode(event:Event){
-			trace("view code");
+		public function onCouponExchangeViewCode(event:CouponEvent){
+			trace("view code : " + event.getItemId());
 		}
 		
-		public function onCouponExchangeExchange(event:Event){
-			trace("exchange");
+		public function onCouponExchangeExchange(event:CouponEvent){
+			trace("exchange : " + event.getItemId());
+		}
+		
+		public function onShopDialogClose(event:Event){
+			
+		}
+		
+		public function onShopDialogBuy(event:Event){
+			
+		}
+		
+		public function onShopDialogSell(event:Event){
+			
 		}
 	}
 }
