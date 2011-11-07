@@ -42,7 +42,6 @@
 			Debug.getInstance().debug("Load Data Complete");
 			//Debug.getInstance().debug("This is Facebook Id : " + facebookId);
 			//Debug.getInstance().debug("This is Facebook Name : " + facebookName);
-			
 			//---- Load External Symbol ----
 			var path:URLRequest = new URLRequest("Resources.swf");
 			var context:LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
