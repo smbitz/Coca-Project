@@ -34,6 +34,8 @@
 		private static const BUY_EACH_AREA:int = 4;
 		private static const ROTTED_ITEM_QTY_PERCENT:Number = 0.5;
 		private static const QTY_START_FARM_PLAYER:int = 16;
+		private static const NOT_SELL_VALUE_1 = "coupon";
+		private static const NOT_SELL_VALUE_2 = "special";
 		
 		public function Player(facebookId:String) {
 			this.facebookId = facebookId;
@@ -545,7 +547,17 @@
 		//---- find sellable item which owned by player ----//
 		//---- return array of ItemQuantityPair ----//
 		public function getSellableItem():Array{
-			return null;
+			var arraySellAbleItem:Array = new Array();
+			
+			for each(var arrayItem:ItemQuantityPair in this.backpack){
+				var backpackItemType:String = arrayItem.getItem().getItemType();
+				
+				if(backpackItemType!=NOT_SELL_VALUE_1&&backpackItemType!=NOT_SELL_VALUE_2){
+					arraySellAbleItem.push(arrayItem);
+				}
+			}
+			
+			return arraySellAbleItem;
 		}
 	}
 }

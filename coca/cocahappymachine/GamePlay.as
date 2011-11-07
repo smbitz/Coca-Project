@@ -165,6 +165,14 @@
 			for each(var showArray:Item in testArray){
 				trace(showArray.getItemType(), showArray.getName());
 			}*/
+			/*currentPlayer.getSellableItem();
+			for each(var arrayItem:ItemQuantityPair in currentPlayer.getSellableItem()){
+				trace(arrayItem.getItem().getName());
+			}*/
+			/*currentPlayer.getBackpack();
+			for each(var arrayItem:ItemQuantityPair in currentPlayer.getBackpack()){
+				trace(arrayItem.getItem().getName());
+			}*/
 		}
 		
 		private function setPlayStateNormal(){
