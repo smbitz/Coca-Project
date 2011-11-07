@@ -38,11 +38,29 @@
 	import cocahappymachine.data.ItemQuantityPair;
 	import Resources.ShopBuyItemBox;
 	import Resources.ShopSellItemBox;
+	import flash.ui.Mouse;
+	import Resources.MouseCursor;
+	import Resources.StatusUI;
+	import Resources.OptionBar;
 	
 	public class GamePlay extends MovieClip{
 		
-		private static const PLAYSTATE_NORMAL = 1;
-		private static const PLAYSTATE_MOVING = 2;
+		private static const PLAYSTATE_NORMAL:int = 1;
+		private static const PLAYSTATE_MOVING:int = 2;
+		
+		private static const MOUSECURSOR_OFFSET_X:int = -5;
+		private static const MOUSECURSOR_OFFSET_Y:int = -5;
+		
+		private static const OPTIONBAR_X:int = 700;
+		private static const OPTIONBAR_Y:int = 5;
+		private static const STATUSUI_X:int = 5;
+		private static const STATUSUI_Y:int = 5;
+		private static const MONEYUI_X:int = 400;
+		private static const MONEYUI_Y:int = 0;
+		private static const COUPONBUTTON_X:int = 400;
+		private static const COUPONBUTTON_Y:int = 50;
+		private static const SPECIALCODEBUTTON_X:int = 400;
+		private static const SPECIALCODEBUTTON_Y:int = 100;
 		
 		private var currentPlayer:Player;
 		
@@ -61,29 +79,44 @@
 		private var couponButton:CouponButton;
 		private var specialCodeButton:SpecialCodeButton;
 		private var moneyUI:MoneyUI;
+		private var statusUI:StatusUI;
+		private var optionBar:OptionBar;
 		private var playState:int;
+		private var mouseCursor:MovieClip;
 		
 		public function GamePlay() {
 			currentPlayer = SystemConstructor.getInstance().getCurrentPlayer();
+			mouseCursor = new MouseCursor();
+			mouseCursor.mouseEnabled = false;
+			Mouse.hide();
 			//---- init interface ----
 			//init FarmMap which consist of playTile, decorated area, market place
 			farmMap = new FarmMap();
 			farmMap.setCurrentPlayer(currentPlayer);
 			couponButton = new CouponButton();
 			couponButton.addEventListener(MouseEvent.CLICK, onCouponButtonClick);
-			couponButton.x = 400;
-			couponButton.y = 50;
+			couponButton.x = COUPONBUTTON_X;
+			couponButton.y = COUPONBUTTON_Y;
 			specialCodeButton = new SpecialCodeButton();
 			specialCodeButton.addEventListener(MouseEvent.CLICK, onSpecialCodeButtonClick);
-			specialCodeButton.x = 400;
-			specialCodeButton.y = 100;
+			specialCodeButton.x = SPECIALCODEBUTTON_X;
+			specialCodeButton.y = SPECIALCODEBUTTON_Y;
 			moneyUI = new MoneyUI();
 			moneyUI.setMoney(currentPlayer.getMoney());
-			moneyUI.x = 400;
+			moneyUI.x = MONEYUI_X;
+			moneyUI.y = MONEYUI_Y;
+			statusUI = new StatusUI();
+			statusUI.x = STATUSUI_X;
+			statusUI.y = STATUSUI_Y;
+			optionBar = new OptionBar();
+			optionBar.x = OPTIONBAR_X;
+			optionBar.y = OPTIONBAR_Y;
 			this.addChild(farmMap);
 			this.addChild(couponButton);
 			this.addChild(specialCodeButton);
 			this.addChild(moneyUI);
+			this.addChild(statusUI);
+			this.addChild(optionBar);
 			//init interface LV, EXP, name, money, option bar, coupon button, special code button
 			
 			//---- init all dialog ----
@@ -143,7 +176,7 @@
 			t.start();
 			
 			AudioManager.getInstance().playBG("MUSIC_1");
-			
+			this.addChild(mouseCursor);
 			/*//Test System
 			var arrayBuilding:Array = BuildingManager.getInstance().getBuilding();
 			var arrayItem:Array = ItemManager.getInstance().getItem();
@@ -223,6 +256,8 @@
 		}
 		
 		public function onRun(event:GameTimerEvent){
+			mouseCursor.x = this.mouseX + MOUSECURSOR_OFFSET_X;
+			mouseCursor.y = this.mouseY + MOUSECURSOR_OFFSET_Y;
 			currentPlayer.update(event.getElapse());
 			moneyUI.setMoney(currentPlayer.getMoney());
 			if(playState == PLAYSTATE_MOVING){
@@ -244,7 +279,7 @@
 			if(money <= currentPlayer.getMoney()){
 				isMoneyEnough = true;
 			}
-			occupyDialog.setData(level, money, isLevelEnough, isMoneyEnough);
+			occupyDialog.setData("LEVEL " + level, money.toString(), isLevelEnough, isMoneyEnough);
 		}
 		
 		public function onTileBuild(event:FarmMapEvent){

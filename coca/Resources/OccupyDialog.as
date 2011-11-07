@@ -22,9 +22,9 @@
 			confirmButton.addEventListener(MouseEvent.CLICK, onConfirmButtonClick);
 		}
 		
-		public function setData(requiredLevel:int, requiredMoney:int, isLevel:Boolean, isMoney:Boolean){
-			levelField.text = requiredLevel.toString();
-			moneyField.text = requiredMoney.toString();
+		public function setData(requiredLevel:String, requiredMoney:String, isLevel:Boolean, isMoney:Boolean){
+			levelField.text = requiredLevel;
+			moneyField.text = requiredMoney;
 			if(isLevel){
 				levelField.textColor = 0x000000;
 			} else {

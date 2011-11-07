@@ -4,13 +4,14 @@
 	import flash.events.MouseEvent;
 	import flash.events.Event;
 	import cocahappymachine.ui.BuildEvent;
+	import flash.display.SimpleButton;
 	
 	public class BuildPanel extends MovieClip {
 		
 		public static const DIALOG_CLOSE:String = "DIALOG_CLOSE";
 		public static const BUILD:String = "BUILD";
 
-		public var closeButton:MovieClip;
+		public var closeButton:SimpleButton;
 		
 		public function BuildPanel() {
 			closeButton.addEventListener(MouseEvent.CLICK, onCloseButtonClick);

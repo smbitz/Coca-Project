@@ -18,6 +18,11 @@
 		private static const FARMSIZE_X:int = 3000;
 		private static const FARMSIZE_Y:int = 3000;
 		
+		private static const X_OFFSET_COLUMN:int = 150;
+		private static const Y_OFFSET_COLUMN:int = 75;
+		private static const X_OFFSET_ROW:int = -150;
+		private static const Y_OFFSET_ROW:int = 75;
+		
 		private var farmTile:Array;		//array of AbstractFarmTile
 		private var shop:Shop;
 		private var currentPlayer:Player;
@@ -48,8 +53,8 @@
 				farmTile.push(tile);
 				var xPosition:int = loop1 % FARMTILE_X;
 				var yPosition:int = int(loop1 / FARMTILE_X);
-				tile.x = (xPosition * 150) - (yPosition * 150);
-				tile.y = (xPosition * 75) + (yPosition * 75);
+				tile.x = (xPosition * X_OFFSET_COLUMN) + (yPosition * X_OFFSET_ROW);
+				tile.y = (xPosition * Y_OFFSET_COLUMN) + (yPosition * Y_OFFSET_ROW);
 				this.addChild(tile);
 			}
 			//---- Create PurchaseTile on top of tile ----//
@@ -64,8 +69,8 @@
 						purchaseTile.setData(tileData);
 						xPosition = loop2 % FARMTILE_X;
 						yPosition = int(loop2 / FARMTILE_X);
-						purchaseTile.x = (xPosition * 150) - (yPosition * 150);
-						purchaseTile.y = (xPosition * 75) + (yPosition * 75);
+						purchaseTile.x = (xPosition * X_OFFSET_COLUMN) + (yPosition * X_OFFSET_ROW);
+						purchaseTile.y = (xPosition * Y_OFFSET_COLUMN) + (yPosition * Y_OFFSET_ROW);
 						purchaseTile.addEventListener(MouseEvent.CLICK, onPurchaseTileClick);
 						this.addChild(purchaseTile);						
 					}
