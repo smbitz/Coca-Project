@@ -35,9 +35,9 @@
 			this.addChild(debugConsole);
 			
 			//---- load data ----
-			/*var facebookId:String = LoaderInfo(this.root.loaderInfo).parameters.userFacebookId.toString();
+			var facebookId:String = LoaderInfo(this.root.loaderInfo).parameters.userFacebookId.toString();
 			
-			SystemConstructor.getInstance().setFacebookId(facebookId);*/
+			SystemConstructor.getInstance().setFacebookId(facebookId);
 			SystemConstructor.getInstance().construct(onSystemComplete);
 			Debug.getInstance().debug("Load Data Complete");
 			//Debug.getInstance().debug("This is Facebook Id : " + facebookId);
