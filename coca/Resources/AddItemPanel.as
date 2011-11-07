@@ -5,6 +5,7 @@
 	import flash.events.Event;
 	import flash.display.SimpleButton;
 	import cocahappymachine.data.Tile;
+	import flash.text.TextField;
 	
 	public class AddItemPanel extends MovieClip {
 
@@ -14,11 +15,14 @@
 		public static const EXTRAITEM2_CLICK:String = "EXTRAITEM2_CLICK";
 		public static const MOVE_CLICK:String = "MOVE_CLICK";
 
-		public var closeButton:MovieClip;
+		public var closeButton:SimpleButton;
 		public var supplyItemButton:SupplyItemButton;
 		public var extraItem1Button:ExtraItemButton;
 		public var extraItem2Button:ExtraItemButton;
 		public var moveButton:MoveButton;
+		public var nameField:TextField;
+		public var progressField:TextField;
+		public var supplyField:TextField;
 		
 		public function AddItemPanel() {
 			closeButton.addEventListener(MouseEvent.CLICK, onCloseButtonClick);
