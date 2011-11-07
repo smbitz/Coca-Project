@@ -5,6 +5,8 @@
 
 		private var itemId:String;
 		
+		private var temp:int;
+		
 		public function CouponEvent(type:String) {
 			super(type);
 		}
