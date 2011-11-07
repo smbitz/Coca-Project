@@ -15,8 +15,8 @@
 
 		private static const FARMTILE_X:int = 8;
 		private static const FARMTILE_Y:int = 8;
-		private static const FARMSIZE_X:int = 1000;
-		private static const FARMSIZE_Y:int = 1000;
+		private static const FARMSIZE_X:int = 3000;
+		private static const FARMSIZE_Y:int = 3000;
 		
 		private var farmTile:Array;		//array of AbstractFarmTile
 		private var shop:Shop;
@@ -25,7 +25,7 @@
 		public function FarmMap() {
 			//---- draw farm bg ----//
 			this.graphics.beginFill(0x55BB55, 1.0);
-			this.graphics.drawRect(0,0, FARMSIZE_X, FARMSIZE_Y);
+			this.graphics.drawRect(-FARMSIZE_X,-FARMSIZE_Y, FARMSIZE_X * 2, FARMSIZE_Y * 2);
 			this.graphics.endFill();
 															   
 			DragManager.getInstance().addObject(this);
@@ -46,8 +46,10 @@
 				tile.setData(tileData);
 				tile.addEventListener(MouseEvent.CLICK, onTileClick);
 				farmTile.push(tile);
-				tile.x = (loop1 % FARMTILE_X) * 100;
-				tile.y =  int(loop1 / FARMTILE_X) * 50;
+				var xPosition:int = loop1 % FARMTILE_X;
+				var yPosition:int = int(loop1 / FARMTILE_X);
+				tile.x = (xPosition * 150) - (yPosition * 150);
+				tile.y = (xPosition * 75) + (yPosition * 75);
 				this.addChild(tile);
 			}
 			//---- Create PurchaseTile on top of tile ----//
@@ -60,8 +62,10 @@
 					if((tX % 2 == 0) && (tY % 2 == 0)){
 						var purchaseTile:PurchaseTile = new PurchaseTile();
 						purchaseTile.setData(tileData);
-						purchaseTile.x = (loop2 % FARMTILE_X) * 100;
-						purchaseTile.y =  int(loop2 / FARMTILE_X) * 50
+						xPosition = loop2 % FARMTILE_X;
+						yPosition = int(loop2 / FARMTILE_X);
+						purchaseTile.x = (xPosition * 150) - (yPosition * 150);
+						purchaseTile.y = (xPosition * 75) + (yPosition * 75);
 						purchaseTile.addEventListener(MouseEvent.CLICK, onPurchaseTileClick);
 						this.addChild(purchaseTile);						
 					}
