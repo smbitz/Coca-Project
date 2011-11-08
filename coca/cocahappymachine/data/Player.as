@@ -10,9 +10,16 @@
 	import flash.net.URLRequestMethod;
 	import flash.net.FileReference;
 	import flash.net.URLVariables;
+	import flash.events.EventDispatcher;
 	
-	public class Player {
+	public class Player extends EventDispatcher {
 
+		public static const LEVELUP:String = "LEVELUP";
+		public static const UPDATE_EXP:String = "UPDATE_EXP";
+//		this.dispatchEvent(new Event(LEVELUP));
+		public static const SPECIAL_CODE_SUCCESS:String = "SPECIAL_CODE_SUCCESS";
+		public static const SPECIAL_CODE_FAIL:String = "SPECIAL_CODE_FAIL";
+		
 		private var facebookId:String;
 		private var exp:int;
 		private var money:int;
@@ -369,9 +376,9 @@
 			var resultInput:String = event.target.data.toString();
 			
 			if(resultInput=="success"){
-				//Random item.
+				this.dispatchEvent(new Event(SPECIAL_CODE_SUCCESS));
 			}else{
-				
+				this.dispatchEvent(new Event(SPECIAL_CODE_FAIL));
 			}
 		}
 		

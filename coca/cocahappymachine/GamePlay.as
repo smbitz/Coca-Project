@@ -42,6 +42,8 @@
 	import Resources.MouseCursor;
 	import Resources.StatusUI;
 	import Resources.OptionBar;
+	import Resources.LevelUpDialog;
+	import Resources.GetItemDialog;
 	
 	public class GamePlay extends MovieClip{
 		
@@ -72,6 +74,8 @@
 		private var buildPanel:BuildPanel;
 		private var addItemPanel:AddItemPanel;
 		private var shopDialog:ShopDialog;
+		private var levelUpDialog:LevelUpDialog;
+		private var getItemDialog:GetItemDialog;
 		
 		private var farmMap:FarmMap;
 		private var activeTile:AbstractFarmTile;
@@ -86,6 +90,10 @@
 		
 		public function GamePlay() {
 			currentPlayer = SystemConstructor.getInstance().getCurrentPlayer();
+			currentPlayer.addEventListener(Player.LEVELUP, onLevelUp);
+			currentPlayer.addEventListener(Player.UPDATE_EXP, onUpdateExp);
+			currentPlayer.addEventListener(Player.SPECIAL_CODE_FAIL, onSpecialCodeFail);
+			currentPlayer.addEventListener(Player.SPECIAL_CODE_SUCCESS, onSpecialCodeSuccess);
 			mouseCursor = new MouseCursor();
 			mouseCursor.mouseEnabled = false;
 			Mouse.hide();
@@ -163,6 +171,14 @@
 			shopDialog.addEventListener(ShopDialog.SELL, onShopDialogSell);
 			shopDialog.visible = false;
 			this.addChild(shopDialog);
+			levelUpDialog = new LevelUpDialog();
+			levelUpDialog.addEventListener(LevelUpDialog.DIALOG_CLOSE, onLevelUpDialogClose);
+			levelUpDialog.visible = false;
+			this.addChild(levelUpDialog);
+			getItemDialog = new GetItemDialog();
+			getItemDialog.addEventListener(GetItemDialog.DIALOG_CLOSE, onGetItemDialogClose);
+			getItemDialog.visible = false;
+			this.addChild(getItemDialog);
 			//-------------------------
 			if(currentPlayer.isNewGame()){
 				setStateTutorial();
@@ -458,6 +474,30 @@
 		
 		public function onShopDialogSell(event:Event){
 			
+		}
+		
+		public function onLevelUp(event:Event){
+			levelUpDialog.visible = true;
+		}
+		
+		public function onUpdateExp(event:Event){
+			
+		}
+		
+		public function onLevelUpDialogClose(event:Event){
+			levelUpDialog.visible = false;
+		}
+		
+		public function onSpecialCodeFail(evnet:Event){
+			trace("Special Code Fail");
+		}
+		
+		public function onSpecialCodeSuccess(event:Event){
+			getItemDialog.visible = true;
+		}
+		
+		public function onGetItemDialogClose(event:Event){
+			getItemDialog.visible = false;
 		}
 	}
 }

@@ -38,6 +38,8 @@
 			/*var facebookId:String = LoaderInfo(this.root.loaderInfo).parameters.userFacebookId.toString();
 			
 			SystemConstructor.getInstance().setFacebookId(facebookId);*/
+			SystemConstructor.getInstance().setFacebookId("1111");
+			
 			SystemConstructor.getInstance().construct(onSystemComplete);
 			Debug.getInstance().debug("Load Data Complete");
 			//Debug.getInstance().debug("This is Facebook Id : " + facebookId);
