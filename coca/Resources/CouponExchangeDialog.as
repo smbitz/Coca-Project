@@ -5,6 +5,7 @@
 	import flash.events.Event;
 	import flash.display.SimpleButton;
 	import cocahappymachine.ui.CouponEvent;
+	import flash.text.TextField;
 	
 	public class CouponExchangeDialog extends MovieClip {
 		
@@ -15,6 +16,11 @@
 		public var closeButton:SimpleButton;
 		public var leftButton:SimpleButton;
 		public var rightButton:SimpleButton;
+		
+		public var allTab:TextField;
+		public var availableTab:TextField;
+		public var unavailableTab:TextField;
+		public var myTab:TextField;
 		
 		public function CouponExchangeDialog() {
 			closeButton.addEventListener(MouseEvent.CLICK, onCloseButtonClick);
