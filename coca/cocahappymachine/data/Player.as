@@ -41,8 +41,13 @@
 		private static const BUY_EACH_AREA:int = 4;
 		private static const ROTTED_ITEM_QTY_PERCENT:Number = 0.5;
 		private static const QTY_START_FARM_PLAYER:int = 16;
-		private static const NOT_SELL_VALUE_1 = "coupon";
-		private static const NOT_SELL_VALUE_2 = "special";
+		private static const NOT_SELL_VALUE_1:String = "coupon";
+		private static const NOT_SELL_VALUE_2:String = "special";
+		private static const RECEIVE_EXP_BUILD:int = 50;
+		private static const RECEIVE_EXP_SUPPLY:int = 20;
+		private static const RECEIVE_EXP_HARVEST:int = 100;
+		private static const RECEIVE_EXP_BUY_SELL_ITEM:int = 10;
+		private static const RECEIVE_EXP_EXCHANGE_COUPON:int = 500;
 		
 		public function Player(facebookId:String) {
 			this.facebookId = facebookId;
@@ -153,12 +158,14 @@
 							backpack[c].setItemQty(backpack[c].getItemQty()-QTY_TO_BUILD);
 						}
 					}
-					trace("Build Item");
 					currentTile.build(building);
+					this.reciveExp(RECEIVE_EXP_BUILD);
+					trace("Build Item", this.exp);
 				}else if(this.money >= moneyItem*QTY_TO_BUILD){
 					this.money -= (moneyItem*QTY_TO_BUILD);
 					currentTile.build(building);
-					trace("Build Money");
+					this.reciveExp(RECEIVE_EXP_BUILD);
+					trace("Build Item", this.exp);
 				}else {
 					throw new Error("Unexpected Behavior, NO MONEY TO BUILD on build function Plaer.as");
 				}
@@ -225,6 +232,8 @@
 				
 				//Clear Tile
 				t.clearTile();
+				this.reciveExp(RECEIVE_EXP_HARVEST);
+				trace("Harvest Tile", this.exp);
 			}else{
 				throw new Error("Unexpected from harvest in Player.as");
 			}
@@ -318,6 +327,12 @@
 				//add coupon item to player backpack
 			//else
 				//respond to player that exchange was rejected
+			if(couponId=="fail"){
+				
+			}else{
+				this.reciveExp(RECEIVE_EXP_EXCHANGE_COUPON);
+				trace("Exchange Cupon ", this.exp);
+			}
 		}
 		
 		public function couponCodeView(itemId:String){
@@ -375,10 +390,10 @@
 		public function onSpecialCodeInputReply(event:Event){
 			var resultInput:String = event.target.data.toString();
 			
-			if(resultInput=="success"){
-				this.dispatchEvent(new Event(SPECIAL_CODE_SUCCESS));
-			}else{
+			if(resultInput=="fail"){
 				this.dispatchEvent(new Event(SPECIAL_CODE_FAIL));
+			}else{
+				this.dispatchEvent(new Event(SPECIAL_CODE_SUCCESS));
 			}
 		}
 		
@@ -396,11 +411,15 @@
 				if(searchSupply>=0){
 					this.backpack[searchSupply].setItemQty(currentQty-1);
 					targetTile.setSupply(targetTile.getBuilding().getSupplyPeriod());
+					this.reciveExp(RECEIVE_EXP_SUPPLY);
+					trace("supply", this.exp);
 					return true;
 				}
 			}else if(this.money > moneySupply){
 				this.money -= moneySupply;
 				targetTile.setSupply(targetTile.getBuilding().getSupplyPeriod());
+				this.reciveExp(RECEIVE_EXP_SUPPLY);
+				trace("supply", this.exp);
 				return true;
 			}
 			return false;
@@ -536,6 +555,40 @@
 		
 		public function onUpdateToServerFail(event:IOErrorEvent){
 			trace("Player Update To Server IO Error");
+		}
+		
+		//---- Calculate level and exp when receive exp ---//
+		private function reciveExp(expPoint:int){
+			//Check for next level
+			//if level up add level,exp and call levelup,exp event
+			if(this.isLevelUp(expPoint)){
+				this.exp += expPoint;
+				this.dispatchEvent(new Event(UPDATE_EXP));
+				this.dispatchEvent(new Event(LEVELUP));
+			}else{
+			//else add exp call exp event
+				this.exp += expPoint;
+				this.dispatchEvent(new Event(UPDATE_EXP));
+			}
+		}
+		
+		//---- Check exp for next level ----//
+		private function isLevelUp(checkValue:int):Boolean{
+			var currentLevel:int = this.getLevel();
+			var checkExp:int = this.exp+checkValue;
+			var checkLevel:int;
+			var expForNextLevel:int;
+			
+			while(checkExp>=expForNextLevel){
+				checkLevel++;
+				expForNextLevel = 50+(50*(Math.pow(checkLevel, 2)));
+			}
+			
+			if(currentLevel<checkLevel){
+				return true;
+			}else{
+				return false;
+			}
 		}
 		
 		//---- calculate and return player level ----//
