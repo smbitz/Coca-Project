@@ -7,10 +7,15 @@
 	
 	public class BuildItemBox extends MovieClip {
 		
+		private static const ITEM_BUILD_COLOR:int = 0x0EA00A;
+		private static const MONEY_BUILD_COLOR:int = 0x431D1E;
+		private static const CANT_BUILD_COLOR:int = 0xFF3B00;
 		private var id:String;
 		private var isBuildable:Boolean;
 		
 		public var titleField:TextField;
+		public var durationField:TextField;
+		public var priceField:TextField;
 		
 		public function BuildItemBox() {
 		}
@@ -28,12 +33,34 @@
 			titleField.text = title;
 		}
 		
-		public function setBuildable(isBuildable:Boolean){
-			this.isBuildable = isBuildable;
-			if(!isBuildable){
-				this.graphics.beginFill(0xFF0000, 1);
-				this.graphics.drawRect(-15, 0, 15, 15);
-				this.graphics.endFill();
+		public function setDuration(d:int){
+			d = d / 60000;
+			var minute:int = d % 60;
+			var hour:int = d / 60;
+			var minuteStr:String = minute.toString();
+			var hourStr:String= hour.toString();
+			if(minute < 10){
+				minuteStr = "0" + minuteStr;
+			}
+			if(hour < 10){
+				hourStr = "0" + hour;
+			}
+			durationField.text = hourStr + ":" + minuteStr + ":00";
+		}
+		
+		public function setPrice(p:int, quantity:int, isEnoughMoney:Boolean){
+			isBuildable = true;
+			if(quantity > 0 ){
+				priceField.text = "x " + quantity;
+				priceField.textColor = ITEM_BUILD_COLOR;
+			} else {
+				priceField.text = p.toString();
+				if(isEnoughMoney){
+					priceField.textColor = MONEY_BUILD_COLOR;
+				} else {
+					priceField.textColor = CANT_BUILD_COLOR;
+					isBuildable =false;
+				}
 			}
 		}
 		

@@ -25,8 +25,8 @@
 			confirmButton.addEventListener(MouseEvent.CLICK, onConfirmButtonClick);
 		}
 		
-		public function setData(requiredLevel:String, requiredMoney:String, isLevel:Boolean, isMoney:Boolean){
-			levelField.text = requiredLevel;
+		public function setData(requiredLevel:int, requiredMoney:String, isLevel:Boolean, isMoney:Boolean){
+			levelField.text = "LEVEL " + requiredLevel;
 			moneyField.text = requiredMoney;
 			if(isLevel){
 				levelField.textColor = ENOUGH_COLOR;
@@ -41,7 +41,7 @@
 			if(isLevel && isMoney){
 				confirmButton.visible = true;
 			} else {
-//				confirmButton.visible = false;
+				confirmButton.visible = false;
 			}
 		}
 		

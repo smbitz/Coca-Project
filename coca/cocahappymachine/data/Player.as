@@ -26,6 +26,7 @@
 		private var isNew:Boolean;
 		private var tile:Array;		//array of Tile
 		private var backpack:Array;	//array of BackpackItem
+		private var name:String;
 		
 		private var isLoad:Boolean;
 		private var loadCallback:Function;
@@ -60,6 +61,14 @@
 		
 		public function isLoadComplete():Boolean {
 			return isLoad;
+		}
+		
+		public function setName(name:String){
+			this.name = name;
+		}
+		
+		public function getName():String{
+			return name;
 		}
 		
 		public function load(callback:Function){
@@ -618,6 +627,18 @@
 			}
 			
 			return arraySellAbleItem;
+		}
+		
+		//---- find percentage of exp since the start of current level until level up
+		//---- return value must be between 0 - 1, 
+		//---- 0 : no exp since previous level up, 1 : exp full ready to level up
+		public function getExpProgress():Number{
+			return 0.5;
+		}
+		
+		//---- find quantity of given item ----//
+		public function getItemQuantity(item:Item):int {
+			return 0;
 		}
 	}
 }

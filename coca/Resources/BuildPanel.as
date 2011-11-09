@@ -12,6 +12,9 @@
 		public static const BUILD:String = "BUILD";
 
 		public var closeButton:SimpleButton;
+		public var leftButton:SimpleButton;
+		public var rightButton:SimpleButton;
+		public var paging:MovieClip;
 		
 		public function BuildPanel() {
 			closeButton.addEventListener(MouseEvent.CLICK, onCloseButtonClick);
@@ -24,15 +27,10 @@
 		//---- boxList is an array of BuildItemBox using for select item to build
 		public function setBuildItemBox(boxList:Array){
 			removeItemBox();
-			var loop:int = 0;
 			for each(var box:BuildItemBox in boxList){
-				box.x = 20;
-				box.y = loop * 50;
 				if(box.getBuildable()){
 					box.addEventListener(MouseEvent.CLICK, onItemBoxClick);
 				}
-				this.addChild(box);
-				loop++;
 			}
 		}
 		
@@ -45,7 +43,6 @@
 			}
 			for each(var box:BuildItemBox in itemBox){
 				box.removeEventListener(MouseEvent.CLICK, onItemBoxClick);
-				this.removeChild(box);
 			}
 		}
 		
@@ -55,6 +52,18 @@
 			var bEvent:BuildEvent = new BuildEvent(BUILD);
 			bEvent.setBuildingId(buildingIdToBuild);
 			this.dispatchEvent(bEvent);
+		}
+		
+		public function setPaging(p:MovieClip){
+			paging.addChild(p);
+		}
+		
+		public function getLeftButton():SimpleButton{
+			return leftButton;
+		}
+		
+		public function getRightButton():SimpleButton{
+			return rightButton;
 		}
 	}
 	
