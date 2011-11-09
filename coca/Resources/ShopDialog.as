@@ -16,6 +16,10 @@
 		public var closeButton:SimpleButton;
 		public var sellPaging:MovieClip;
 		public var buyPaging:MovieClip;
+		public var buyLeftButton:SimpleButton;
+		public var buyRightButton:SimpleButton;
+		public var sellLeftButton:SimpleButton;
+		public var sellRightButton:SimpleButton;
 		
 		public function ShopDialog() {
 			closeButton.addEventListener(MouseEvent.CLICK, onCloseButtonClick);
@@ -28,6 +32,7 @@
 		//---- buyList : Array of ShopBuyItemBox ----//
 		public function setBuyItemBox(buyList:Array){
 			for each(var box:ShopBuyItemBox in buyList){
+				box.addEventListener(ShopBuyItemBox.BUY, onBuy);
 			}
 		}
 		
@@ -50,6 +55,24 @@
 			var e:ShopEvent = new ShopEvent(SELL);
 			e.setItemId(event.getItemId());
 			this.dispatchEvent(e);
+		}
+		
+		public function onBuy(event:ShopEvent){
+			var e:ShopEvent = new ShopEvent(BUY);
+			e.setItemId(event.getItemId());
+			this.dispatchEvent(e);
+		}
+		public function getBuyLeftButton():SimpleButton{
+			return buyLeftButton;
+		}
+		public function getBuyRightButton():SimpleButton{
+			return buyRightButton;
+		}
+		public function getSellLeftButton():SimpleButton{
+			return sellLeftButton;
+		}
+		public function getSellRightButton():SimpleButton{
+			return sellRightButton;
 		}
 	}
 }
