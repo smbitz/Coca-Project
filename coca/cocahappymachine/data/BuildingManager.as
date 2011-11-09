@@ -122,6 +122,12 @@
 		//---- find the building which given item used to build it ----//
 		//---- return building or null if item isn't use to build ----//
 		public function getBuildingByBuildItem(item:Item):Building{
+			for each(var eachBuilding:Building in this.building){
+				if(eachBuilding.getBuildItemId()==item.getId()){
+					return eachBuilding;
+				}
+			}
+			
 			return null;
 		}
 	}

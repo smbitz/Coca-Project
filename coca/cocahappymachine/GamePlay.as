@@ -253,8 +253,9 @@
 			for each(var arrayItem:ItemQuantityPair in currentPlayer.getBackpack()){
 				trace(arrayItem.getItem().getName());
 			}*/
-			//var itemFind:Item = ItemManager.getInstance().getItem()[0];
+			//var itemFind:Item = ItemManager.getInstance().getItem()[1];
 			//trace(currentPlayer.getItemQuantity(itemFind));
+			//trace(BuildingManager.getInstance().getBuildingByBuildItem(itemFind).getName());
 		}
 		
 		private function setPlayStateNormal(){
