@@ -50,7 +50,7 @@
 			urlLoader.load(new URLRequest(url));
 		}
 		
-		private function onXmlComplete(event:Event){
+		public function onXmlComplete(event:Event){
 			//get list of building node
 			var dataXml:XML = new XML(event.target.data);
 
@@ -83,7 +83,7 @@
 			return null;
 		}
 		
-		private function onIOError(event:IOErrorEvent){
+		public function onIOError(event:IOErrorEvent){
 			trace("building IO Error");
 			load(loadCallback);
 			Debug.getInstance().debug("IOError Event");
@@ -115,8 +115,14 @@
 			return arrayBuildingFromLand;
 		}
 
-		private function onSecurityError(event:SecurityError){
+		public function onSecurityError(event:SecurityError){
 			Debug.getInstance().debug("SecurityError Event");
+		}
+		
+		//---- find the building which given item used to build it ----//
+		//---- return building or null if item isn't use to build ----//
+		public function getBuildingByBuildItem(item:Item):Building{
+			return null;
 		}
 	}
 	

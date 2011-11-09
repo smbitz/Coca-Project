@@ -94,6 +94,7 @@
 		private var expProgress:ProgressBar;
 		private var buildPaging:Paging;
 		private var sellPaging:Paging;
+		private var buyPaging:Paging;
 		
 		public function GamePlay() {
 			currentPlayer = SystemConstructor.getInstance().getCurrentPlayer();
@@ -192,7 +193,13 @@
 			sellPaging = new Paging();
 			sellPaging.setGap(90, 200);
 			sellPaging.setItemPerPage(6, 1);
+			sellPaging.setLeftRightButton(shopDialog.getSellLeftButton(), shopDialog.getSellRightButton());
 			shopDialog.setSellPaging(sellPaging);
+			buyPaging = new Paging();
+			buyPaging.setGap(90, 200);
+			buyPaging.setItemPerPage(6, 1);
+			buyPaging.setLeftRightButton(shopDialog.getBuyLeftButton(), shopDialog.getBuyRightButton());
+			shopDialog.setBuyPaging(buyPaging);
 			shopDialog.visible = false;
 			this.addChild(shopDialog);
 			levelUpDialog = new LevelUpDialog();
@@ -380,6 +387,19 @@
 			var sellBoxList:Array = new Array();
 			for each(var item:Item in buyItem){
 				var buyBox:ShopBuyItemBox = new ShopBuyItemBox();
+				buyBox.setItemId(item.getId());
+				var isEnoughMoney:Boolean = true;
+				if(currentPlayer.getMoney() < item.getPrice()){
+					isEnoughMoney = false;
+				}
+				buyBox.setPrice(item.getPrice(), isEnoughMoney);
+				buyBox.setName(item.getName());
+				var building:Building = BuildingManager.getInstance().getBuildingByBuildItem(item);
+				if(building != null){
+					buyBox.setTime(building.getBuildPeriod());
+				} else {
+					buyBox.setTime(0);
+				}
 				buyBoxList.push(buyBox);
 			}
 			for each(var backpack:ItemQuantityPair in sellItem){
@@ -392,6 +412,8 @@
 			}
 			sellPaging.setItem(sellBoxList);
 			sellPaging.setCurrentPage(0);
+			buyPaging.setItem(buyBoxList);
+			buyPaging.setCurrentPage(0);
 			shopDialog.setBuyItemBox(buyBoxList);
 			shopDialog.setSellItemBox(sellBoxList);
 		}
@@ -510,7 +532,7 @@
 		}
 		
 		public function onShopDialogBuy(event:ShopEvent){
-			
+			trace("Buy : " + event.getItemId());
 		}
 		
 		public function onShopDialogSell(event:ShopEvent){
