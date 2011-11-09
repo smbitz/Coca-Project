@@ -246,6 +246,8 @@
 			for each(var arrayItem:ItemQuantityPair in currentPlayer.getBackpack()){
 				trace(arrayItem.getItem().getName());
 			}*/
+			//var itemFind:Item = ItemManager.getInstance().getItem()[0];
+			//trace(currentPlayer.getItemQuantity(itemFind));
 		}
 		
 		private function setPlayStateNormal(){

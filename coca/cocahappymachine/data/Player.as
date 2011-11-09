@@ -19,6 +19,7 @@
 //		this.dispatchEvent(new Event(LEVELUP));
 		public static const SPECIAL_CODE_SUCCESS:String = "SPECIAL_CODE_SUCCESS";
 		public static const SPECIAL_CODE_FAIL:String = "SPECIAL_CODE_FAIL";
+		private static const NUM_FULL_PROGRESS:int = 1;
 		
 		private var facebookId:String;
 		private var exp:int;
@@ -50,8 +51,9 @@
 		private static const RECEIVE_EXP_BUY_SELL_ITEM:int = 10;
 		private static const RECEIVE_EXP_EXCHANGE_COUPON:int = 500;
 		
-		public function Player(facebookId:String) {
+		public function Player(facebookId:String,playerName:String) {
 			this.facebookId = facebookId;
+			this.name = playerName;
 			isLoad = false;
 			tile = new Array();
 			backpack = new Array();
@@ -633,12 +635,28 @@
 		//---- return value must be between 0 - 1, 
 		//---- 0 : no exp since previous level up, 1 : exp full ready to level up
 		public function getExpProgress():Number{
-			return 0.5;
+			var currentProgress:Number;
+			var expAtStartLevel:int = 50+(50*(Math.pow((this.getLevel()-1), 2)));
+			var expForNextLevel:int = 50+(50*(Math.pow(this.getLevel(), 2)));
+			var diffExp:int = (expForNextLevel-expAtStartLevel);
+			var currentExp:int = this.exp-expAtStartLevel;
+			
+			currentProgress = (NUM_FULL_PROGRESS/diffExp)*currentExp;
+			
+			return currentProgress;
 		}
 		
 		//---- find quantity of given item ----//
 		public function getItemQuantity(item:Item):int {
-			return 0;
+			var itemQuantity:int;
+			
+			for(var c:int; c < backpack.length; c++){
+				if(backpack[c].getItemId()==item.getId()){
+					itemQuantity = backpack[c].getItemQty();
+				}
+			}
+			
+			return itemQuantity;
 		}
 	}
 }
