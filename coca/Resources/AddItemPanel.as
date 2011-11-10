@@ -32,6 +32,35 @@
 			moveButton.addEventListener(MouseEvent.CLICK, onMoveClick);
 		}
 		
+		public function setName(name:String){
+			nameField.text = name;
+		}
+		
+		public function setProgress(progress:int){
+			progress = progress / 1000;
+			var second:int = progress % 60;
+			progress = progress / 60;
+			var minute:int = progress % 60;
+			var hour:int = progress / 60;
+			var secondStr:String = second.toString();
+			var minuteStr:String = minute.toString();
+			var hourStr:String= hour.toString();
+			if(minute < 10){
+				minuteStr = "0" + minuteStr;
+			}
+			if(hour < 10){
+				hourStr = "0" + hour;
+			}
+			if(second < 10){
+				secondStr = "0" + second;
+			}
+			progressField.text = hourStr + ":" + minuteStr + ":" + secondStr;
+		}
+		
+		public function setSupply(supplyPercentage:Number){
+			supplyField.text = (supplyPercentage * 100) + "%";
+		}
+		
 		public function setButtonState(supply:Boolean, extra1:Boolean, extra2:Boolean, move:Boolean){
 			supplyItemButton.visible = supply;
 			extraItem1Button.visible = extra1;

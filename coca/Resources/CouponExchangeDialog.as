@@ -22,8 +22,35 @@
 		public var unavailableTab:TextField;
 		public var myTab:TextField;
 		
+		public var allCouponsSelected:SimpleButton;
+		public var allCouponsUnselected:SimpleButton;
+		public var availableSelected:SimpleButton;
+		public var availableUnselected:SimpleButton;
+		public var unavailableSelected:SimpleButton;
+		public var unavailableUnselected:SimpleButton;
+		public var myCouponsSelected:SimpleButton;
+		public var myCouponsUnselected:SimpleButton;
+		
+		public var tabContent:MovieClip;
+		
 		public function CouponExchangeDialog() {
 			closeButton.addEventListener(MouseEvent.CLICK, onCloseButtonClick);
+		}
+		
+		public function getAllCouponsSelectedButton():SimpleButton{
+			return allCouponsSelected;
+		}
+		
+		public function getAllCouponUnselectedButton():SimpleButton{
+			return allCouponsUnselected;
+		}
+		
+		public function getAvailableSelectedButton():SimpleButton{
+			return availableSelected;
+		}
+		
+		public function getAvailableUnselectedButton():SimpleButton{
+			return availableUnselected;
 		}
 		
 		public function onCloseButtonClick(event:MouseEvent){
@@ -33,15 +60,12 @@
 		public function setItemBox(boxList:Array){
 			removeItemBox();
 			var loop:int = 0;
-			for each(var box:BuildItemBox in boxList){
-				box.x = 70 * loop;
-				box.y = 50;
+			for each(var box:MovieClip in boxList){
 				if(box is CouponExchangeItemBox1){
 					box.addEventListener(MouseEvent.CLICK, onBox1Click);	
 				} else {
 					box.addEventListener(MouseEvent.CLICK, onBox2Click);	
 				}
-				this.addChild(box);
 				loop++;
 			}
 		}
@@ -57,7 +81,6 @@
 			for each(var box:BuildItemBox in itemBox){
 				box.removeEventListener(MouseEvent.CLICK, onBox1Click);
 				box.removeEventListener(MouseEvent.CLICK, onBox2Click);
-				this.removeChild(box);
 			}
 		}
 		
@@ -81,6 +104,10 @@
 				throw new Error("unexpected : onBox2Click in CouponExchangeDialog.as");
 			}
 			this.dispatchEvent(e);
+		}
+		
+		public function addTabContent(mc:MovieClip){
+			tabContent.addChild(mc);
 		}
 	}
 }

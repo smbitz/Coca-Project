@@ -16,7 +16,8 @@
 
 		public static const LEVELUP:String = "LEVELUP";
 		public static const UPDATE_EXP:String = "UPDATE_EXP";
-//		this.dispatchEvent(new Event(LEVELUP));
+		public static const ITEM_UPDATE:String = "ITEM_UPDATE";
+
 		public static const SPECIAL_CODE_SUCCESS:String = "SPECIAL_CODE_SUCCESS";
 		public static const SPECIAL_CODE_FAIL:String = "SPECIAL_CODE_FAIL";
 		private static const NUM_FULL_PROGRESS:int = 1;
@@ -657,6 +658,18 @@
 			}
 			
 			return itemQuantity;
+		}
+		
+		//--- buy item ----//
+		public function buy(itemId:String, quantity:int){
+			// code here
+			this.dispatchEvent(new Event(ITEM_UPDATE));
+		}
+		
+		//---- sell item----//
+		public function sell(itemId:String, quantity:int){
+			//code here
+			this.dispatchEvent(new Event(ITEM_UPDATE));			
 		}
 	}
 }

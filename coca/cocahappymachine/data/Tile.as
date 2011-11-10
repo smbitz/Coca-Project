@@ -127,6 +127,11 @@
 			return this.supply;
 		}
 		
+		//---- get percentage of current supply compare to full supply ----//
+		public function getSupplyPercentage():Number {
+			return 0.5;
+		}
+		
 		public function getRottenPeriod():int{
 			return this.rottenPeriod;
 		}

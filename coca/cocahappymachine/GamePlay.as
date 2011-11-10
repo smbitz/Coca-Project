@@ -48,6 +48,11 @@
 	import Resources.ExpProgress;
 	import cocahappymachine.ui.Paging;
 	import cocahappymachine.ui.ShopEvent;
+	import Resources.CouponExchangeTabContent;
+	import cocahappymachine.data.ItemExchangeItem;
+	import cocahappymachine.ui.AbstractCouponExchangeItemBox;
+	import Resources.CouponExchangeItemBox3;
+	import cocahappymachine.ui.Tab;
 	
 	public class GamePlay extends MovieClip{
 		
@@ -95,6 +100,10 @@
 		private var buildPaging:Paging;
 		private var sellPaging:Paging;
 		private var buyPaging:Paging;
+		private var couponExchangeAllCouponsTab:CouponExchangeTabContent;
+		private var couponExchangeAvailableTab:CouponExchangeTabContent;
+		private var couponExchangePaging:Paging;
+		private var couponExchangeTab:Tab;
 		
 		public function GamePlay() {
 			currentPlayer = SystemConstructor.getInstance().getCurrentPlayer();
@@ -102,6 +111,7 @@
 			currentPlayer.addEventListener(Player.UPDATE_EXP, onUpdateExp);
 			currentPlayer.addEventListener(Player.SPECIAL_CODE_FAIL, onSpecialCodeFail);
 			currentPlayer.addEventListener(Player.SPECIAL_CODE_SUCCESS, onSpecialCodeSuccess);
+			currentPlayer.addEventListener(Player.ITEM_UPDATE, onItemUpdate);
 			mouseCursor = new MouseCursor();
 			mouseCursor.mouseEnabled = false;
 			Mouse.hide();
@@ -162,6 +172,21 @@
 			couponExchangeDialog.addEventListener(CouponExchangeDialog.DIALOG_CLOSE, onCouponExchangeDialogClose);
 			couponExchangeDialog.addEventListener(CouponExchangeDialog.VIEW_CODE, onCouponExchangeViewCode);
 			couponExchangeDialog.addEventListener(CouponExchangeDialog.EXCHANGE, onCouponExchangeExchange);
+			couponExchangeAllCouponsTab = new CouponExchangeTabContent();
+			couponExchangeDialog.addTabContent(couponExchangeAllCouponsTab);
+			couponExchangeAvailableTab = new CouponExchangeTabContent();
+			couponExchangeDialog.addTabContent(couponExchangeAvailableTab);
+			couponExchangePaging = new Paging();
+			couponExchangePaging.setGap(280, 130);
+			couponExchangePaging.setItemPerPage(2, 3);
+			couponExchangeAllCouponsTab.setPaging(couponExchangePaging);
+			couponExchangeTab = new Tab();
+			couponExchangeTab.addTab(couponExchangeAllCouponsTab, 
+									 couponExchangeDialog.getAllCouponsSelectedButton(), 
+									 couponExchangeDialog.getAllCouponUnselectedButton());
+			couponExchangeTab.addTab(couponExchangeAvailableTab, 
+									 couponExchangeDialog.getAvailableSelectedButton(), 
+									 couponExchangeDialog.getAvailableUnselectedButton());
 			this.addChild(couponExchangeDialog);
 			buildPanel = new BuildPanel();
 			buildPanel.visible = false;
@@ -369,6 +394,9 @@
 			var isExtra2:Boolean = currentPlayer.isAllowToExtra2(activeTile.getData());
 			addItemPanel.setButtonState(isSupply, isExtra1, isExtra2, true);
 			addItemPanel.visible = true;
+			addItemPanel.setName(activeTile.getData().getBuilding().getName());
+			addItemPanel.setProgress(activeTile.getData().getProgress());
+			addItemPanel.setSupply(activeTile.getData().getSupplyPercentage());
 			currentPlayer.updateToServer();
 		}
 		
@@ -380,12 +408,12 @@
 		}
 		
 		public function onShopClick(event:Event){
-			trace("shop click");
 			shopDialog.visible = true;
 			var buyItem:Array = ItemManager.getInstance().getItemByType("normal");	//array of item
 			var sellItem:Array = currentPlayer.getSellableItem();					//array of ItemQuantityPair
 			var buyBoxList:Array = new Array();
 			var sellBoxList:Array = new Array();
+			//Add Tab 1
 			for each(var item:Item in buyItem){
 				var buyBox:ShopBuyItemBox = new ShopBuyItemBox();
 				buyBox.setItemId(item.getId());
@@ -424,16 +452,23 @@
 			var itemBoxList:Array = new Array();
 			var couponItemList:Array = ItemManager.getInstance().getItemByType("coupon");
 			for each(var item:Item in couponItemList){
-				var box:MovieClip;
+				var box:AbstractCouponExchangeItemBox;
 				if(currentPlayer.isItemEnough(item.getId(), 1)){
-					box = new CouponExchangeItemBox2();
-					CouponExchangeItemBox2(box).setItemId(item.getId());
+					box = new CouponExchangeItemBox3();
+					box.setItemId(item.getId());
 				} else {
-					box = new CouponExchangeItemBox1();
-					CouponExchangeItemBox1(box).setItemId(item.getId());
+					var i:ItemExchangeItem = item.getExchangeItem()[0];
+					if(currentPlayer.isItemEnough(i.getItem().getId(), i.getQuantity())){
+						box = new CouponExchangeItemBox2();
+						box.setItemId(item.getId());
+					} else {
+						box = new CouponExchangeItemBox1();
+						box.setItemId(item.getId());
+					}
 				}
 				itemBoxList.push(box);
 			}
+			couponExchangePaging.setItem(itemBoxList);
 			couponExchangeDialog.setItemBox(itemBoxList);
 		}
 		
@@ -533,11 +568,11 @@
 		}
 		
 		public function onShopDialogBuy(event:ShopEvent){
-			trace("Buy : " + event.getItemId());
+			currentPlayer.buy(event.getItemId(), 1);
 		}
 		
 		public function onShopDialogSell(event:ShopEvent){
-			trace("Sell : " + event.getItemId());
+			currentPlayer.sell(event.getItemId(), 1);
 		}
 		
 		public function onLevelUp(event:Event){
@@ -563,6 +598,12 @@
 		
 		public function onGetItemDialogClose(event:Event){
 			getItemDialog.visible = false;
+		}
+		
+		public function onItemUpdate(event:Event){
+			if(shopDialog.visible){
+				onShopClick(null);
+			}
 		}
 	}
 }
