@@ -102,6 +102,8 @@
 		private var buyPaging:Paging;
 		private var couponExchangeAllCouponsTab:CouponExchangeTabContent;
 		private var couponExchangeAvailableTab:CouponExchangeTabContent;
+		private var couponExchangeUnavailableTab:CouponExchangeTabContent;
+		private var couponExchangeMyCouponsTab:CouponExchangeTabContent;
 		private var couponExchangePaging:Paging;
 		private var couponExchangeTab:Tab;
 		
@@ -176,6 +178,10 @@
 			couponExchangeDialog.addTabContent(couponExchangeAllCouponsTab);
 			couponExchangeAvailableTab = new CouponExchangeTabContent();
 			couponExchangeDialog.addTabContent(couponExchangeAvailableTab);
+			couponExchangeUnavailableTab = new CouponExchangeTabContent();
+			couponExchangeDialog.addTabContent(couponExchangeUnavailableTab);
+			couponExchangeMyCouponsTab = new CouponExchangeTabContent();
+			couponExchangeDialog.addTabContent(couponExchangeMyCouponsTab);
 			couponExchangePaging = new Paging();
 			couponExchangePaging.setGap(280, 130);
 			couponExchangePaging.setItemPerPage(2, 3);
@@ -187,6 +193,12 @@
 			couponExchangeTab.addTab(couponExchangeAvailableTab, 
 									 couponExchangeDialog.getAvailableSelectedButton(), 
 									 couponExchangeDialog.getAvailableUnselectedButton());
+			couponExchangeTab.addTab(couponExchangeUnavailableTab, 
+									 couponExchangeDialog.getUnavailableSelectedButton(), 
+									 couponExchangeDialog.getUnavailableUnselectedButton());
+			couponExchangeTab.addTab(couponExchangeMyCouponsTab, 
+									 couponExchangeDialog.getMyCouponsSelectedButton(), 
+									 couponExchangeDialog.getMyCouponsUnselectedButton());
 			this.addChild(couponExchangeDialog);
 			buildPanel = new BuildPanel();
 			buildPanel.visible = false;

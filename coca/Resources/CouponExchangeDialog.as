@@ -53,6 +53,22 @@
 			return availableUnselected;
 		}
 		
+		public function getUnavailableSelectedButton():SimpleButton{
+			return unavailableSelected;
+		}
+		
+		public function getUnavailableUnselectedButton():SimpleButton{
+			return unavailableUnselected;
+		}
+		
+		public function getMyCouponsSelectedButton():SimpleButton{
+			return myCouponsSelected;
+		}
+		
+		public function getMyCouponsUnselectedButton():SimpleButton{
+			return myCouponsUnselected;
+		}
+		
 		public function onCloseButtonClick(event:MouseEvent){
 			this.dispatchEvent(new Event(DIALOG_CLOSE));
 		}
