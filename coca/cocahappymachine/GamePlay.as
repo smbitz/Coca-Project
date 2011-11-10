@@ -274,13 +274,17 @@
 			for each(var arrayItem:ItemQuantityPair in currentPlayer.getSellableItem()){
 				trace(arrayItem.getItem().getName());
 			}*/
-			/*currentPlayer.getBackpack();
+			/*trace(currentPlayer.getExp());
+			currentPlayer.buy("20", 1);
+			trace(currentPlayer.getExp());
+			currentPlayer.getBackpack();
 			for each(var arrayItem:ItemQuantityPair in currentPlayer.getBackpack()){
-				trace(arrayItem.getItem().getName());
+				trace(arrayItem.getItem().getName(), arrayItem.getItemQty());
 			}*/
 			//var itemFind:Item = ItemManager.getInstance().getItem()[1];
 			//trace(currentPlayer.getItemQuantity(itemFind));
 			//trace(BuildingManager.getInstance().getBuildingByBuildItem(itemFind).getName());
+			//trace(currentPlayer.getTile()[26].getSupplyPercentage(), currentPlayer.getTile()[26].getBuilding().getBuildPeriod(), currentPlayer.getTile()[26].getProgress());
 		}
 		
 		private function setPlayStateNormal(){
