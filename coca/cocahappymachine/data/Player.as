@@ -20,6 +20,7 @@
 		public static const SPECIAL_CODE_SUCCESS:String = "SPECIAL_CODE_SUCCESS";
 		public static const SPECIAL_CODE_FAIL:String = "SPECIAL_CODE_FAIL";
 		private static const NUM_FULL_PROGRESS:int = 1;
+		private static const FIRST_LEVEL:int = 1;
 		
 		private var facebookId:String;
 		private var exp:int;
@@ -636,7 +637,15 @@
 		//---- 0 : no exp since previous level up, 1 : exp full ready to level up
 		public function getExpProgress():Number{
 			var currentProgress:Number;
-			var expAtStartLevel:int = 50+(50*(Math.pow((this.getLevel()-1), 2)));
+			var expAtStartLevel:int;
+			
+			//If first lv.
+			if(this.getLevel()==FIRST_LEVEL){
+				expAtStartLevel = 0;
+			}else{
+				expAtStartLevel = 50+(50*(Math.pow((this.getLevel()-1), 2)));
+			}
+			
 			var expForNextLevel:int = 50+(50*(Math.pow(this.getLevel(), 2)));
 			var diffExp:int = (expForNextLevel-expAtStartLevel);
 			var currentExp:int = this.exp-expAtStartLevel;
