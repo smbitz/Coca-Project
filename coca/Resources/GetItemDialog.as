@@ -4,15 +4,14 @@
 	import flash.events.MouseEvent;
 	import flash.events.Event;
 	import flash.display.SimpleButton;
+	import flash.text.TextField;
 	
 	public class GetItemDialog extends MovieClip {
 		
 		public static const DIALOG_CLOSE:String = "DIALOG_CLOSE";
 		
 		public var closeButton:SimpleButton;
-		public var getItemBox1:MovieClip;
-		public var getItemBox2:MovieClip;
-		public var getItemBox3:MovieClip;
+		public var wordField:TextField;
 		
 		public function GetItemDialog() {
 			closeButton.addEventListener(MouseEvent.CLICK, onCloseButtonClick);

@@ -53,6 +53,10 @@
 			return price;
 		}
 		
+		public function getSellPrice():int{
+			return int(price / 2);
+		}
+		
 		public function getItemType():String{
 			return itemType;
 		}

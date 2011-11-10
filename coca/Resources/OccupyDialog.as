@@ -12,6 +12,9 @@
 		public static const DIALOG_CLOSE:String = "DIALOG_CLOSE";
 		public static const DIALOG_CONFIRM:String = "DIALOG_CONFIRM";
 		
+		private static const NOTENOUGH_COLOR:int = 0xFF3B00;
+		private static const ENOUGH_COLOR:int = 0x431D1E;
+		
 		public var closeButton:SimpleButton;
 		public var confirmButton:SimpleButton;
 		public var levelField:TextField;
@@ -22,23 +25,23 @@
 			confirmButton.addEventListener(MouseEvent.CLICK, onConfirmButtonClick);
 		}
 		
-		public function setData(requiredLevel:String, requiredMoney:String, isLevel:Boolean, isMoney:Boolean){
-			levelField.text = requiredLevel;
+		public function setData(requiredLevel:int, requiredMoney:String, isLevel:Boolean, isMoney:Boolean){
+			levelField.text = "LEVEL " + requiredLevel;
 			moneyField.text = requiredMoney;
 			if(isLevel){
-				levelField.textColor = 0x000000;
+				levelField.textColor = ENOUGH_COLOR;
 			} else {
-				levelField.textColor = 0xFF0000;
+				levelField.textColor = NOTENOUGH_COLOR;
 			}
 			if(isMoney){
-				moneyField.textColor = 0x000000;
+				moneyField.textColor = ENOUGH_COLOR;
 			} else {
-				moneyField.textColor = 0xFF0000;
+				moneyField.textColor = NOTENOUGH_COLOR;
 			}
 			if(isLevel && isMoney){
 				confirmButton.visible = true;
 			} else {
-//				confirmButton.visible = false;
+				confirmButton.visible = false;
 			}
 		}
 		

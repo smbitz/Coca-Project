@@ -10,15 +10,24 @@
 	import flash.net.URLRequestMethod;
 	import flash.net.FileReference;
 	import flash.net.URLVariables;
+	import flash.events.EventDispatcher;
 	
-	public class Player {
+	public class Player extends EventDispatcher {
 
+		public static const LEVELUP:String = "LEVELUP";
+		public static const UPDATE_EXP:String = "UPDATE_EXP";
+//		this.dispatchEvent(new Event(LEVELUP));
+		public static const SPECIAL_CODE_SUCCESS:String = "SPECIAL_CODE_SUCCESS";
+		public static const SPECIAL_CODE_FAIL:String = "SPECIAL_CODE_FAIL";
+		private static const NUM_FULL_PROGRESS:int = 1;
+		
 		private var facebookId:String;
 		private var exp:int;
 		private var money:int;
 		private var isNew:Boolean;
 		private var tile:Array;		//array of Tile
 		private var backpack:Array;	//array of BackpackItem
+		private var name:String;
 		
 		private var isLoad:Boolean;
 		private var loadCallback:Function;
@@ -34,11 +43,17 @@
 		private static const BUY_EACH_AREA:int = 4;
 		private static const ROTTED_ITEM_QTY_PERCENT:Number = 0.5;
 		private static const QTY_START_FARM_PLAYER:int = 16;
-		private static const NOT_SELL_VALUE_1 = "coupon";
-		private static const NOT_SELL_VALUE_2 = "special";
+		private static const NOT_SELL_VALUE_1:String = "coupon";
+		private static const NOT_SELL_VALUE_2:String = "special";
+		private static const RECEIVE_EXP_BUILD:int = 50;
+		private static const RECEIVE_EXP_SUPPLY:int = 20;
+		private static const RECEIVE_EXP_HARVEST:int = 100;
+		private static const RECEIVE_EXP_BUY_SELL_ITEM:int = 10;
+		private static const RECEIVE_EXP_EXCHANGE_COUPON:int = 500;
 		
-		public function Player(facebookId:String) {
+		public function Player(facebookId:String,playerName:String) {
 			this.facebookId = facebookId;
+			this.name = playerName;
 			isLoad = false;
 			tile = new Array();
 			backpack = new Array();
@@ -48,6 +63,14 @@
 		
 		public function isLoadComplete():Boolean {
 			return isLoad;
+		}
+		
+		public function setName(name:String){
+			this.name = name;
+		}
+		
+		public function getName():String{
+			return name;
 		}
 		
 		public function load(callback:Function){
@@ -146,12 +169,14 @@
 							backpack[c].setItemQty(backpack[c].getItemQty()-QTY_TO_BUILD);
 						}
 					}
-					trace("Build Item");
 					currentTile.build(building);
+					this.reciveExp(RECEIVE_EXP_BUILD);
+					trace("Build Item", this.exp);
 				}else if(this.money >= moneyItem*QTY_TO_BUILD){
 					this.money -= (moneyItem*QTY_TO_BUILD);
 					currentTile.build(building);
-					trace("Build Money");
+					this.reciveExp(RECEIVE_EXP_BUILD);
+					trace("Build Item", this.exp);
 				}else {
 					throw new Error("Unexpected Behavior, NO MONEY TO BUILD on build function Plaer.as");
 				}
@@ -218,6 +243,8 @@
 				
 				//Clear Tile
 				t.clearTile();
+				this.reciveExp(RECEIVE_EXP_HARVEST);
+				trace("Harvest Tile", this.exp);
 			}else{
 				throw new Error("Unexpected from harvest in Player.as");
 			}
@@ -311,6 +338,12 @@
 				//add coupon item to player backpack
 			//else
 				//respond to player that exchange was rejected
+			if(couponId=="fail"){
+				
+			}else{
+				this.reciveExp(RECEIVE_EXP_EXCHANGE_COUPON);
+				trace("Exchange Cupon ", this.exp);
+			}
 		}
 		
 		public function couponCodeView(itemId:String){
@@ -368,10 +401,10 @@
 		public function onSpecialCodeInputReply(event:Event){
 			var resultInput:String = event.target.data.toString();
 			
-			if(resultInput=="success"){
-				//Random item.
+			if(resultInput=="fail"){
+				this.dispatchEvent(new Event(SPECIAL_CODE_FAIL));
 			}else{
-				
+				this.dispatchEvent(new Event(SPECIAL_CODE_SUCCESS));
 			}
 		}
 		
@@ -389,11 +422,15 @@
 				if(searchSupply>=0){
 					this.backpack[searchSupply].setItemQty(currentQty-1);
 					targetTile.setSupply(targetTile.getBuilding().getSupplyPeriod());
+					this.reciveExp(RECEIVE_EXP_SUPPLY);
+					trace("supply", this.exp);
 					return true;
 				}
 			}else if(this.money > moneySupply){
 				this.money -= moneySupply;
 				targetTile.setSupply(targetTile.getBuilding().getSupplyPeriod());
+				this.reciveExp(RECEIVE_EXP_SUPPLY);
+				trace("supply", this.exp);
 				return true;
 			}
 			return false;
@@ -531,6 +568,40 @@
 			trace("Player Update To Server IO Error");
 		}
 		
+		//---- Calculate level and exp when receive exp ---//
+		private function reciveExp(expPoint:int){
+			//Check for next level
+			//if level up add level,exp and call levelup,exp event
+			if(this.isLevelUp(expPoint)){
+				this.exp += expPoint;
+				this.dispatchEvent(new Event(UPDATE_EXP));
+				this.dispatchEvent(new Event(LEVELUP));
+			}else{
+			//else add exp call exp event
+				this.exp += expPoint;
+				this.dispatchEvent(new Event(UPDATE_EXP));
+			}
+		}
+		
+		//---- Check exp for next level ----//
+		private function isLevelUp(checkValue:int):Boolean{
+			var currentLevel:int = this.getLevel();
+			var checkExp:int = this.exp+checkValue;
+			var checkLevel:int;
+			var expForNextLevel:int;
+			
+			while(checkExp>=expForNextLevel){
+				checkLevel++;
+				expForNextLevel = 50+(50*(Math.pow(checkLevel, 2)));
+			}
+			
+			if(currentLevel<checkLevel){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		
 		//---- calculate and return player level ----//
 		public function getLevel():int{
 			var currentPlayerLevel:int;
@@ -558,6 +629,34 @@
 			}
 			
 			return arraySellAbleItem;
+		}
+		
+		//---- find percentage of exp since the start of current level until level up
+		//---- return value must be between 0 - 1, 
+		//---- 0 : no exp since previous level up, 1 : exp full ready to level up
+		public function getExpProgress():Number{
+			var currentProgress:Number;
+			var expAtStartLevel:int = 50+(50*(Math.pow((this.getLevel()-1), 2)));
+			var expForNextLevel:int = 50+(50*(Math.pow(this.getLevel(), 2)));
+			var diffExp:int = (expForNextLevel-expAtStartLevel);
+			var currentExp:int = this.exp-expAtStartLevel;
+			
+			currentProgress = (NUM_FULL_PROGRESS/diffExp)*currentExp;
+			
+			return currentProgress;
+		}
+		
+		//---- find quantity of given item ----//
+		public function getItemQuantity(item:Item):int {
+			var itemQuantity:int;
+			
+			for(var c:int; c < backpack.length; c++){
+				if(backpack[c].getItemId()==item.getId()){
+					itemQuantity = backpack[c].getItemQty();
+				}
+			}
+			
+			return itemQuantity;
 		}
 	}
 }

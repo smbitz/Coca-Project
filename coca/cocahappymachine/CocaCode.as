@@ -32,12 +32,18 @@
 			startLoading();
 			
 			var debugConsole:InputableDebugConsole = new InputableDebugConsole(stage.stageWidth, stage.stageHeight);
-			this.addChild(debugConsole);
+//			this.addChild(debugConsole);
 			
 			//---- load data ----
-			var facebookId:String = LoaderInfo(this.root.loaderInfo).parameters.userFacebookId.toString();
+			/*var facebookId:String = LoaderInfo(this.root.loaderInfo).parameters.userFacebookId.toString();
+			var facebookName:String = LoaderInfo(this.root.loaderInfo).parameters.userFacebookName.toString();
 			
 			SystemConstructor.getInstance().setFacebookId(facebookId);
+			SystemConstructor.getInstance().setPlayerName(facebookName);*/
+			//SystemConstructor.getInstance().setFacebookId("1111");
+			SystemConstructor.getInstance().setFacebookId("2222");
+			SystemConstructor.getInstance().setPlayerName("TestName");
+			
 			SystemConstructor.getInstance().construct(onSystemComplete);
 			Debug.getInstance().debug("Load Data Complete");
 			//Debug.getInstance().debug("This is Facebook Id : " + facebookId);

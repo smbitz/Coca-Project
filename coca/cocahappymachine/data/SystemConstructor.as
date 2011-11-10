@@ -13,6 +13,7 @@
 		private static var instance:SystemConstructor = null;
 		
 		private var facebookId:String;
+		private var playerName:String;
 
 		private var currentPlayer:Player;
 		private var isLoad:Boolean = false;
@@ -48,6 +49,11 @@
 		public function setFacebookId(id:String){
 			facebookId = id;
 		}
+		
+		public function setPlayerName(name:String){
+			playerName = name;
+		}
+		
 		private function initData() {
 			//retrive all information from HTML
 			aManager = AudioManager.getInstance();
@@ -56,7 +62,7 @@
 			bManager = BuildingManager.getInstance();
 			iManager.load(onItemComplete);
 			bManager.load(onBuildingComplete);
-			currentPlayer = new Player(facebookId);
+			currentPlayer = new Player(facebookId,playerName);
 			currentPlayer.load(onPlayerComplete);
 		
 		}

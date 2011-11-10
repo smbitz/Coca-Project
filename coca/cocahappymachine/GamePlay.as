@@ -42,6 +42,12 @@
 	import Resources.MouseCursor;
 	import Resources.StatusUI;
 	import Resources.OptionBar;
+	import Resources.LevelUpDialog;
+	import Resources.GetItemDialog;
+	import cocahappymachine.ui.ProgressBar;
+	import Resources.ExpProgress;
+	import cocahappymachine.ui.Paging;
+	import cocahappymachine.ui.ShopEvent;
 	
 	public class GamePlay extends MovieClip{
 		
@@ -51,16 +57,16 @@
 		private static const MOUSECURSOR_OFFSET_X:int = -5;
 		private static const MOUSECURSOR_OFFSET_Y:int = -5;
 		
-		private static const OPTIONBAR_X:int = 700;
-		private static const OPTIONBAR_Y:int = 5;
+		private static const OPTIONBAR_X:int = 680;
+		private static const OPTIONBAR_Y:int = 15;
 		private static const STATUSUI_X:int = 5;
 		private static const STATUSUI_Y:int = 5;
-		private static const MONEYUI_X:int = 400;
-		private static const MONEYUI_Y:int = 0;
-		private static const COUPONBUTTON_X:int = 400;
-		private static const COUPONBUTTON_Y:int = 50;
-		private static const SPECIALCODEBUTTON_X:int = 400;
-		private static const SPECIALCODEBUTTON_Y:int = 100;
+		private static const MONEYUI_X:int = 250;
+		private static const MONEYUI_Y:int = 15;
+		private static const COUPONBUTTON_X:int = 600;
+		private static const COUPONBUTTON_Y:int = 5;
+		private static const SPECIALCODEBUTTON_X:int = 520;
+		private static const SPECIALCODEBUTTON_Y:int = 15;
 		
 		private var currentPlayer:Player;
 		
@@ -72,6 +78,8 @@
 		private var buildPanel:BuildPanel;
 		private var addItemPanel:AddItemPanel;
 		private var shopDialog:ShopDialog;
+		private var levelUpDialog:LevelUpDialog;
+		private var getItemDialog:GetItemDialog;
 		
 		private var farmMap:FarmMap;
 		private var activeTile:AbstractFarmTile;
@@ -83,9 +91,17 @@
 		private var optionBar:OptionBar;
 		private var playState:int;
 		private var mouseCursor:MovieClip;
+		private var expProgress:ProgressBar;
+		private var buildPaging:Paging;
+		private var sellPaging:Paging;
+		private var buyPaging:Paging;
 		
 		public function GamePlay() {
 			currentPlayer = SystemConstructor.getInstance().getCurrentPlayer();
+			currentPlayer.addEventListener(Player.LEVELUP, onLevelUp);
+			currentPlayer.addEventListener(Player.UPDATE_EXP, onUpdateExp);
+			currentPlayer.addEventListener(Player.SPECIAL_CODE_FAIL, onSpecialCodeFail);
+			currentPlayer.addEventListener(Player.SPECIAL_CODE_SUCCESS, onSpecialCodeSuccess);
 			mouseCursor = new MouseCursor();
 			mouseCursor.mouseEnabled = false;
 			Mouse.hide();
@@ -108,6 +124,14 @@
 			statusUI = new StatusUI();
 			statusUI.x = STATUSUI_X;
 			statusUI.y = STATUSUI_Y;
+			statusUI.setName(currentPlayer.getName());
+			statusUI.setLevel(currentPlayer.getLevel().toString());
+			expProgress = new ProgressBar();
+			var progressMC:ExpProgress = new ExpProgress();
+			expProgress.setMC(progressMC);
+			expProgress.setSize(115);
+			expProgress.setProgress(currentPlayer.getExpProgress());
+			statusUI.setProgressMC(expProgress);
 			optionBar = new OptionBar();
 			optionBar.x = OPTIONBAR_X;
 			optionBar.y = OPTIONBAR_Y;
@@ -143,6 +167,11 @@
 			buildPanel.visible = false;
 			buildPanel.addEventListener(BuildPanel.DIALOG_CLOSE, onBuildPanelClose);
 			buildPanel.addEventListener(BuildPanel.BUILD, onBuildPanelBuild);
+			buildPaging = new Paging();
+			buildPaging.setLeftRightButton(buildPanel.getLeftButton(), buildPanel.getRightButton());
+			buildPanel.setPaging(buildPaging);
+			buildPaging.setGap(90, 150);
+			buildPaging.setItemPerPage(7, 1);
 			this.addChild(buildPanel);
 			occupyDialog = new OccupyDialog();
 			occupyDialog.visible = false;
@@ -161,8 +190,26 @@
 			shopDialog.addEventListener(ShopDialog.DIALOG_CLOSE, onShopDialogClose);
 			shopDialog.addEventListener(ShopDialog.BUY, onShopDialogBuy);
 			shopDialog.addEventListener(ShopDialog.SELL, onShopDialogSell);
+			sellPaging = new Paging();
+			sellPaging.setGap(90, 200);
+			sellPaging.setItemPerPage(6, 1);
+			sellPaging.setLeftRightButton(shopDialog.getSellLeftButton(), shopDialog.getSellRightButton());
+			shopDialog.setSellPaging(sellPaging);
+			buyPaging = new Paging();
+			buyPaging.setGap(90, 200);
+			buyPaging.setItemPerPage(6, 1);
+			buyPaging.setLeftRightButton(shopDialog.getBuyLeftButton(), shopDialog.getBuyRightButton());
+			shopDialog.setBuyPaging(buyPaging);
 			shopDialog.visible = false;
 			this.addChild(shopDialog);
+			levelUpDialog = new LevelUpDialog();
+			levelUpDialog.addEventListener(LevelUpDialog.DIALOG_CLOSE, onLevelUpDialogClose);
+			levelUpDialog.visible = false;
+			this.addChild(levelUpDialog);
+			getItemDialog = new GetItemDialog();
+			getItemDialog.addEventListener(GetItemDialog.DIALOG_CLOSE, onGetItemDialogClose);
+			getItemDialog.visible = false;
+			this.addChild(getItemDialog);
 			//-------------------------
 			if(currentPlayer.isNewGame()){
 				setStateTutorial();
@@ -206,6 +253,9 @@
 			for each(var arrayItem:ItemQuantityPair in currentPlayer.getBackpack()){
 				trace(arrayItem.getItem().getName());
 			}*/
+			//var itemFind:Item = ItemManager.getInstance().getItem()[1];
+			//trace(currentPlayer.getItemQuantity(itemFind));
+			//trace(BuildingManager.getInstance().getBuildingByBuildItem(itemFind).getName());
 		}
 		
 		private function setPlayStateNormal(){
@@ -232,6 +282,7 @@
 			farmMap.removeEventListener(FarmMapEvent.TILE_ADDITEM, onTileAddItem);
 			farmMap.removeEventListener(FarmMapEvent.TILE_HARVEST, onTileHarvest);
 			farmMap.removeEventListener(FarmMap.SHOP_CLICK, onShopClick);
+			
 		}
 		
 		private function setStateTutorial(){
@@ -279,7 +330,7 @@
 			if(money <= currentPlayer.getMoney()){
 				isMoneyEnough = true;
 			}
-			occupyDialog.setData("LEVEL " + level, money.toString(), isLevelEnough, isMoneyEnough);
+			occupyDialog.setData(level, money.toString(), isLevelEnough, isMoneyEnough);
 		}
 		
 		public function onTileBuild(event:FarmMapEvent){
@@ -289,6 +340,8 @@
 			var buildingList:Array = BuildingManager.getInstance().getBuildingForLandType(tile.getLandType());
 			var itemBox:Array = createBuildItemBox(buildingList);
 			buildPanel.setBuildItemBox(itemBox);
+			buildPaging.setItem(itemBox);
+			buildPaging.setCurrentPage(0);
 		}
 		
 		public function createBuildItemBox(buildingArray:Array):Array{
@@ -297,7 +350,13 @@
 				var box:BuildItemBox = new BuildItemBox();
 				box.setBuildingId(building.getId());
 				box.setTitle(building.getName());
-				box.setBuildable(currentPlayer.isEnoughResourceToBuild(building));
+				box.setDuration(building.getBuildPeriod());
+				var isEnoughMoney:Boolean = true;
+				if(building.getBuildItem().getPrice() > currentPlayer.getMoney()){
+					isEnoughMoney = false;
+				}
+				box.setPrice(building.getBuildItem().getPrice(), 
+							 currentPlayer.getItemQuantity(building.getBuildItem()), isEnoughMoney);
 				boxArray.push(box);
 			}
 			return boxArray;
@@ -329,12 +388,33 @@
 			var sellBoxList:Array = new Array();
 			for each(var item:Item in buyItem){
 				var buyBox:ShopBuyItemBox = new ShopBuyItemBox();
+				buyBox.setItemId(item.getId());
+				var isEnoughMoney:Boolean = true;
+				if(currentPlayer.getMoney() < item.getPrice()){
+					isEnoughMoney = false;
+				}
+				buyBox.setPrice(item.getPrice(), isEnoughMoney);
+				buyBox.setName(item.getName());
+				var building:Building = BuildingManager.getInstance().getBuildingByBuildItem(item);
+				if(building != null){
+					buyBox.setTime(building.getBuildPeriod());
+				} else {
+					buyBox.setTime(0);
+				}
 				buyBoxList.push(buyBox);
 			}
 			for each(var backpack:ItemQuantityPair in sellItem){
 				var sellBox:ShopSellItemBox = new ShopSellItemBox();
 				sellBoxList.push(sellBox);
+				sellBox.setItemId(backpack.getItem().getId());
+				sellBox.setName(backpack.getItem().getName());
+				sellBox.setQuantity(backpack.getItemQty());
+				sellBox.setPrice(backpack.getItem().getSellPrice());
 			}
+			sellPaging.setItem(sellBoxList);
+			sellPaging.setCurrentPage(0);
+			buyPaging.setItem(buyBoxList);
+			buyPaging.setCurrentPage(0);
 			shopDialog.setBuyItemBox(buyBoxList);
 			shopDialog.setSellItemBox(sellBoxList);
 		}
@@ -449,15 +529,40 @@
 		}
 		
 		public function onShopDialogClose(event:Event){
-			
+			shopDialog.visible = false;
 		}
 		
-		public function onShopDialogBuy(event:Event){
-			
+		public function onShopDialogBuy(event:ShopEvent){
+			trace("Buy : " + event.getItemId());
 		}
 		
-		public function onShopDialogSell(event:Event){
-			
+		public function onShopDialogSell(event:ShopEvent){
+			trace("Sell : " + event.getItemId());
+		}
+		
+		public function onLevelUp(event:Event){
+			levelUpDialog.visible = true;
+			statusUI.setLevel(currentPlayer.getLevel().toString());
+		}
+		
+		public function onUpdateExp(event:Event){
+			expProgress.setProgress(currentPlayer.getExpProgress());
+		}
+		
+		public function onLevelUpDialogClose(event:Event){
+			levelUpDialog.visible = false;
+		}
+		
+		public function onSpecialCodeFail(evnet:Event){
+			trace("Special Code Fail");
+		}
+		
+		public function onSpecialCodeSuccess(event:Event){
+			getItemDialog.visible = true;
+		}
+		
+		public function onGetItemDialogClose(event:Event){
+			getItemDialog.visible = false;
 		}
 	}
 }
