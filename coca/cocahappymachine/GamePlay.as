@@ -53,6 +53,7 @@
 	import cocahappymachine.ui.AbstractCouponExchangeItemBox;
 	import Resources.CouponExchangeItemBox3;
 	import cocahappymachine.ui.Tab;
+	import cocahappymachine.ui.ItemPictureBuilder;
 	
 	public class GamePlay extends MovieClip{
 		
@@ -105,6 +106,9 @@
 		private var couponExchangeUnavailableTab:CouponExchangeTabContent;
 		private var couponExchangeMyCouponsTab:CouponExchangeTabContent;
 		private var couponExchangePaging:Paging;
+		private var couponExchangeAvailablePaging:Paging;
+		private var couponExchangeUnavailablePaging:Paging;
+		private var couponExchangeMyCouponsPaging:Paging;
 		private var couponExchangeTab:Tab;
 		
 		public function GamePlay() {
@@ -186,6 +190,18 @@
 			couponExchangePaging.setGap(280, 130);
 			couponExchangePaging.setItemPerPage(2, 3);
 			couponExchangeAllCouponsTab.setPaging(couponExchangePaging);
+			couponExchangeAvailablePaging = new Paging();
+			couponExchangeAvailablePaging.setGap(280, 130);
+			couponExchangeAvailablePaging.setItemPerPage(2, 3);
+			couponExchangeAvailableTab.setPaging(couponExchangeAvailablePaging);
+			couponExchangeUnavailablePaging = new Paging();
+			couponExchangeUnavailablePaging.setGap(280, 130);
+			couponExchangeUnavailablePaging.setItemPerPage(2, 3);
+			couponExchangeUnavailableTab.setPaging(couponExchangeUnavailablePaging);
+			couponExchangeMyCouponsPaging = new Paging();
+			couponExchangeMyCouponsPaging.setGap(280, 130);
+			couponExchangeMyCouponsPaging.setItemPerPage(2, 3);
+			couponExchangeMyCouponsTab.setPaging(couponExchangeMyCouponsPaging);
 			couponExchangeTab = new Tab();
 			couponExchangeTab.addTab(couponExchangeAllCouponsTab, 
 									 couponExchangeDialog.getAllCouponsSelectedButton(), 
@@ -466,25 +482,55 @@
 		public function onCouponButtonClick(event:MouseEvent){
 			couponExchangeDialog.visible = true;
 			var itemBoxList:Array = new Array();
+			var availableBoxList:Array = new Array();
+			var unavailableBoxList:Array = new Array();
+			var myCouponsBoxList:Array = new Array();
 			var couponItemList:Array = ItemManager.getInstance().getItemByType("coupon");
 			for each(var item:Item in couponItemList){
 				var box:AbstractCouponExchangeItemBox;
 				if(currentPlayer.isItemEnough(item.getId(), 1)){
 					box = new CouponExchangeItemBox3();
 					box.setItemId(item.getId());
+					box.setName(item.getName());
+					var myBox:AbstractCouponExchangeItemBox = new CouponExchangeItemBox3();
+					myBox.setName(item.getName());
+					myBox.setItemId(item.getId());
+					myCouponsBoxList.push(myBox);
 				} else {
 					var i:ItemExchangeItem = item.getExchangeItem()[0];
 					if(currentPlayer.isItemEnough(i.getItem().getId(), i.getQuantity())){
 						box = new CouponExchangeItemBox2();
 						box.setItemId(item.getId());
+						box.setName(item.getName());
+						box.setItemQuantity(currentPlayer.getItemQuantity(i.getItem()));
+						box.setItemRequire(i.getQuantity());
+						var availableBox:AbstractCouponExchangeItemBox = new CouponExchangeItemBox2();
+						availableBox.setItemId(item.getId());
+						availableBox.setName(item.getName());
+						availableBox.setItemQuantity(currentPlayer.getItemQuantity(i.getItem()));
+						availableBox.setItemRequire(i.getQuantity());
+						availableBoxList.push(availableBox);
 					} else {
 						box = new CouponExchangeItemBox1();
 						box.setItemId(item.getId());
+						box.setName(item.getName());
+						box.setItemQuantity(currentPlayer.getItemQuantity(i.getItem()));
+						box.setItemRequire(i.getQuantity());
+						box.setPicture(ItemPictureBuilder.createCouponExchangeItemBox1Picture(item));
+						var unavailableBox:AbstractCouponExchangeItemBox = new CouponExchangeItemBox1();
+						unavailableBox.setItemId(item.getId());
+						unavailableBox.setName(item.getName());
+						unavailableBox.setItemQuantity(currentPlayer.getItemQuantity(i.getItem()));
+						unavailableBox.setItemRequire(i.getQuantity());
+						unavailableBoxList.push(unavailableBox);
 					}
 				}
 				itemBoxList.push(box);
 			}
 			couponExchangePaging.setItem(itemBoxList);
+			couponExchangeAvailablePaging.setItem(availableBoxList);
+			couponExchangeUnavailablePaging.setItem(unavailableBoxList);
+			couponExchangeMyCouponsPaging.setItem(myCouponsBoxList);
 			couponExchangeDialog.setItemBox(itemBoxList);
 		}
 		

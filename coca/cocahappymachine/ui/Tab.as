@@ -38,7 +38,13 @@
 		}
 		
 		public function onTabClick(event:MouseEvent){
-			//change Tab
+			trace("Tab Click");
+			for each(var t:TabData in tabList){
+				if(t.getUnselected() == event.target){
+					currentTab = t;
+					calculate();
+				}
+			}
 		}
 
 	}
