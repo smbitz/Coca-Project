@@ -132,7 +132,7 @@
 		//---- get percentage of current supply compare to full supply ----//
 		public function getSupplyPercentage():Number {
 			var currentPercen:Number;
-			currentPercen = (NUM_FULL_PERCEN/this.building.getBuildPeriod())*this.progress;
+			currentPercen = (NUM_FULL_PERCEN/this.building.getSupplyPeriod())*this.supply;
 			
 			if(currentPercen<NUM_SUPPY_OUT_PERCEN){
 				currentPercen = NUM_SUPPY_OUT_PERCEN;
