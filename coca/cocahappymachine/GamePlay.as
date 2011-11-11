@@ -398,6 +398,10 @@
 				movingTile.x = this.mouseX;
 				movingTile.y = this.mouseY;
 			}
+			if(addItemPanel.visible){
+				addItemPanel.setProgress(activeTile.getData().getProgress());
+				addItemPanel.setSupply(activeTile.getData().getSupplyPercentage());
+			}
 		}
 		
 		public function onTilePurchase(event:FarmMapEvent){
@@ -452,13 +456,15 @@
 			var isExtra1:Boolean = currentPlayer.isAllowToExtra1(activeTile.getData());
 			var isExtra2:Boolean = currentPlayer.isAllowToExtra2(activeTile.getData());
 			var building:Building = activeTile.getData().getBuilding();
-			addItemPanel.setButtonState(isSupply, isExtra1, isExtra2, true);
 			addItemPanel.visible = true;
 			addItemPanel.setName(building.getName());
 			addItemPanel.setProgress(activeTile.getData().getProgress());
 			addItemPanel.setSupply(activeTile.getData().getSupplyPercentage());
 			addItemPanel.setPicture(ItemPictureBuilder.createAddItemBoxPicture(building));
 			addItemPanel.setSmallPicture(ItemPictureBuilder.createAddItemSmallPicture(building));
+			addItemPanel.setSupplyButton(ItemPictureBuilder.createAddItemSupplyButton(building, isSupply), isSupply);
+			addItemPanel.setExtra1Button(ItemPictureBuilder.createAddItemExtra1Button(building, isExtra1), isExtra1);
+			addItemPanel.setExtra2Button(ItemPictureBuilder.createAddItemExtra2Button(building, isExtra2), isExtra2);
 			currentPlayer.updateToServer();
 		}
 		
