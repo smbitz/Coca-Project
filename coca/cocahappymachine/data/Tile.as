@@ -9,6 +9,7 @@
 		public static const BUILDING_ROTTED:int = 5;
 		public static const BUILDING_NOTOCCUPY:int = 6;
 		private static const NUM_FULL_PERCEN:int = 1;
+		private static const NUM_SUPPY_OUT_PERCEN:int = 0;
 		
 		private var landType:String;
 		private var isOccupy:Boolean;
@@ -131,10 +132,10 @@
 		//---- get percentage of current supply compare to full supply ----//
 		public function getSupplyPercentage():Number {
 			var currentPercen:Number;
-			currentPercen = (NUM_FULL_PERCEN/this.building.getBuildPeriod())*(this.building.getBuildPeriod()-this.progress);
+			currentPercen = (NUM_FULL_PERCEN/this.building.getSupplyPeriod())*this.supply;
 			
-			if(currentPercen>NUM_FULL_PERCEN){
-				currentPercen = NUM_FULL_PERCEN;
+			if(currentPercen<NUM_SUPPY_OUT_PERCEN){
+				currentPercen = NUM_SUPPY_OUT_PERCEN;
 			}
 			
 			return currentPercen;

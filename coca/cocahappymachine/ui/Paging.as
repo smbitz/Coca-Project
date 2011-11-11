@@ -119,7 +119,7 @@
 		}
 		
 		public function getMaxPage():int{
-			return itemList.length / (itemPerPageHorizontal * itemPerPageVertical)
+			return (itemList.length - 1) / (itemPerPageHorizontal * itemPerPageVertical)
 		}
 		
 	}
