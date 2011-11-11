@@ -14,6 +14,9 @@
 			quantity = setQuantity;
 		}
 		
+		public function getQuantity():int{
+			return quantity;
+		}
 		public function getId():String{
 			return id;
 		}

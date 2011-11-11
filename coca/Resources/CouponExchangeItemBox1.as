@@ -2,23 +2,19 @@
 	
 	import flash.display.SimpleButton;
 	import flash.display.MovieClip;
+	import flash.text.TextField;
+	import cocahappymachine.ui.AbstractCouponExchangeItemBox;
 	
-	
-	public class CouponExchangeItemBox1 extends MovieClip {
+	public class CouponExchangeItemBox1 extends AbstractCouponExchangeItemBox {
 		
-		private var itemId:String;
-		
+		public var requireField:TextField;
+		public var itemQuantityField:TextField;
+		public var nameField:TextField;
+
 		public function CouponExchangeItemBox1() {
 			// constructor code
 		}
-		
-		public function setItemId(itemId:String){
-			this.itemId = itemId;
-		}
-		
-		public function getItemId():String{
-			return itemId;
-		}
+
 	}
 	
 }

@@ -16,7 +16,8 @@
 
 		public static const LEVELUP:String = "LEVELUP";
 		public static const UPDATE_EXP:String = "UPDATE_EXP";
-//		this.dispatchEvent(new Event(LEVELUP));
+		public static const ITEM_UPDATE:String = "ITEM_UPDATE";
+
 		public static const SPECIAL_CODE_SUCCESS:String = "SPECIAL_CODE_SUCCESS";
 		public static const SPECIAL_CODE_FAIL:String = "SPECIAL_CODE_FAIL";
 		private static const NUM_FULL_PROGRESS:int = 1;
@@ -658,14 +659,66 @@
 		//---- find quantity of given item ----//
 		public function getItemQuantity(item:Item):int {
 			var itemQuantity:int;
+			var findItemBackpack:int = findItemBackpackById(item.getId());
 			
-			for(var c:int; c < backpack.length; c++){
-				if(backpack[c].getItemId()==item.getId()){
-					itemQuantity = backpack[c].getItemQty();
-				}
+			if(findItemBackpack>=0){
+				itemQuantity = backpack[findItemBackpack].getItemQty();
 			}
 			
 			return itemQuantity;
+		}
+		
+		//---- Find item in backpack ----//
+		private function findItemBackpackById(findItemId:String):int{
+			for(var c:int; c < backpack.length; c++){
+				if(backpack[c].getItemId()==findItemId){
+					return c;
+				}
+			}
+			
+			return -1;
+		}
+		
+		//--- buy item ----//
+		public function buy(itemId:String, quantity:int){
+			// code here
+			var currentItem:Item = iManager.getMatchItem(itemId);
+			
+			if(this.money>=(currentItem.getPrice()*quantity)){
+				var itemPosition:int = findItemBackpackById(itemId);
+				
+				if(itemPosition>=0){
+				   this.backpack[itemPosition].setItemQty(this.backpack[itemPosition].getItemQty()+quantity);
+				}else{
+				   var b:ItemQuantityPair = new ItemQuantityPair();
+				   b.setItemQty(quantity);
+				   b.setItem(currentItem);
+				   b.setItemId(itemId)
+				   this.backpack.push(b);
+				}
+				this.money -= (currentItem.getPrice()*quantity);
+				this.reciveExp(RECEIVE_EXP_BUY_SELL_ITEM);
+			}
+			
+			this.dispatchEvent(new Event(ITEM_UPDATE));
+		}
+		
+		//---- sell item----//
+		public function sell(itemId:String, quantity:int){
+			//code here
+			var itemPosition:int = findItemBackpackById(itemId);
+			
+			if(itemPosition>=0){
+				var currentItemQty:int = this.backpack[itemPosition].getItemQty();
+				
+				if(currentItemQty>=quantity){
+					this.backpack[itemPosition].setItemQty(this.backpack[itemPosition].getItemQty()-quantity);
+					this.money += (this.backpack[itemPosition].getItem().getPrice())*quantity;
+					this.reciveExp(RECEIVE_EXP_BUY_SELL_ITEM);
+				}
+			}
+			
+			this.dispatchEvent(new Event(ITEM_UPDATE));			
 		}
 	}
 }
