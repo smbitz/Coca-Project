@@ -42,7 +42,7 @@
 			SystemConstructor.getInstance().setPlayerName(facebookName);*/
 			/*SystemConstructor.getInstance().setFacebookId("1111");*/
 			SystemConstructor.getInstance().setFacebookId("2222");
-			SystemConstructor.getInstance().setPlayerName("TestName");
+			SystemConstructor.getInstance().setPlayerName("Name");
 			
 			SystemConstructor.getInstance().construct(onSystemComplete);
 			Debug.getInstance().debug("Load Data Complete");

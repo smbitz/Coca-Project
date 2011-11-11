@@ -713,7 +713,7 @@
 				
 				if(currentItemQty>=quantity){
 					this.backpack[itemPosition].setItemQty(this.backpack[itemPosition].getItemQty()-quantity);
-					this.money += (this.backpack[itemPosition].getItem().getPrice())*quantity;
+					this.money += (this.backpack[itemPosition].getItem().getSellPrice())*quantity;
 					this.reciveExp(RECEIVE_EXP_BUY_SELL_ITEM);
 				}
 			}
