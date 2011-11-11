@@ -13,6 +13,7 @@
 		private var id:String;
 		private var isBuildable:Boolean;
 		
+		public var pictureMC:MovieClip;
 		public var titleField:TextField;
 		public var durationField:TextField;
 		public var priceField:TextField;
@@ -66,6 +67,13 @@
 		
 		public function getBuildable():Boolean{
 			return isBuildable;
+		}
+		
+		public function setPicture(mc:MovieClip){
+			while(pictureMC.numChildren != 0){
+				pictureMC.removeChildAt(0);
+			}
+			pictureMC.addChild(mc);
 		}
 	}
 }

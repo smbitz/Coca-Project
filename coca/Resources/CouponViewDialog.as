@@ -13,14 +13,19 @@
 		
 		public var closeButton:SimpleButton;
 		public var couponText:TextField;
+		public var coupon:CouponExchangeItemBox3;
 		
 		public function CouponViewDialog() {
 			// constructor code
 			closeButton.addEventListener(MouseEvent.CLICK, onCloseButtonClick);
 		}
 		
-		public function setCounpon(text:String){
+		public function setCoupon(text:String){
 			couponText.text = text;
+		}
+		
+		public function getCoupon():CouponExchangeItemBox3{
+			return coupon;
 		}
 		
 		public function onCloseButtonClick(event:MouseEvent){

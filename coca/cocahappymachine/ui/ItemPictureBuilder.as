@@ -4,6 +4,11 @@
 	import Resources.CE1MorningGloryItem;
 	import Resources.MoveButton;
 	import Resources.CE2ChickenItem;
+	import cocahappymachine.data.Building;
+	import Resources.BuildMorningGloryItem;
+	import Resources.AddItemChickenItem;
+	import Resources.ShopWaterItem;
+	import Resources.AddItemSmallWaterItem;
 	
 	public class ItemPictureBuilder {
 
@@ -18,6 +23,25 @@
 		public static function createCouponExchangeItemBox2Picture(item:Item):MovieClip {
 			return new CE2ChickenItem();
 		}
+
+		public static function createCouponExchangeItemBox3Picture(item:Item):MovieClip {
+			return new CE2ChickenItem();
+		}
+		
+		public static function createBuildItemBoxPicture(buliding:Building):MovieClip {
+			return new BuildMorningGloryItem();
+		}
+		
+		public static function createAddItemBoxPicture(building:Building):MovieClip{
+			return new AddItemChickenItem();
+		}
+		
+		public static function createShopItemBoxPicture(item:Item):MovieClip{
+			return new ShopWaterItem();
+		}
+		
+		public static function createAddItemSmallPicture(building:Building):MovieClip{
+			return new AddItemSmallWaterItem();
+		}
 	}
-	
 }

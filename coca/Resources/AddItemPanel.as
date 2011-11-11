@@ -15,6 +15,8 @@
 		public static const EXTRAITEM2_CLICK:String = "EXTRAITEM2_CLICK";
 		public static const MOVE_CLICK:String = "MOVE_CLICK";
 
+		public var pictureMC:MovieClip;
+		public var smallPictureMC:MovieClip;
 		public var closeButton:SimpleButton;
 		public var supplyItemButton:SupplyItemButton;
 		public var extraItem1Button:ExtraItemButton;
@@ -88,6 +90,20 @@
 		
 		public function onMoveClick(event:MouseEvent){
 			this.dispatchEvent(new Event(MOVE_CLICK));
+		}
+		
+		public function setPicture(mc:MovieClip){
+			while(pictureMC.numChildren != 0){
+				pictureMC.removeChildAt(0);
+			}
+			pictureMC.addChild(mc);
+		}
+		
+		public function setSmallPicture(mc:MovieClip){
+			while(smallPictureMC.numChildren != 0){
+				smallPictureMC.removeChildAt(0);
+			}
+			smallPictureMC.addChild(mc);
 		}
 	}
 }

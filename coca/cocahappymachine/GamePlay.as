@@ -54,6 +54,9 @@
 	import Resources.CouponExchangeItemBox3;
 	import cocahappymachine.ui.Tab;
 	import cocahappymachine.ui.ItemPictureBuilder;
+	import Resources.CouponConfirmDialog;
+	import Resources.CouponViewDialog;
+	import cocahappymachine.ui.CodeViewEvent;
 	
 	public class GamePlay extends MovieClip{
 		
@@ -86,6 +89,8 @@
 		private var shopDialog:ShopDialog;
 		private var levelUpDialog:LevelUpDialog;
 		private var getItemDialog:GetItemDialog;
+		private var couponConfirmDialog:CouponConfirmDialog;
+		private var couponViewDialog:CouponViewDialog;
 		
 		private var farmMap:FarmMap;
 		private var activeTile:AbstractFarmTile;
@@ -117,7 +122,9 @@
 			currentPlayer.addEventListener(Player.UPDATE_EXP, onUpdateExp);
 			currentPlayer.addEventListener(Player.SPECIAL_CODE_FAIL, onSpecialCodeFail);
 			currentPlayer.addEventListener(Player.SPECIAL_CODE_SUCCESS, onSpecialCodeSuccess);
+			currentPlayer.addEventListener(Player.CODE_RECEIVE, onCodeReceive);
 			currentPlayer.addEventListener(Player.ITEM_UPDATE, onItemUpdate);
+			currentPlayer.addEventListener(Player.EXCHANGE_SUCCESS, onExchangeSuccess);
 			mouseCursor = new MouseCursor();
 			mouseCursor.mouseEnabled = false;
 			Mouse.hide();
@@ -156,9 +163,7 @@
 			this.addChild(specialCodeButton);
 			this.addChild(moneyUI);
 			this.addChild(statusUI);
-			this.addChild(optionBar);
-			//init interface LV, EXP, name, money, option bar, coupon button, special code button
-			
+			this.addChild(optionBar);			
 			//---- init all dialog ----
 			tutorialDialog = new TutorialDialog();
 			tutorialDialog.visible = false;
@@ -189,18 +194,30 @@
 			couponExchangePaging = new Paging();
 			couponExchangePaging.setGap(280, 130);
 			couponExchangePaging.setItemPerPage(2, 3);
+			couponExchangePaging.setLeftRightButton(couponExchangeAllCouponsTab.getLeftButton(), 
+													couponExchangeAllCouponsTab.getRightButton());
 			couponExchangeAllCouponsTab.setPaging(couponExchangePaging);
 			couponExchangeAvailablePaging = new Paging();
 			couponExchangeAvailablePaging.setGap(280, 130);
 			couponExchangeAvailablePaging.setItemPerPage(2, 3);
+			couponExchangeAvailablePaging.setLeftRightButton(
+										couponExchangeAvailableTab.getLeftButton(), 
+										couponExchangeAvailableTab.getRightButton());
 			couponExchangeAvailableTab.setPaging(couponExchangeAvailablePaging);
 			couponExchangeUnavailablePaging = new Paging();
 			couponExchangeUnavailablePaging.setGap(280, 130);
 			couponExchangeUnavailablePaging.setItemPerPage(2, 3);
+			couponExchangeUnavailablePaging.setLeftRightButton(
+										couponExchangeUnavailableTab.getLeftButton(), 
+										couponExchangeUnavailableTab.getRightButton());
+			couponExchangeAllCouponsTab.setPaging(couponExchangePaging);
 			couponExchangeUnavailableTab.setPaging(couponExchangeUnavailablePaging);
 			couponExchangeMyCouponsPaging = new Paging();
 			couponExchangeMyCouponsPaging.setGap(280, 130);
 			couponExchangeMyCouponsPaging.setItemPerPage(2, 3);
+			couponExchangeMyCouponsPaging.setLeftRightButton(
+										couponExchangeMyCouponsTab.getLeftButton(), 
+										couponExchangeMyCouponsTab.getRightButton());
 			couponExchangeMyCouponsTab.setPaging(couponExchangeMyCouponsPaging);
 			couponExchangeTab = new Tab();
 			couponExchangeTab.addTab(couponExchangeAllCouponsTab, 
@@ -263,6 +280,15 @@
 			getItemDialog.addEventListener(GetItemDialog.DIALOG_CLOSE, onGetItemDialogClose);
 			getItemDialog.visible = false;
 			this.addChild(getItemDialog);
+			couponConfirmDialog = new CouponConfirmDialog();
+			couponConfirmDialog.addEventListener(CouponConfirmDialog.DIALOG_CLOSE, onCouponConfirmClose);
+			couponConfirmDialog.addEventListener(CouponConfirmDialog.DIALOG_CONFIRM, onCouponConfirmConfirm);
+			couponConfirmDialog.visible =false;
+			this.addChild(couponConfirmDialog);
+			couponViewDialog = new CouponViewDialog();
+			couponViewDialog.addEventListener(CouponViewDialog.DIALOG_CLOSE, onCouponViewClose);
+			couponViewDialog.visible = false;
+			this.addChild(couponViewDialog);
 			//-------------------------
 			if(currentPlayer.isNewGame()){
 				setStateTutorial();
@@ -408,6 +434,7 @@
 				box.setBuildingId(building.getId());
 				box.setTitle(building.getName());
 				box.setDuration(building.getBuildPeriod());
+				box.setPicture(ItemPictureBuilder.createBuildItemBoxPicture(building));
 				var isEnoughMoney:Boolean = true;
 				if(building.getBuildItem().getPrice() > currentPlayer.getMoney()){
 					isEnoughMoney = false;
@@ -424,11 +451,14 @@
 			var isSupply:Boolean = currentPlayer.isAllowToSupply(activeTile.getData());
 			var isExtra1:Boolean = currentPlayer.isAllowToExtra1(activeTile.getData());
 			var isExtra2:Boolean = currentPlayer.isAllowToExtra2(activeTile.getData());
+			var building:Building = activeTile.getData().getBuilding();
 			addItemPanel.setButtonState(isSupply, isExtra1, isExtra2, true);
 			addItemPanel.visible = true;
-			addItemPanel.setName(activeTile.getData().getBuilding().getName());
+			addItemPanel.setName(building.getName());
 			addItemPanel.setProgress(activeTile.getData().getProgress());
 			addItemPanel.setSupply(activeTile.getData().getSupplyPercentage());
+			addItemPanel.setPicture(ItemPictureBuilder.createAddItemBoxPicture(building));
+			addItemPanel.setSmallPicture(ItemPictureBuilder.createAddItemSmallPicture(building));
 			currentPlayer.updateToServer();
 		}
 		
@@ -449,6 +479,7 @@
 			for each(var item:Item in buyItem){
 				var buyBox:ShopBuyItemBox = new ShopBuyItemBox();
 				buyBox.setItemId(item.getId());
+				buyBox.setPicture(ItemPictureBuilder.createShopItemBoxPicture(item));
 				var isEnoughMoney:Boolean = true;
 				if(currentPlayer.getMoney() < item.getPrice()){
 					isEnoughMoney = false;
@@ -465,6 +496,7 @@
 			}
 			for each(var backpack:ItemQuantityPair in sellItem){
 				var sellBox:ShopSellItemBox = new ShopSellItemBox();
+				sellBox.setPicture(ItemPictureBuilder.createShopItemBoxPicture(item));
 				sellBoxList.push(sellBox);
 				sellBox.setItemId(backpack.getItem().getId());
 				sellBox.setName(backpack.getItem().getName());
@@ -492,9 +524,11 @@
 					box = new CouponExchangeItemBox3();
 					box.setItemId(item.getId());
 					box.setName(item.getName());
+					box.setPicture(ItemPictureBuilder.createCouponExchangeItemBox3Picture(item));
 					var myBox:AbstractCouponExchangeItemBox = new CouponExchangeItemBox3();
 					myBox.setName(item.getName());
 					myBox.setItemId(item.getId());
+					myBox.setPicture(ItemPictureBuilder.createCouponExchangeItemBox3Picture(item));
 					myCouponsBoxList.push(myBox);
 				} else {
 					var i:ItemExchangeItem = item.getExchangeItem()[0];
@@ -504,11 +538,13 @@
 						box.setName(item.getName());
 						box.setItemQuantity(currentPlayer.getItemQuantity(i.getItem()));
 						box.setItemRequire(i.getQuantity());
+						box.setPicture(ItemPictureBuilder.createCouponExchangeItemBox2Picture(item));
 						var availableBox:AbstractCouponExchangeItemBox = new CouponExchangeItemBox2();
 						availableBox.setItemId(item.getId());
 						availableBox.setName(item.getName());
 						availableBox.setItemQuantity(currentPlayer.getItemQuantity(i.getItem()));
 						availableBox.setItemRequire(i.getQuantity());
+						availableBox.setPicture(ItemPictureBuilder.createCouponExchangeItemBox2Picture(item));
 						availableBoxList.push(availableBox);
 					} else {
 						box = new CouponExchangeItemBox1();
@@ -522,16 +558,22 @@
 						unavailableBox.setName(item.getName());
 						unavailableBox.setItemQuantity(currentPlayer.getItemQuantity(i.getItem()));
 						unavailableBox.setItemRequire(i.getQuantity());
+						unavailableBox.setPicture(ItemPictureBuilder.createCouponExchangeItemBox1Picture(item));
 						unavailableBoxList.push(unavailableBox);
 					}
 				}
 				itemBoxList.push(box);
 			}
+			var allArray:Array = new Array();
+			allArray = allArray.concat(itemBoxList);
+			allArray = allArray.concat(availableBoxList);
+			allArray = allArray.concat(unavailableBoxList);
+			allArray = allArray.concat(myCouponsBoxList);
 			couponExchangePaging.setItem(itemBoxList);
 			couponExchangeAvailablePaging.setItem(availableBoxList);
 			couponExchangeUnavailablePaging.setItem(unavailableBoxList);
 			couponExchangeMyCouponsPaging.setItem(myCouponsBoxList);
-			couponExchangeDialog.setItemBox(itemBoxList);
+			couponExchangeDialog.setItemBox(allArray);
 		}
 		
 		public function onSpecialCodeButtonClick(event:MouseEvent){
@@ -618,11 +660,20 @@
 		}
 		
 		public function onCouponExchangeViewCode(event:CouponEvent){
-			trace("view code : " + event.getItemId());
+			currentPlayer.couponCodeView(event.getItemId());
 		}
 		
 		public function onCouponExchangeExchange(event:CouponEvent){
-			trace("exchange : " + event.getItemId());
+			couponConfirmDialog.visible = true;
+			var c:CouponExchangeItemBox2 = couponConfirmDialog.getCoupon();
+			var item:Item = ItemManager.getInstance().getMatchItem(event.getItemId());
+			var itemExchange:ItemExchangeItem = item.getExchangeItem()[0];
+			couponConfirmDialog.setItemId(item.getId());
+			c.setItemId(item.getId());
+			c.setName(item.getName());
+			c.setItemQuantity(currentPlayer.getItemQuantity(itemExchange.getItem()));
+			c.setItemRequire(itemExchange.getQuantity());
+			c.setPicture(ItemPictureBuilder.createCouponExchangeItemBox2Picture(item));
 		}
 		
 		public function onShopDialogClose(event:Event){
@@ -658,6 +709,14 @@
 			getItemDialog.visible = true;
 		}
 		
+		public function onCodeReceive(event:CodeViewEvent){
+			var item:Item = ItemManager.getInstance().getMatchItem(event.getItemId());
+			var cBox:CouponExchangeItemBox3 = couponViewDialog.getCoupon();
+			cBox.setName(item.getName());
+			couponViewDialog.setCoupon(event.getCode());
+			couponViewDialog.visible = true;
+		}
+		
 		public function onGetItemDialogClose(event:Event){
 			getItemDialog.visible = false;
 		}
@@ -666,6 +725,26 @@
 			if(shopDialog.visible){
 				onShopClick(null);
 			}
+			if(couponExchangeDialog.visible){
+				onCouponButtonClick(null);
+			}
+		}
+		
+		public function onCouponConfirmClose(event:Event){
+			couponConfirmDialog.visible = false;
+		}
+		
+		public function onCouponConfirmConfirm(event:CouponEvent){
+			couponConfirmDialog.visible = false;
+			currentPlayer.exchange(event.getItemId());
+		}
+		
+		public function onCouponViewClose(event:Event){
+			couponViewDialog.visible = false;
+		}
+		
+		public function onExchangeSuccess(event:CodeViewEvent){
+			currentPlayer.couponCodeView(event.getItemId());
 		}
 	}
 }

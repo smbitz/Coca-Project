@@ -11,13 +11,16 @@
 	import flash.net.FileReference;
 	import flash.net.URLVariables;
 	import flash.events.EventDispatcher;
+	import cocahappymachine.ui.CodeViewEvent;
+	import cocahappymachine.ui.CouponEvent;
 	
 	public class Player extends EventDispatcher {
 
 		public static const LEVELUP:String = "LEVELUP";
 		public static const UPDATE_EXP:String = "UPDATE_EXP";
 		public static const ITEM_UPDATE:String = "ITEM_UPDATE";
-
+		public static const CODE_RECEIVE:String = "CODE_RECEIVE";
+		public static const EXCHANGE_SUCCESS:String = "EXCHANGE_SUCCESS";
 		public static const SPECIAL_CODE_SUCCESS:String = "SPECIAL_CODE_SUCCESS";
 		public static const SPECIAL_CODE_FAIL:String = "SPECIAL_CODE_FAIL";
 		private static const NUM_FULL_PROGRESS:int = 1;
@@ -335,16 +338,18 @@
 		public function onExchangeReply(event:Event){
 			var couponId:String = event.target.data.toString();
 			
-			//if success
-				//reduce amount of item using for exchange
-				//add coupon item to player backpack
-			//else
-				//respond to player that exchange was rejected
 			if(couponId=="fail"){
-				
+				//respond to player that exchange was rejected				
 			}else{
 				this.reciveExp(RECEIVE_EXP_EXCHANGE_COUPON);
+				//reduce amount of item using for exchange
+				//add coupon item to player backpack
 				trace("Exchange Cupon ", this.exp);
+				var e:CodeViewEvent = new CodeViewEvent(EXCHANGE_SUCCESS);
+				e.setItemId("0"/*Itemid*/);
+				e.setCode("0"/*code*/);
+				this.dispatchEvent(e);
+				this.dispatchEvent(new Event(ITEM_UPDATE));	
 			}
 		}
 		
@@ -371,11 +376,13 @@
 		//---- Callback function for couponCodeView() ----//
 		public function onCouponCodeViewReply(event:Event){
 			var couponId:String = event.target.data.toString();
-
 			if(couponId=="fail"){
-				
+				trace("Code View Fail");
 			}else{
-				
+				var e:CodeViewEvent = new CodeViewEvent(CODE_RECEIVE);
+				e.setCode("0");
+				e.setItemId("50110");
+				this.dispatchEvent(e);
 			}
 		}
 		
@@ -407,6 +414,8 @@
 				this.dispatchEvent(new Event(SPECIAL_CODE_FAIL));
 			}else{
 				this.dispatchEvent(new Event(SPECIAL_CODE_SUCCESS));
+				//add item
+				this.dispatchEvent(new Event(ITEM_UPDATE));
 			}
 		}
 		
