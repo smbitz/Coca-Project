@@ -17,6 +17,18 @@
 		public function getItemId():String{
 			return itemId;
 		}
+		
+		public function setName(n:String){
+		}
+		
+		public function setItemQuantity(i:int){
+		}
+
+		public function setItemRequire(i:int){
+		}
+		
+		public function setPicture(mc:MovieClip){
+		}
 	}
 	
 }
