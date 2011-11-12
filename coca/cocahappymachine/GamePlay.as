@@ -518,7 +518,7 @@
 			}
 			for each(var backpack:ItemQuantityPair in sellItem){
 				var sellBox:ShopSellItemBox = new ShopSellItemBox();
-				sellBox.setPicture(ItemPictureBuilder.createShopItemBoxPicture(item));
+				sellBox.setPicture(ItemPictureBuilder.createShopItemBoxPicture(backpack.getItem()));
 				sellBoxList.push(sellBox);
 				sellBox.setItemId(backpack.getItem().getId());
 				sellBox.setName(backpack.getItem().getName());
