@@ -6,6 +6,12 @@
 	import cocahappymachine.util.Config;
 	import cocahappymachine.util.Debug;
 	import cocahappymachine.audio.AudioManager;
+	import flash.events.Event;
+	import flash.net.URLRequest;
+	import flash.display.Loader;
+	import flash.system.LoaderContext;
+	import flash.system.ApplicationDomain;
+
 
 	//Instanctiate all necessary data using in application, then callback to one function
 	public class SystemConstructor {
@@ -17,6 +23,7 @@
 
 		private var currentPlayer:Player;
 		private var isLoad:Boolean = false;
+		private var isAsset:Boolean = false;
 		private var constructCallback:Function;
 		private var iManager:ItemManager;
 		private var bManager:BuildingManager;
@@ -65,7 +72,22 @@
 			currentPlayer = new Player(facebookId,playerName);
 			currentPlayer.load(onPlayerComplete);
 		
+			//---- Load External SWF ----//
+			var path:URLRequest = new URLRequest("Resources.swf");
+			var context:LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
+			var loader:Loader = new Loader();
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,onSWFLoadComplete);
+			loader.load(path,context);
 		}
+		
+		public function onSWFLoadComplete(event:Event){
+			Debug.getInstance().debug("Asset load Complete");
+			isAsset = true;
+			if( isAllLoadComplete()){
+				onAllLoadComplete();
+			}
+		}
+	
 		private function onConfigComplete(){
 			initData();
 		}
@@ -97,7 +119,8 @@
 		}
 		
 		private function isAllLoadComplete():Boolean{
-			if(iManager.isLoadComplete() && bManager.isLoadComplete() && currentPlayer.isLoadComplete() && aManager.isLoadComplete()){
+			if(iManager.isLoadComplete() && bManager.isLoadComplete() && 
+			   currentPlayer.isLoadComplete() && aManager.isLoadComplete() && isAsset){
 				manageData();
 				return true;
 			}
