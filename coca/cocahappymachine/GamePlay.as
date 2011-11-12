@@ -57,6 +57,7 @@
 	import Resources.CouponConfirmDialog;
 	import Resources.CouponViewDialog;
 	import cocahappymachine.ui.CodeViewEvent;
+	import Resources.OptionBarExpand;
 	
 	public class GamePlay extends MovieClip{
 		
@@ -76,6 +77,11 @@
 		private static const COUPONBUTTON_Y:int = 5;
 		private static const SPECIALCODEBUTTON_X:int = 520;
 		private static const SPECIALCODEBUTTON_Y:int = 15;
+		
+		private static const ADDITEMPANEL_POSITIONX_MIN:int = 170;
+		private static const ADDITEMPANEL_POSITIONX_MAX:int = 590;
+		private static const ADDITEMPANEL_POSITIONY_MIN:int = 220;
+		private static const ADDITEMPANEL_POSITIONY_MAX:int = 550;
 		
 		private var currentPlayer:Player;
 		
@@ -156,6 +162,12 @@
 			expProgress.setProgress(currentPlayer.getExpProgress());
 			statusUI.setProgressMC(expProgress);
 			optionBar = new OptionBar();
+			optionBar.addEventListener(OptionBar.OPEN, onOptionBarOpen);
+			var expanded:OptionBarExpand = optionBar.getExpaned();
+			expanded.addEventListener(OptionBarExpand.SOUND_ON, onSoundOn);
+			expanded.addEventListener(OptionBarExpand.SOUND_OFF, onSoundOff);
+			expanded.addEventListener(OptionBarExpand.ZOOM_IN, onZoomIn);
+			expanded.addEventListener(OptionBarExpand.ZOOM_OUT, onZoomOut);
 			optionBar.x = OPTIONBAR_X;
 			optionBar.y = OPTIONBAR_Y;
 			this.addChild(farmMap);
@@ -398,6 +410,10 @@
 				movingTile.x = this.mouseX;
 				movingTile.y = this.mouseY;
 			}
+			if(addItemPanel.visible){
+				addItemPanel.setProgress(activeTile.getData().getProgress());
+				addItemPanel.setSupply(activeTile.getData().getSupplyPercentage());
+			}
 		}
 		
 		public function onTilePurchase(event:FarmMapEvent){
@@ -452,13 +468,19 @@
 			var isExtra1:Boolean = currentPlayer.isAllowToExtra1(activeTile.getData());
 			var isExtra2:Boolean = currentPlayer.isAllowToExtra2(activeTile.getData());
 			var building:Building = activeTile.getData().getBuilding();
-			addItemPanel.setButtonState(isSupply, isExtra1, isExtra2, true);
 			addItemPanel.visible = true;
 			addItemPanel.setName(building.getName());
+			addItemPanel.x = Math.min(this.mouseX, ADDITEMPANEL_POSITIONX_MAX);
+			addItemPanel.x = Math.max(addItemPanel.x, ADDITEMPANEL_POSITIONX_MIN);
+			addItemPanel.y = Math.min(this.mouseY, ADDITEMPANEL_POSITIONY_MAX);
+			addItemPanel.y = Math.max(addItemPanel.y, ADDITEMPANEL_POSITIONY_MIN);
 			addItemPanel.setProgress(activeTile.getData().getProgress());
 			addItemPanel.setSupply(activeTile.getData().getSupplyPercentage());
 			addItemPanel.setPicture(ItemPictureBuilder.createAddItemBoxPicture(building));
 			addItemPanel.setSmallPicture(ItemPictureBuilder.createAddItemSmallPicture(building));
+			addItemPanel.setSupplyButton(ItemPictureBuilder.createAddItemSupplyButton(building, isSupply), isSupply);
+			addItemPanel.setExtra1Button(ItemPictureBuilder.createAddItemExtra1Button(building, isExtra1), isExtra1);
+			addItemPanel.setExtra2Button(ItemPictureBuilder.createAddItemExtra2Button(building, isExtra2), isExtra2);
 			currentPlayer.updateToServer();
 		}
 		
@@ -745,6 +767,27 @@
 		
 		public function onExchangeSuccess(event:CodeViewEvent){
 			currentPlayer.couponCodeView(event.getItemId());
+		}
+		
+		public function onOptionBarOpen(event:Event){
+			var expanded:OptionBarExpand = optionBar.getExpaned();
+			expanded.setOption(true, true, true);
+		}
+		
+		public function onSoundOn(event:Event){
+			trace("Sound On");
+		}
+		
+		public function onSoundOff(event:Event){
+			trace("Sound Off");			
+		}
+		
+		public function onZoomIn(event:Event){
+			trace("Zoom in");
+		}
+		
+		public function onZoomOut(event:Event){
+			trace("Zoom out");			
 		}
 	}
 }

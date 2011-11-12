@@ -9,6 +9,9 @@
 	import Resources.AddItemChickenItem;
 	import Resources.ShopWaterItem;
 	import Resources.AddItemSmallWaterItem;
+	import Resources.AddItemWaterEnableButton;
+	import Resources.AddItemFertilizerAEnableButton;
+	import Resources.AddItemFertilizerBEnableButton;
 	
 	public class ItemPictureBuilder {
 
@@ -42,6 +45,18 @@
 		
 		public static function createAddItemSmallPicture(building:Building):MovieClip{
 			return new AddItemSmallWaterItem();
+		}
+		
+		public static function createAddItemSupplyButton(building:Building, isSupply:Boolean){
+			return new AddItemWaterEnableButton();
+		}
+		
+		public static function createAddItemExtra1Button(building:Building, isExtra1:Boolean){
+			return new AddItemFertilizerAEnableButton();
+		}
+		
+		public static function createAddItemExtra2Button(building:Building, isExtra2:Boolean){
+			return new AddItemFertilizerBEnableButton();
 		}
 	}
 }
