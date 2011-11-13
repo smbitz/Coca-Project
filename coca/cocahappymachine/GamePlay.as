@@ -58,6 +58,8 @@
 	import Resources.CouponViewDialog;
 	import cocahappymachine.ui.CodeViewEvent;
 	import Resources.OptionBarExpand;
+	import cocahappymachine.ui.BitmapFont;
+	import cocahappymachine.ui.BigLevelBitMapConstructor;
 	
 	public class GamePlay extends MovieClip{
 		
@@ -351,6 +353,10 @@
 			//trace(currentPlayer.getItemQuantity(itemFind));
 			//trace(BuildingManager.getInstance().getBuildingByBuildItem(itemFind).getName());
 			//trace(currentPlayer.getTile()[26].getSupplyPercentage(), currentPlayer.getTile()[26].getBuilding().getBuildPeriod(), currentPlayer.getTile()[26].getProgress());
+			
+			var temp:BitmapFont = new BitmapFont(new BigLevelBitMapConstructor());
+			var mc:MovieClip = temp.getMovieClip("23");
+			this.addChild(mc);
 		}
 		
 		private function setPlayStateNormal(){
