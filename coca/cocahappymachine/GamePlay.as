@@ -748,6 +748,7 @@
 			var item:Item = ItemManager.getInstance().getMatchItem(event.getItemId());
 			var cBox:CouponExchangeItemBox3 = couponViewDialog.getCoupon();
 			cBox.setName(item.getName());
+			cBox.setPicture(ItemPictureBuilder.createCouponExchangeItemBox3Picture(item));
 			couponViewDialog.setCoupon(event.getCode());
 			couponViewDialog.visible = true;
 		}

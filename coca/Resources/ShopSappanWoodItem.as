@@ -3,10 +3,10 @@
 	import flash.display.MovieClip;
 	
 	
-	public class ShopFangDryItem extends MovieClip {
+	public class ShopSappanWoodItem extends MovieClip {
 		
 		
-		public function ShopFangDryItem() {
+		public function ShopSappanWoodItem() {
 			// constructor code
 		}
 	}

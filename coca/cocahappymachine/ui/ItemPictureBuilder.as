@@ -68,9 +68,9 @@
 	import Resources.AddItemScallopsItem;
 	import Resources.AddItemShrimpItem;
 	import Resources.AddItemOysterItem;
-	import Resources.AddItemSmallFangDryItem;
+	import Resources.AddItemSmallSappanWoodItem;
 	import Resources.AddItemSmallPelletFoodItem;
-	import Resources.AddItemFangDryEnableButton;
+	import Resources.AddItemSappanWoodEnableButton;
 	import Resources.AddItemPelletFoodEnableButton;
 	import Resources.AddItemVaccineAEnableButton;
 	import Resources.AddItemMicroorganismAEnableButton;
@@ -79,7 +79,7 @@
 	import Resources.ShopPearlItem;
 	import Resources.ShopGoldItem;
 	import Resources.ShopDiamondItem;
-	import Resources.ShopFangDryItem;
+	import Resources.ShopSappanWoodItem;
 	import Resources.ShopPelletFoodItem;
 	import Resources.ShopMorningGloryItem;
 	import Resources.ShopMorningGlorySeedItem;
@@ -111,6 +111,15 @@
 	import Resources.ShopShrimpItem;
 	import Resources.ShopOysterItem;
 	import Resources.ShopStrawMushroomsItem;
+	import Resources.AddItemWaterDisableButton;
+	import Resources.AddItemSappanWoodDisableButton;
+	import Resources.AddItemPelletFoodDisableButton;
+	import Resources.AddItemFertilizerADisableButton;
+	import Resources.AddItemVaccineADisableButton;
+	import Resources.AddItemMicroorganismADisableButton;
+	import Resources.AddItemFertilizerBDisableButton;
+	import Resources.AddItemVaccineBDisableButton;
+	import Resources.AddItemMicroorganismBDisableButton;
 	
 	public class ItemPictureBuilder {
 		//Coupon Item id
@@ -408,7 +417,7 @@
 			}else if(item.getId()==ITEM_WATER_ID){
 				return new ShopWaterItem();
 			}else if(item.getId()==ITEM_FANG_DRY_ID){
-				return new ShopFangDryItem();
+				return new ShopSappanWoodItem();
 			}else if(item.getId()==ITEM_PELLET_FOOD_ID){
 				return new ShopPelletFoodItem();
 			}else if(item.getId()==ITEM_PEARL_ID){
@@ -456,7 +465,7 @@
 			if(building.getBuildingType()==BUILD_TYPE_VAGE){
 				return new AddItemSmallWaterItem();
 			}else if(building.getBuildingType()==BUILD_TYPE_MEAT){
-				return new AddItemSmallFangDryItem();
+				return new AddItemSmallSappanWoodItem();
 			}else if(building.getBuildingType()==BUILD_TYPE_SEA){
 				return new AddItemSmallPelletFoodItem();
 			}
@@ -465,36 +474,66 @@
 		}
 		
 		public static function createAddItemSupplyButton(building:Building, isSupply:Boolean){
-			if(building.getBuildingType()==BUILD_TYPE_VAGE){
-				return new AddItemWaterEnableButton();
-			}else if(building.getBuildingType()==BUILD_TYPE_MEAT){
-				return new AddItemFangDryEnableButton();
-			}else if(building.getBuildingType()==BUILD_TYPE_SEA){
-				return new AddItemPelletFoodEnableButton();
+			if(isSupply){
+				if(building.getBuildingType()==BUILD_TYPE_VAGE){
+					return new AddItemWaterEnableButton();
+				}else if(building.getBuildingType()==BUILD_TYPE_MEAT){
+					return new AddItemSappanWoodEnableButton();
+				}else if(building.getBuildingType()==BUILD_TYPE_SEA){
+					return new AddItemPelletFoodEnableButton();
+				}
+			}else{
+				if(building.getBuildingType()==BUILD_TYPE_VAGE){
+					return new AddItemWaterDisableButton();
+				}else if(building.getBuildingType()==BUILD_TYPE_MEAT){
+					return new AddItemSappanWoodDisableButton();
+				}else if(building.getBuildingType()==BUILD_TYPE_SEA){
+					return new AddItemPelletFoodDisableButton();
+				}
 			}
 			
 			return null;
 		}
 		
 		public static function createAddItemExtra1Button(building:Building, isExtra1:Boolean){
-			if(building.getBuildingType()==BUILD_TYPE_VAGE){
-				return new AddItemFertilizerAEnableButton();
-			}else if(building.getBuildingType()==BUILD_TYPE_MEAT){
-				return new AddItemVaccineAEnableButton();
-			}else if(building.getBuildingType()==BUILD_TYPE_SEA){
-				return new AddItemMicroorganismAEnableButton();
+			if(isExtra1){
+				if(building.getBuildingType()==BUILD_TYPE_VAGE){
+					return new AddItemFertilizerAEnableButton();
+				}else if(building.getBuildingType()==BUILD_TYPE_MEAT){
+					return new AddItemVaccineAEnableButton();
+				}else if(building.getBuildingType()==BUILD_TYPE_SEA){
+					return new AddItemMicroorganismAEnableButton();
+				}
+			}else{
+				if(building.getBuildingType()==BUILD_TYPE_VAGE){
+					return new AddItemFertilizerADisableButton();
+				}else if(building.getBuildingType()==BUILD_TYPE_MEAT){
+					return new AddItemVaccineADisableButton();
+				}else if(building.getBuildingType()==BUILD_TYPE_SEA){
+					return new AddItemMicroorganismADisableButton();
+				}
 			}
 			
 			return null;
 		}
 		
 		public static function createAddItemExtra2Button(building:Building, isExtra2:Boolean){
-			if(building.getBuildingType()==BUILD_TYPE_VAGE){
-				return new AddItemFertilizerBEnableButton();
-			}else if(building.getBuildingType()==BUILD_TYPE_MEAT){
-				return new AddItemVaccineBEnableButton();
-			}else if(building.getBuildingType()==BUILD_TYPE_SEA){
-				return new AddItemMicroorganismBEnableButton();
+			if(isExtra2){
+				if(building.getBuildingType()==BUILD_TYPE_VAGE){
+					return new AddItemFertilizerBEnableButton();
+				}else if(building.getBuildingType()==BUILD_TYPE_MEAT){
+					return new AddItemVaccineBEnableButton();
+				}else if(building.getBuildingType()==BUILD_TYPE_SEA){
+					return new AddItemMicroorganismBEnableButton();
+				}
+			}else{
+				if(building.getBuildingType()==BUILD_TYPE_VAGE){
+					return new AddItemFertilizerBDisableButton();
+				}else if(building.getBuildingType()==BUILD_TYPE_MEAT){
+					return new AddItemVaccineBDisableButton();
+				}else if(building.getBuildingType()==BUILD_TYPE_SEA){
+					return new AddItemMicroorganismBDisableButton();
+				}
 			}
 			
 			return null;
