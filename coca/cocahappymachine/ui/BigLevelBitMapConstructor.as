@@ -4,7 +4,7 @@
 	public class BigLevelBitMapConstructor extends AbstractBitMapConstructor {
 
 		public function BigLevelBitMapConstructor() {
-			addChar('0', BigLevelNumber0.class);
+			addChar('0', BigLevelNumber0 );
 		}
 	}
 }

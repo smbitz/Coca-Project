@@ -10,7 +10,7 @@
 		}
 
 		public function getMovieClip(text:String):MovieClip {
-			var mc:MovieClip;
+			var mc:MovieClip = new MovieClip();
 			for(var i:int = 0; i < text.length; i++){
 				var c:String = text.charAt(i);
 				var cMC:MovieClip = constructor.getChar(c);

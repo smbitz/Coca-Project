@@ -6,6 +6,7 @@
 		private var charBitmapArray:Array;
 		
 		public function AbstractBitMapConstructor() {
+			charBitmapArray = new Array();
 		}
 
 		public function getChar(c:String):MovieClip{
