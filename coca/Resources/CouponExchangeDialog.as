@@ -78,9 +78,10 @@
 			var loop:int = 0;
 			for each(var box:MovieClip in boxList){
 				if(box is CouponExchangeItemBox1){
-					box.addEventListener(MouseEvent.CLICK, onBox1Click);	
-				} else {
+				} else if (box is CouponExchangeItemBox2){
 					box.addEventListener(MouseEvent.CLICK, onBox2Click);	
+				} else if (box is CouponExchangeItemBox3){
+					box.addEventListener(MouseEvent.CLICK, onBox3Click);	
 				}
 				loop++;
 			}
@@ -95,12 +96,14 @@
 				}
 			}
 			for each(var box:BuildItemBox in itemBox){
-				box.removeEventListener(MouseEvent.CLICK, onBox1Click);
 				box.removeEventListener(MouseEvent.CLICK, onBox2Click);
+				box.removeEventListener(MouseEvent.CLICK, onBox3Click);
 			}
 		}
 		
 		public function onBox1Click(event:MouseEvent){
+			/*
+			trace("box1");
 			var e:CouponEvent = new CouponEvent(EXCHANGE)
 			if(event.target is CouponExchangeItemBox1){
 				var box:CouponExchangeItemBox1 = CouponExchangeItemBox1(event.target);
@@ -109,15 +112,29 @@
 				throw new Error("unexpected : onBox1Click in CouponExchangeDialog.as");
 			}
 			this.dispatchEvent(e);
+			*/
 		}
 		
 		public function onBox2Click(event:MouseEvent){
-			var e:CouponEvent = new CouponEvent(VIEW_CODE)
-			if(event.target is CouponExchangeItemBox1){
-				var box:CouponExchangeItemBox2 = CouponExchangeItemBox2(event.target);				
+			trace("box2");
+			var e:CouponEvent = new CouponEvent(EXCHANGE)
+			if(event.currentTarget is CouponExchangeItemBox2){
+				var box:CouponExchangeItemBox2 = CouponExchangeItemBox2(event.currentTarget);				
 				e.setItemId(box.getItemId());
 			} else {
 				throw new Error("unexpected : onBox2Click in CouponExchangeDialog.as");
+			}
+			this.dispatchEvent(e);
+		}
+		
+		public function onBox3Click(event:MouseEvent){
+			trace("box3");
+			var e:CouponEvent = new CouponEvent(VIEW_CODE)
+			if(event.currentTarget is CouponExchangeItemBox3){
+				var box:CouponExchangeItemBox3 = CouponExchangeItemBox3(event.currentTarget);
+				e.setItemId(box.getItemId());
+			} else {
+				throw new Error("unexpected : onBox3Click in CouponExchangeDialog.as");
 			}
 			this.dispatchEvent(e);
 		}

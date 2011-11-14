@@ -22,6 +22,7 @@
 		public var priceField:TextField;
 		public var buyButton:SimpleButton;
 		public var timeIcon:MovieClip;
+		public var pictureMC:MovieClip;		
 		
 		public function ShopBuyItemBox() {
 			buyButton.addEventListener(MouseEvent.CLICK, onBuy);
@@ -74,6 +75,13 @@
 			var e:ShopEvent = new ShopEvent(BUY);
 			e.setItemId(itemId);
 			this.dispatchEvent(e);
+		}
+		
+		public function setPicture(mc:MovieClip){
+			while(pictureMC.numChildren != 0){
+				pictureMC.removeChildAt(0);
+			}
+			pictureMC.addChild(mc);
 		}
 	}
 	

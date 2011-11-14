@@ -16,6 +16,7 @@
 		public var quantityField:TextField;
 		public var priceField:TextField;
 		public var sellButton:SimpleButton;
+		public var pictureMC:MovieClip;
 		
 		public function ShopSellItemBox() {
 			sellButton.addEventListener(MouseEvent.CLICK, onSell);
@@ -47,6 +48,12 @@
 			this.dispatchEvent(e);
 		}
 
+		public function setPicture(mc:MovieClip){
+			while(pictureMC.numChildren != 0){
+				pictureMC.removeChildAt(0);
+			}
+			pictureMC.addChild(mc);
+		}
 	}
 	
 }

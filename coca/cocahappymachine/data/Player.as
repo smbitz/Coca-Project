@@ -11,17 +11,22 @@
 	import flash.net.FileReference;
 	import flash.net.URLVariables;
 	import flash.events.EventDispatcher;
+	import cocahappymachine.ui.CodeViewEvent;
+	import cocahappymachine.ui.CouponEvent;
 	
 	public class Player extends EventDispatcher {
 
 		public static const LEVELUP:String = "LEVELUP";
 		public static const UPDATE_EXP:String = "UPDATE_EXP";
 		public static const ITEM_UPDATE:String = "ITEM_UPDATE";
-
+		public static const CODE_RECEIVE:String = "CODE_RECEIVE";
+		public static const EXCHANGE_SUCCESS:String = "EXCHANGE_SUCCESS";
 		public static const SPECIAL_CODE_SUCCESS:String = "SPECIAL_CODE_SUCCESS";
 		public static const SPECIAL_CODE_FAIL:String = "SPECIAL_CODE_FAIL";
 		private static const NUM_FULL_PROGRESS:int = 1;
 		private static const FIRST_LEVEL:int = 1;
+		private static const COUPON_RECEIVE_EACH_TIEM = 1;
+		private static const QUANTITY_FROM_SPECIAL_CODE = 1;
 		
 		private var facebookId:String;
 		private var exp:int;
@@ -333,18 +338,34 @@
 		
 		//---- Callback function for exchange() ----//
 		public function onExchangeReply(event:Event){
-			var couponId:String = event.target.data.toString();
+			var returnString:String = event.target.data.toString();
+			var arrayReturn:Array = returnString.split(",");
+			var couponId:String = arrayReturn[0];
+			var itemId:String = arrayReturn[1];
 			
-			//if success
-				//reduce amount of item using for exchange
-				//add coupon item to player backpack
-			//else
-				//respond to player that exchange was rejected
-			if(couponId=="fail"){
-				
+			if(returnString=="fail"){
+				//respond to player that exchange was rejected				
 			}else{
 				this.reciveExp(RECEIVE_EXP_EXCHANGE_COUPON);
+				
+				//reduce amount of item using for exchange
+				var extraItem:Item = iManager.getMatchItem(itemId);
+				for(var i:int; i < extraItem.getExchangeItem().length; i++){
+					var backpackNumber:int = this.findItemBackpackById(extraItem.getExchangeItem()[i].getId());
+					var quantityToExchange:int = iManager.getMatchItem(itemId).getExchangeItem()[i].getQuantity();
+					
+					this.backpack[backpackNumber].setItemQty(this.backpack[backpackNumber].getItemQty()-quantityToExchange);
+				}
+
+				//add coupon item to player backpack
+				this.addItemToBackpack(itemId, COUPON_RECEIVE_EACH_TIEM);
+				
 				trace("Exchange Cupon ", this.exp);
+				var e:CodeViewEvent = new CodeViewEvent(EXCHANGE_SUCCESS);
+				e.setItemId(itemId);
+				e.setCode(couponId);
+				this.dispatchEvent(e);
+				this.dispatchEvent(new Event(ITEM_UPDATE));	
 			}
 		}
 		
@@ -370,12 +391,18 @@
 		
 		//---- Callback function for couponCodeView() ----//
 		public function onCouponCodeViewReply(event:Event){
-			var couponId:String = event.target.data.toString();
-
-			if(couponId=="fail"){
-				
+			var returnString:String = event.target.data.toString();
+			var arrayReturn:Array = returnString.split(",");
+			var couponId:String = arrayReturn[0];
+			var itemId:String = arrayReturn[1];
+			
+			if(returnString=="fail"){
+				trace("Code View Fail");
 			}else{
-				
+				var e:CodeViewEvent = new CodeViewEvent(CODE_RECEIVE);
+				e.setCode(couponId);
+				e.setItemId(itemId);
+				this.dispatchEvent(e);
 			}
 		}
 		
@@ -402,11 +429,15 @@
 		//---- Callback function for specialCodeInput() ----//
 		public function onSpecialCodeInputReply(event:Event){
 			var resultInput:String = event.target.data.toString();
-			
+			trace(resultInput);
 			if(resultInput=="fail"){
 				this.dispatchEvent(new Event(SPECIAL_CODE_FAIL));
 			}else{
 				this.dispatchEvent(new Event(SPECIAL_CODE_SUCCESS));
+				//add item
+				this.addItemToBackpack(resultInput, QUANTITY_FROM_SPECIAL_CODE);
+				
+				this.dispatchEvent(new Event(ITEM_UPDATE));
 			}
 		}
 		
@@ -719,6 +750,20 @@
 			}
 			
 			this.dispatchEvent(new Event(ITEM_UPDATE));			
+		}
+		
+		private function addItemToBackpack(itemId:String, quantity:int){
+			var findItemInBackpack:int = this.findItemBackpackById(itemId);
+
+			if(findItemInBackpack>=0){
+				this.backpack[findItemInBackpack].setItemQty(this.backpack[findItemInBackpack].getItemQty()+quantity);
+			}else {
+				var b:ItemQuantityPair = new ItemQuantityPair();
+				b.setItemQty(quantity);
+				b.setItem(iManager.getMatchItem(itemId));
+				b.setItemId(iManager.getMatchItem(itemId).getId())
+				this.backpack.push(b);
+			}
 		}
 	}
 }

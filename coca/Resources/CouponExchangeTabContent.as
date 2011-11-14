@@ -20,6 +20,14 @@
 			}
 			couponExchangePaging.addChild(p);
 		}
+		
+		public function getLeftButton():SimpleButton{
+			return leftButton;
+		}
+		
+		public function getRightButton():SimpleButton{
+			return rightButton;
+		}
 	}
 	
 }

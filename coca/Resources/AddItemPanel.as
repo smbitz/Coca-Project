@@ -15,10 +15,13 @@
 		public static const EXTRAITEM2_CLICK:String = "EXTRAITEM2_CLICK";
 		public static const MOVE_CLICK:String = "MOVE_CLICK";
 
+		public var closePane:MovieClip;
+		public var pictureMC:MovieClip;
+		public var smallPictureMC:MovieClip;
 		public var closeButton:SimpleButton;
-		public var supplyItemButton:SupplyItemButton;
-		public var extraItem1Button:ExtraItemButton;
-		public var extraItem2Button:ExtraItemButton;
+		public var supplyItemButton:MovieClip;
+		public var extraItem1Button:MovieClip;
+		public var extraItem2Button:MovieClip;
 		public var moveButton:MoveButton;
 		public var nameField:TextField;
 		public var progressField:TextField;
@@ -26,9 +29,7 @@
 		
 		public function AddItemPanel() {
 			closeButton.addEventListener(MouseEvent.CLICK, onCloseButtonClick);
-			supplyItemButton.addEventListener(MouseEvent.CLICK, onSupplyItemClick);
-			extraItem1Button.addEventListener(MouseEvent.CLICK, onExtraItem1Click);
-			extraItem2Button.addEventListener(MouseEvent.CLICK, onExtraItem2Click);
+			closePane.addEventListener(MouseEvent.CLICK, onCloseButtonClick);
 			moveButton.addEventListener(MouseEvent.CLICK, onMoveClick);
 		}
 		
@@ -58,14 +59,7 @@
 		}
 		
 		public function setSupply(supplyPercentage:Number){
-			supplyField.text = (supplyPercentage * 100) + "%";
-		}
-		
-		public function setButtonState(supply:Boolean, extra1:Boolean, extra2:Boolean, move:Boolean){
-			supplyItemButton.visible = supply;
-			extraItem1Button.visible = extra1;
-			extraItem2Button.visible = extra2;
-			moveButton.visible = move;
+			supplyField.text = (supplyPercentage * 100).toFixed(2) + "%";
 		}
 		
 		public function onCloseButtonClick(event:MouseEvent){
@@ -88,6 +82,53 @@
 		
 		public function onMoveClick(event:MouseEvent){
 			this.dispatchEvent(new Event(MOVE_CLICK));
+		}
+		
+		public function setPicture(mc:MovieClip){
+			while(pictureMC.numChildren != 0){
+				pictureMC.removeChildAt(0);
+			}
+			pictureMC.addChild(mc);
+		}
+		
+		public function setSmallPicture(mc:MovieClip){
+			while(smallPictureMC.numChildren != 0){
+				smallPictureMC.removeChildAt(0);
+			}
+			smallPictureMC.addChild(mc);
+		}
+		
+		public function setSupplyButton(mc:SimpleButton, isEnable:Boolean){
+			while(supplyItemButton.numChildren != 0){
+				supplyItemButton.getChildAt(0).removeEventListener(MouseEvent.CLICK, onSupplyItemClick);
+				supplyItemButton.removeChildAt(0);
+			}
+			if(isEnable){
+				mc.addEventListener(MouseEvent.CLICK, onSupplyItemClick);
+			}
+			supplyItemButton.addChild(mc);
+		}
+		
+		public function setExtra1Button(mc:SimpleButton, isEnable:Boolean){
+			while(extraItem1Button.numChildren != 0){
+				extraItem1Button.getChildAt(0).removeEventListener(MouseEvent.CLICK, onExtraItem1Click);
+				extraItem1Button.removeChildAt(0);
+			}
+			if(isEnable){
+				mc.addEventListener(MouseEvent.CLICK, onExtraItem1Click);
+			}
+			extraItem1Button.addChild(mc);
+		}
+		
+		public function setExtra2Button(mc:SimpleButton, isEnable:Boolean){
+			while(extraItem2Button.numChildren != 0){
+				extraItem2Button.getChildAt(0).removeEventListener(MouseEvent.CLICK, onExtraItem2Click);
+				extraItem2Button.removeChildAt(0);
+			}
+			if(isEnable){
+				mc.addEventListener(MouseEvent.CLICK, onExtraItem2Click);
+			}
+			extraItem2Button.addChild(mc);
 		}
 	}
 }
