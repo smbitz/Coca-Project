@@ -1,16 +1,16 @@
 ﻿package cocahappymachine.ui {
 	import flash.display.MovieClip;
 	
-	public class AbstractBitMapConstructor {
+	public class AbstractBitmapConstructor {
 
 		private var charBitmapArray:Array;
 		
-		public function AbstractBitMapConstructor() {
+		public function AbstractBitmapConstructor() {
 			charBitmapArray = new Array();
 		}
 
 		public function getChar(c:String):MovieClip{
-			return new charBitmapArray['0']();
+			return new charBitmapArray[c]();
 		}
 		
 		protected function addChar(char:String, mcClass:Class){

@@ -59,7 +59,8 @@
 	import cocahappymachine.ui.CodeViewEvent;
 	import Resources.OptionBarExpand;
 	import cocahappymachine.ui.BitmapFont;
-	import cocahappymachine.ui.BigLevelBitMapConstructor;
+	import cocahappymachine.ui.BigLevelBitmapConstructor;
+	import cocahappymachine.ui.SmallLevelBitmapConstructor;
 	
 	public class GamePlay extends MovieClip{
 		
@@ -123,6 +124,8 @@
 		private var couponExchangeUnavailablePaging:Paging;
 		private var couponExchangeMyCouponsPaging:Paging;
 		private var couponExchangeTab:Tab;
+		private var bigLevelFont:BitmapFont;
+		private var smallLevelFont:BitmapFont;
 		
 		public function GamePlay() {
 			currentPlayer = SystemConstructor.getInstance().getCurrentPlayer();
@@ -137,6 +140,8 @@
 			mouseCursor.mouseEnabled = false;
 			Mouse.hide();
 			//---- init interface ----
+			bigLevelFont = new BitmapFont(new BigLevelBitmapConstructor());
+			smallLevelFont = new BitmapFont(new SmallLevelBitmapConstructor());
 			//init FarmMap which consist of playTile, decorated area, market place
 			farmMap = new FarmMap();
 			farmMap.setCurrentPlayer(currentPlayer);
@@ -156,7 +161,8 @@
 			statusUI.x = STATUSUI_X;
 			statusUI.y = STATUSUI_Y;
 			statusUI.setName(currentPlayer.getName());
-			statusUI.setLevel(currentPlayer.getLevel().toString());
+			statusUI.setNumberMC(smallLevelFont.getMovieClip(currentPlayer.getLevel().toString(), 
+							BitmapFont.H_CENTER | BitmapFont.TOP));
 			expProgress = new ProgressBar();
 			var progressMC:ExpProgress = new ExpProgress();
 			expProgress.setMC(progressMC);
@@ -353,10 +359,6 @@
 			//trace(currentPlayer.getItemQuantity(itemFind));
 			//trace(BuildingManager.getInstance().getBuildingByBuildItem(itemFind).getName());
 			//trace(currentPlayer.getTile()[26].getSupplyPercentage(), currentPlayer.getTile()[26].getBuilding().getBuildPeriod(), currentPlayer.getTile()[26].getProgress());
-			
-			var temp:BitmapFont = new BitmapFont(new BigLevelBitMapConstructor());
-			var mc:MovieClip = temp.getMovieClip("23");
-			this.addChild(mc);
 		}
 		
 		private function setPlayStateNormal(){
@@ -718,7 +720,12 @@
 		
 		public function onLevelUp(event:Event){
 			levelUpDialog.visible = true;
-			statusUI.setLevel(currentPlayer.getLevel().toString());
+			var smallMC:MovieClip = smallLevelFont.getMovieClip(currentPlayer.getLevel().toString(), 
+							BitmapFont.H_CENTER | BitmapFont.TOP);
+			statusUI.setNumberMC(smallMC);
+			var bigMC:MovieClip = bigLevelFont.getMovieClip(currentPlayer.getLevel().toString(), 
+							BitmapFont.H_CENTER | BitmapFont.TOP);
+			levelUpDialog.setNumberMC(bigMC);
 		}
 		
 		public function onUpdateExp(event:Event){
@@ -777,23 +784,31 @@
 		
 		public function onOptionBarOpen(event:Event){
 			var expanded:OptionBarExpand = optionBar.getExpaned();
-			expanded.setOption(true, true, true);
+			expanded.setOption(expanded.isSoundOn(), !farmMap.isMaxZoomIn(), !farmMap.isMaxZoomOut());
 		}
 		
 		public function onSoundOn(event:Event){
-			trace("Sound On");
+			var expanded:OptionBarExpand = optionBar.getExpaned();
+			AudioManager.getInstance().setSound(false);
+			expanded.setOption(false, expanded.isZoomInEnable(), expanded.isZoomOutEnable());
 		}
 		
 		public function onSoundOff(event:Event){
-			trace("Sound Off");			
+			var expanded:OptionBarExpand = optionBar.getExpaned();
+			AudioManager.getInstance().setSound(true);
+			expanded.setOption(true, expanded.isZoomInEnable(), expanded.isZoomOutEnable());
 		}
 		
 		public function onZoomIn(event:Event){
-			trace("Zoom in");
+			var expanded:OptionBarExpand = optionBar.getExpaned();
+			farmMap.zoomIn();
+			expanded.setOption(expanded.isSoundOn(), !farmMap.isMaxZoomIn(), !farmMap.isMaxZoomOut());
 		}
 		
 		public function onZoomOut(event:Event){
-			trace("Zoom out");			
+			var expanded:OptionBarExpand = optionBar.getExpaned();
+			farmMap.zoomOut();
+			expanded.setOption(expanded.isSoundOn(), !farmMap.isMaxZoomIn(), !farmMap.isMaxZoomOut());
 		}
 	}
 }

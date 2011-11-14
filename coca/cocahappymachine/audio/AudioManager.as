@@ -13,14 +13,26 @@
 		private var audioPair:Array;		//Array of AudioPair
 		private var loadCount:int;
 		private var bgChannel:SoundChannel;
+		private var currentBg:AudioPair;
+		private var isSoundOn:Boolean;
 		
 		public function AudioManager() {
 			if(instance != null){
 				throw new Error("Singletone Pattern Implemented, new operation is forbidden");
 			}
+			isSoundOn = true;
 			isLoad = false;
 			loadCount = 0;
 			audioPair = new Array();
+		}
+		
+		public function setSound(isSoundOn:Boolean){
+			this.isSoundOn = isSoundOn;
+			if(isSoundOn){
+				playCurrent();
+			} else {
+				stop();
+			}
 		}
 		
 		public static function getInstance() {
@@ -68,14 +80,31 @@
 			for each(var pair:AudioPair in audioPair){
 				if(pair.key == key){
 					bgChannel = pair.audio.play(0, 9999);
+					currentBg = pair;
 				}
 			}
 		}
 		
 		public function playEffect(key:String){
-			for each(var pair:AudioPair in audioPair){
-				if(pair.key == key){
-					pair.audio.play();
+			if(isSoundOn){
+				for each(var pair:AudioPair in audioPair){
+					if(pair.key == key){
+						pair.audio.play();
+					}
+				}
+			}
+		}
+		
+		public function stop(){
+			if(bgChannel != null){
+				bgChannel.stop()
+			}
+		}
+		
+		public function playCurrent(){
+			if(isSoundOn){
+				if(currentBg != null){
+					bgChannel = currentBg.audio.play(0, 999);
 				}
 			}
 		}
