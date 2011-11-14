@@ -59,7 +59,8 @@
 	import cocahappymachine.ui.CodeViewEvent;
 	import Resources.OptionBarExpand;
 	import cocahappymachine.ui.BitmapFont;
-	import cocahappymachine.ui.BigLevelBitMapConstructor;
+	import cocahappymachine.ui.BigLevelBitmapConstructor;
+	import cocahappymachine.ui.SmallLevelBitmapConstructor;
 	
 	public class GamePlay extends MovieClip{
 		
@@ -123,6 +124,8 @@
 		private var couponExchangeUnavailablePaging:Paging;
 		private var couponExchangeMyCouponsPaging:Paging;
 		private var couponExchangeTab:Tab;
+		private var bigLevelFont:BitmapFont;
+		private var smallLevelFont:BitmapFont;
 		
 		public function GamePlay() {
 			currentPlayer = SystemConstructor.getInstance().getCurrentPlayer();
@@ -137,6 +140,8 @@
 			mouseCursor.mouseEnabled = false;
 			Mouse.hide();
 			//---- init interface ----
+			bigLevelFont = new BitmapFont(new BigLevelBitmapConstructor());
+			smallLevelFont = new BitmapFont(new SmallLevelBitmapConstructor());
 			//init FarmMap which consist of playTile, decorated area, market place
 			farmMap = new FarmMap();
 			farmMap.setCurrentPlayer(currentPlayer);
@@ -156,7 +161,8 @@
 			statusUI.x = STATUSUI_X;
 			statusUI.y = STATUSUI_Y;
 			statusUI.setName(currentPlayer.getName());
-			statusUI.setLevel(currentPlayer.getLevel().toString());
+			statusUI.setNumberMC(smallLevelFont.getMovieClip(currentPlayer.getLevel().toString(), 
+							BitmapFont.H_CENTER | BitmapFont.TOP));
 			expProgress = new ProgressBar();
 			var progressMC:ExpProgress = new ExpProgress();
 			expProgress.setMC(progressMC);
@@ -317,10 +323,42 @@
 			
 			AudioManager.getInstance().playBG("MUSIC_1");
 			this.addChild(mouseCursor);
+			/*//Test System
+			var arrayBuilding:Array = BuildingManager.getInstance().getBuilding();
+			var arrayItem:Array = ItemManager.getInstance().getItem();
 			
-			var temp:BitmapFont = new BitmapFont(new BigLevelBitMapConstructor());
-			var mc:MovieClip = temp.getMovieClip("23");
-			this.addChild(mc);
+			//trace(currentPlayer.isAllowToExtra2(currentPlayer.getTile()[37]));
+			//trace(currentPlayer.isAllowToSupply(currentPlayer.getTile()[37]));
+			//trace(currentPlayer.enoughResourceToBuild(arrayBuilding[0]));
+			//currentPlayer.build(2, 2, arrayBuilding[0]); //tile[18]
+			
+			//currentPlayer.supplyItem(currentPlayer.getTile()[18]);
+			//currentPlayer.extraItem(currentPlayer.getTile()[18], arrayItem[52]);
+			//currentPlayer.harvest(currentPlayer.getTile()[18]);
+			//currentPlayer.purchase(currentPlayer.getTile()[0]);
+			currentPlayer.updateToServer();*/
+			//trace(currentPlayer.getMoney());
+			//Debug.getInstance().debug("This is current money : " + currentPlayer.getMoney());
+			//currentPlayer.couponCodeView("5010");
+			/*var testArray:Array = ItemManager.getInstance().getItemByType("special");
+			for each(var showArray:Item in testArray){
+				trace(showArray.getItemType(), showArray.getName());
+			}*/
+			/*currentPlayer.getSellableItem();
+			for each(var arrayItem:ItemQuantityPair in currentPlayer.getSellableItem()){
+				trace(arrayItem.getItem().getName());
+			}*/
+			/*trace(currentPlayer.getExp());
+			currentPlayer.buy("20", 1);
+			trace(currentPlayer.getExp());
+			currentPlayer.getBackpack();
+			for each(var arrayItem:ItemQuantityPair in currentPlayer.getBackpack()){
+				trace(arrayItem.getItem().getName(), arrayItem.getItemQty());
+			}*/
+			//var itemFind:Item = ItemManager.getInstance().getItem()[1];
+			//trace(currentPlayer.getItemQuantity(itemFind));
+			//trace(BuildingManager.getInstance().getBuildingByBuildItem(itemFind).getName());
+			//trace(currentPlayer.getTile()[26].getSupplyPercentage(), currentPlayer.getTile()[26].getBuilding().getBuildPeriod(), currentPlayer.getTile()[26].getProgress());
 		}
 		
 		private function setPlayStateNormal(){
@@ -682,7 +720,12 @@
 		
 		public function onLevelUp(event:Event){
 			levelUpDialog.visible = true;
-			statusUI.setLevel(currentPlayer.getLevel().toString());
+			var smallMC:MovieClip = smallLevelFont.getMovieClip(currentPlayer.getLevel().toString(), 
+							BitmapFont.H_CENTER | BitmapFont.TOP);
+			statusUI.setNumberMC(smallMC);
+			var bigMC:MovieClip = bigLevelFont.getMovieClip(currentPlayer.getLevel().toString(), 
+							BitmapFont.H_CENTER | BitmapFont.TOP);
+			levelUpDialog.setNumberMC(bigMC);
 		}
 		
 		public function onUpdateExp(event:Event){
@@ -705,7 +748,6 @@
 			var item:Item = ItemManager.getInstance().getMatchItem(event.getItemId());
 			var cBox:CouponExchangeItemBox3 = couponViewDialog.getCoupon();
 			cBox.setName(item.getName());
-			cBox.setPicture(ItemPictureBuilder.createCouponExchangeItemBox3Picture(item));
 			couponViewDialog.setCoupon(event.getCode());
 			couponViewDialog.visible = true;
 		}
@@ -742,23 +784,31 @@
 		
 		public function onOptionBarOpen(event:Event){
 			var expanded:OptionBarExpand = optionBar.getExpaned();
-			expanded.setOption(true, true, true);
+			expanded.setOption(expanded.isSoundOn(), !farmMap.isMaxZoomIn(), !farmMap.isMaxZoomOut());
 		}
 		
 		public function onSoundOn(event:Event){
-			trace("Sound On");
+			var expanded:OptionBarExpand = optionBar.getExpaned();
+			AudioManager.getInstance().setSound(false);
+			expanded.setOption(false, expanded.isZoomInEnable(), expanded.isZoomOutEnable());
 		}
 		
 		public function onSoundOff(event:Event){
-			trace("Sound Off");			
+			var expanded:OptionBarExpand = optionBar.getExpaned();
+			AudioManager.getInstance().setSound(true);
+			expanded.setOption(true, expanded.isZoomInEnable(), expanded.isZoomOutEnable());
 		}
 		
 		public function onZoomIn(event:Event){
-			trace("Zoom in");
+			var expanded:OptionBarExpand = optionBar.getExpaned();
+			farmMap.zoomIn();
+			expanded.setOption(expanded.isSoundOn(), !farmMap.isMaxZoomIn(), !farmMap.isMaxZoomOut());
 		}
 		
 		public function onZoomOut(event:Event){
-			trace("Zoom out");			
+			var expanded:OptionBarExpand = optionBar.getExpaned();
+			farmMap.zoomOut();
+			expanded.setOption(expanded.isSoundOn(), !farmMap.isMaxZoomIn(), !farmMap.isMaxZoomOut());
 		}
 	}
 }

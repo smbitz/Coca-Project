@@ -11,6 +11,9 @@
 	
 	public class FarmMap extends MovieClip{
 		
+		public static const ZOOM_STEP:Array = [0.6, 0.8, 1, 1.2];
+		public static const START_ZOOM_STEP:int = 1;
+		
 		public static const SHOP_CLICK:String = "SHOP_CLICK";
 
 		private static const FARMTILE_X:int = 8;
@@ -26,6 +29,7 @@
 		private var farmTile:Array;		//array of AbstractFarmTile
 		private var shop:Shop;
 		private var currentPlayer:Player;
+		private var currentZoomStep:int;
 		
 		public function FarmMap() {
 			//---- draw farm bg ----//
@@ -37,7 +41,36 @@
 			
 			shop = new Shop();
 			shop.addEventListener(MouseEvent.CLICK, onShopClick);
+			currentZoomStep = START_ZOOM_STEP;
+			this.scaleX = ZOOM_STEP[currentZoomStep];
+			this.scaleY = ZOOM_STEP[currentZoomStep];
 			this.addChild(shop);
+		}
+		
+		public function zoomIn(){
+			currentZoomStep = Math.min(ZOOM_STEP.length - 1, currentZoomStep + 1);
+			this.scaleX = ZOOM_STEP[currentZoomStep];
+			this.scaleY = ZOOM_STEP[currentZoomStep];
+		}
+		
+		public function zoomOut(){
+			currentZoomStep = Math.max(0, currentZoomStep - 1);
+			this.scaleX = ZOOM_STEP[currentZoomStep];
+			this.scaleY = ZOOM_STEP[currentZoomStep];			
+		}
+		
+		public function isMaxZoomIn():Boolean{
+			if(currentZoomStep == ZOOM_STEP.length - 1){
+				return true;
+			}
+			return false;
+		}
+		
+		public function isMaxZoomOut():Boolean{
+			if(currentZoomStep == 0){
+				return true;
+			}
+			return false;
 		}
 		
 		public function setCurrentPlayer(p:Player){

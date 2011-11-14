@@ -25,11 +25,25 @@
 			zoomOut.addEventListener(MouseEvent.CLICK, onZoomOut);
 		}
 		
+		public function isSoundOn():Boolean{
+			return soundOn.visible;
+		}
+		
+		public function isZoomInEnable():Boolean{
+			return zoomIn.visible;
+		}
+		
+		public function isZoomOutEnable():Boolean{
+			return zoomOut.visible;
+		}
+		
 		public function setOption(isSoundOn:Boolean, isZoomInEnable:Boolean, isZoomOutEnable:Boolean){
 			if(isSoundOn){
 				soundOn.visible = true;
-			} else {
 				soundOff.visible = false;
+			} else {
+				soundOn.visible = false;
+				soundOff.visible = true;
 			}
 			if(isZoomInEnable){
 				zoomIn.visible = true;
