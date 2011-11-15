@@ -398,6 +398,7 @@
 
 		private function setStateSpecialCode(){
 			specialCodeDialog.visible = true;
+			specialCodeDialog.setMessage(false);
 		}
 		
 		public function onTutorialClose(event:Event){
@@ -738,6 +739,8 @@
 		
 		public function onSpecialCodeFail(evnet:Event){
 			trace("Special Code Fail");
+			specialCodeDialog.visible = true;
+			specialCodeDialog.setMessage(true);
 		}
 		
 		public function onSpecialCodeSuccess(event:Event){
