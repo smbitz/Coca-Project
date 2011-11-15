@@ -203,12 +203,10 @@
 					}
 					currentTile.build(building);
 					this.reciveExp(RECEIVE_EXP_BUILD);
-					trace("Build Item", this.exp);
 				}else if(this.money >= moneyItem*QTY_TO_BUILD){
 					this.money -= (moneyItem*QTY_TO_BUILD);
 					currentTile.build(building);
 					this.reciveExp(RECEIVE_EXP_BUILD);
-					trace("Build Item", this.exp);
 				}else {
 					throw new Error("Unexpected Behavior, NO MONEY TO BUILD on build function Plaer.as");
 				}
@@ -247,7 +245,7 @@
 					var itemPositionBackpack:int = searchBackpackItem(yieldItemId);
 					var yieldItemQty:int = arrayGetYieldItem.getItemQty();
 					
-					var extraQuantity:int;
+					var extraQuantity:int = 0;
 					
 					//Match with all item id can have extra item
 					if(yieldItemId==ITEM_ID_MORNING_GLORY||yieldItemId==ITEM_ID_CHINESE_CABBAGE||yieldItemId==ITEM_ID_PUMPKIN||yieldItemId==ITEM_ID_BABY_CORN||yieldItemId==ITEM_ID_STRAW_MUSHROOMS||yieldItemId==ITEM_ID_CHICKEN||yieldItemId==ITEM_ID_PIG||yieldItemId==ITEM_ID_COW||yieldItemId==ITEM_ID_SHEEP||yieldItemId==ITEM_ID_OSTRICH||yieldItemId==ITEM_ID_FISH||yieldItemId==ITEM_ID_SQUID||yieldItemId==ITEM_ID_SCALLOPS||yieldItemId==ITEM_ID_SHRIMP||yieldItemId==ITEM_ID_OYSTER){
@@ -256,23 +254,23 @@
 						}else if(getTileExtraId==ITEM_ID_FERTILIZER_B||getTileExtraId==ITEM_ID_MICROORGANISM_B||getTileExtraId==ITEM_ID_VACCINE_B){
 							extraQuantity = yieldItemQty*harvestPercentsExtraB;
 						}
+						
+						yieldItemQty += extraQuantity;
 					}
-					
-					yieldItemQty += extraQuantity;
 					
 					if(itemPositionBackpack>=0){
 						var currentBackpackQty:int = this.backpack[itemPositionBackpack].getItemQty();
 						
 						//If tile rotted get 50% of item quantity.
 						if(t.getBuildingStatus()==Tile.BUILDING_ROTTED){
-							yieldItemQty = yieldItemQty*ROTTED_ITEM_QTY_PERCENT;
+							yieldItemQty = Math.round(yieldItemQty*ROTTED_ITEM_QTY_PERCENT);
 						}
 						
 						this.backpack[itemPositionBackpack].setItemQty(currentBackpackQty+yieldItemQty);
 					}else{
 						//If tile rotted get 50% of item quantity.
 						if(t.getBuildingStatus()==Tile.BUILDING_ROTTED){
-							yieldItemQty = yieldItemQty*ROTTED_ITEM_QTY_PERCENT;
+							yieldItemQty = Math.round(yieldItemQty*ROTTED_ITEM_QTY_PERCENT);
 						}
 						
 						var b:ItemQuantityPair = new ItemQuantityPair();
@@ -290,7 +288,6 @@
 				//Clear Tile
 				t.clearTile();
 				this.reciveExp(RECEIVE_EXP_HARVEST);
-				trace("Harvest Tile", this.exp);
 			}else{
 				throw new Error("Unexpected from harvest in Player.as");
 			}
@@ -399,7 +396,6 @@
 				//add coupon item to player backpack
 				this.addItemToBackpack(itemId, COUPON_RECEIVE_EACH_TIME);
 				
-				trace("Exchange Cupon ", this.exp);
 				var e:CodeViewEvent = new CodeViewEvent(EXCHANGE_SUCCESS);
 				e.setItemId(itemId);
 				e.setCode(couponId);
@@ -495,14 +491,12 @@
 					this.backpack[searchSupply].setItemQty(currentQty-1);
 					targetTile.setSupply(targetTile.getBuilding().getSupplyPeriod());
 					this.reciveExp(RECEIVE_EXP_SUPPLY);
-					trace("supply", this.exp);
 					return true;
 				}
 			}else if(this.money > moneySupply){
 				this.money -= moneySupply;
 				targetTile.setSupply(targetTile.getBuilding().getSupplyPeriod());
 				this.reciveExp(RECEIVE_EXP_SUPPLY);
-				trace("supply", this.exp);
 				return true;
 			}
 			return false;
