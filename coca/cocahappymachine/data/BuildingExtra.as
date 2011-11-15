@@ -23,6 +23,10 @@
 			return item;
 		}
 		
+		public function getResult():int{
+			return result;
+		}
+		
 		public function setItem(setValue:Item){
 			item = setValue;
 		}

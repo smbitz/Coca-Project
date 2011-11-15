@@ -25,8 +25,33 @@
 		public static const SPECIAL_CODE_FAIL:String = "SPECIAL_CODE_FAIL";
 		private static const NUM_FULL_PROGRESS:int = 1;
 		private static const FIRST_LEVEL:int = 1;
-		private static const COUPON_RECEIVE_EACH_TIEM = 1;
-		private static const QUANTITY_FROM_SPECIAL_CODE = 1;
+		private static const COUPON_RECEIVE_EACH_TIME:int = 1;
+		private static const QUANTITY_FROM_SPECIAL_CODE:int = 1;
+		
+		//Extra item id
+		private static const ITEM_ID_FERTILIZER_A:String = "7010";
+		private static const ITEM_ID_FERTILIZER_B:String = "7020";
+		private static const ITEM_ID_VACCINE_A:String = "7030";
+		private static const ITEM_ID_VACCINE_B:String = "7040";
+		private static const ITEM_ID_MICROORGANISM_A:String = "7050";
+		private static const ITEM_ID_MICROORGANISM_B:String = "7060";
+		
+		//Item id for check extra
+		private static const ITEM_ID_MORNING_GLORY = "220";
+		private static const ITEM_ID_CHINESE_CABBAGE = "230";
+		private static const ITEM_ID_PUMPKIN = "240";
+		private static const ITEM_ID_BABY_CORN = "250";
+		private static const ITEM_ID_STRAW_MUSHROOMS = "260";
+		private static const ITEM_ID_CHICKEN = "270";
+		private static const ITEM_ID_PIG = "280";
+		private static const ITEM_ID_COW = "290";
+		private static const ITEM_ID_SHEEP = "300";
+		private static const ITEM_ID_OSTRICH = "310";
+		private static const ITEM_ID_FISH = "320";
+		private static const ITEM_ID_SQUID = "330";
+		private static const ITEM_ID_SCALLOPS = "340";
+		private static const ITEM_ID_SHRIMP = "350";
+		private static const ITEM_ID_OYSTER = "360";
 		
 		private var facebookId:String;
 		private var exp:int;
@@ -213,14 +238,30 @@
 			if(t.getBuildingStatus()==Tile.BUILDING_COMPLETED||t.getBuildingStatus()==Tile.BUILDING_ROTTED){
 				//Harvest Yield Item
 				var getYieldItem:Array = t.getBuilding().generateYieldItem();
+				var getTileExtraId:String = t.getExtraId();
+				var harvestPercentsExtraA:Number = (t.getBuilding().getExtra()[0].getResult())/100;
+				var harvestPercentsExtraB:Number = (t.getBuilding().getExtra()[1].getResult())/100;
 				
 				for each(var arrayGetYieldItem:ItemQuantityPair in getYieldItem){
 					var yieldItemId:String = arrayGetYieldItem.getItem().getId();
 					var itemPositionBackpack:int = searchBackpackItem(yieldItemId);
+					var yieldItemQty:int = arrayGetYieldItem.getItemQty();
+					
+					var extraQuantity:int;
+					
+					//Match with all item id can have extra item
+					if(yieldItemId==ITEM_ID_MORNING_GLORY||yieldItemId==ITEM_ID_CHINESE_CABBAGE||yieldItemId==ITEM_ID_PUMPKIN||yieldItemId==ITEM_ID_BABY_CORN||yieldItemId==ITEM_ID_STRAW_MUSHROOMS||yieldItemId==ITEM_ID_CHICKEN||yieldItemId==ITEM_ID_PIG||yieldItemId==ITEM_ID_COW||yieldItemId==ITEM_ID_SHEEP||yieldItemId==ITEM_ID_OSTRICH||yieldItemId==ITEM_ID_FISH||yieldItemId==ITEM_ID_SQUID||yieldItemId==ITEM_ID_SCALLOPS||yieldItemId==ITEM_ID_SHRIMP||yieldItemId==ITEM_ID_OYSTER){
+						if(getTileExtraId==ITEM_ID_FERTILIZER_A||getTileExtraId==ITEM_ID_MICROORGANISM_A||getTileExtraId==ITEM_ID_VACCINE_A){
+							extraQuantity = yieldItemQty*harvestPercentsExtraA;
+						}else if(getTileExtraId==ITEM_ID_FERTILIZER_B||getTileExtraId==ITEM_ID_MICROORGANISM_B||getTileExtraId==ITEM_ID_VACCINE_B){
+							extraQuantity = yieldItemQty*harvestPercentsExtraB;
+						}
+					}
+					
+					yieldItemQty += extraQuantity;
 					
 					if(itemPositionBackpack>=0){
 						var currentBackpackQty:int = this.backpack[itemPositionBackpack].getItemQty();
-						var yieldItemQty:int = arrayGetYieldItem.getItemQty();
 						
 						//If tile rotted get 50% of item quantity.
 						if(t.getBuildingStatus()==Tile.BUILDING_ROTTED){
@@ -229,15 +270,13 @@
 						
 						this.backpack[itemPositionBackpack].setItemQty(currentBackpackQty+yieldItemQty);
 					}else{
-						var yieldNewItemQty:int = arrayGetYieldItem.getItemQty();
-						
 						//If tile rotted get 50% of item quantity.
 						if(t.getBuildingStatus()==Tile.BUILDING_ROTTED){
-							yieldNewItemQty = yieldNewItemQty*ROTTED_ITEM_QTY_PERCENT;
+							yieldItemQty = yieldItemQty*ROTTED_ITEM_QTY_PERCENT;
 						}
 						
 						var b:ItemQuantityPair = new ItemQuantityPair();
-						b.setItemQty(yieldNewItemQty);
+						b.setItemQty(yieldItemQty);
 						b.setItem(arrayGetYieldItem.getItem());
 						b.setItemId(arrayGetYieldItem.getItem().getId())
 						this.backpack.push(b);
@@ -358,7 +397,7 @@
 				}
 
 				//add coupon item to player backpack
-				this.addItemToBackpack(itemId, COUPON_RECEIVE_EACH_TIEM);
+				this.addItemToBackpack(itemId, COUPON_RECEIVE_EACH_TIME);
 				
 				trace("Exchange Cupon ", this.exp);
 				var e:CodeViewEvent = new CodeViewEvent(EXCHANGE_SUCCESS);
@@ -429,7 +468,7 @@
 		//---- Callback function for specialCodeInput() ----//
 		public function onSpecialCodeInputReply(event:Event){
 			var resultInput:String = event.target.data.toString();
-			trace(resultInput);
+
 			if(resultInput=="fail"){
 				this.dispatchEvent(new Event(SPECIAL_CODE_FAIL));
 			}else{

@@ -323,42 +323,6 @@
 			
 			AudioManager.getInstance().playBG("MUSIC_1");
 			this.addChild(mouseCursor);
-			/*//Test System
-			var arrayBuilding:Array = BuildingManager.getInstance().getBuilding();
-			var arrayItem:Array = ItemManager.getInstance().getItem();
-			
-			//trace(currentPlayer.isAllowToExtra2(currentPlayer.getTile()[37]));
-			//trace(currentPlayer.isAllowToSupply(currentPlayer.getTile()[37]));
-			//trace(currentPlayer.enoughResourceToBuild(arrayBuilding[0]));
-			//currentPlayer.build(2, 2, arrayBuilding[0]); //tile[18]
-			
-			//currentPlayer.supplyItem(currentPlayer.getTile()[18]);
-			//currentPlayer.extraItem(currentPlayer.getTile()[18], arrayItem[52]);
-			//currentPlayer.harvest(currentPlayer.getTile()[18]);
-			//currentPlayer.purchase(currentPlayer.getTile()[0]);
-			currentPlayer.updateToServer();*/
-			//trace(currentPlayer.getMoney());
-			//Debug.getInstance().debug("This is current money : " + currentPlayer.getMoney());
-			//currentPlayer.couponCodeView("5010");
-			/*var testArray:Array = ItemManager.getInstance().getItemByType("special");
-			for each(var showArray:Item in testArray){
-				trace(showArray.getItemType(), showArray.getName());
-			}*/
-			/*currentPlayer.getSellableItem();
-			for each(var arrayItem:ItemQuantityPair in currentPlayer.getSellableItem()){
-				trace(arrayItem.getItem().getName());
-			}*/
-			/*trace(currentPlayer.getExp());
-			currentPlayer.buy("20", 1);
-			trace(currentPlayer.getExp());
-			currentPlayer.getBackpack();
-			for each(var arrayItem:ItemQuantityPair in currentPlayer.getBackpack()){
-				trace(arrayItem.getItem().getName(), arrayItem.getItemQty());
-			}*/
-			//var itemFind:Item = ItemManager.getInstance().getItem()[1];
-			//trace(currentPlayer.getItemQuantity(itemFind));
-			//trace(BuildingManager.getInstance().getBuildingByBuildItem(itemFind).getName());
-			//trace(currentPlayer.getTile()[26].getSupplyPercentage(), currentPlayer.getTile()[26].getBuilding().getBuildPeriod(), currentPlayer.getTile()[26].getProgress());
 		}
 		
 		private function setPlayStateNormal(){
