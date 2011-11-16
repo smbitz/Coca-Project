@@ -61,6 +61,9 @@
 	import cocahappymachine.ui.BitmapFont;
 	import cocahappymachine.ui.BigLevelBitmapConstructor;
 	import cocahappymachine.ui.SmallLevelBitmapConstructor;
+	import cocahappymachine.ui.TileUpdateEvent;
+	import cocahappymachine.ui.ItemPairEvent;
+	import flash.display.DisplayObject;
 	
 	public class GamePlay extends MovieClip{
 		
@@ -136,6 +139,7 @@
 			currentPlayer.addEventListener(Player.CODE_RECEIVE, onCodeReceive);
 			currentPlayer.addEventListener(Player.ITEM_UPDATE, onItemUpdate);
 			currentPlayer.addEventListener(Player.EXCHANGE_SUCCESS, onExchangeSuccess);
+			currentPlayer.addEventListener(TileUpdateEvent.TILE_UPDATE, onTileUpdate);
 			mouseCursor = new MouseCursor();
 			mouseCursor.mouseEnabled = false;
 			Mouse.hide();
@@ -707,8 +711,10 @@
 			specialCodeDialog.setMessage(true);
 		}
 		
-		public function onSpecialCodeSuccess(event:Event){
+		public function onSpecialCodeSuccess(event:ItemPairEvent){
 			getItemDialog.visible = true;
+			var mc:DisplayObject = ItemPictureBuilder.createItemGetPicture(event.getItemPair().getItemId());
+			getItemDialog.setData(mc, event.getItemPair());
 		}
 		
 		public function onCodeReceive(event:CodeViewEvent){
@@ -777,6 +783,12 @@
 			var expanded:OptionBarExpand = optionBar.getExpaned();
 			farmMap.zoomOut();
 			expanded.setOption(expanded.isSoundOn(), !farmMap.isMaxZoomIn(), !farmMap.isMaxZoomOut());
+		}
+		
+		public function onTileUpdate(event:TileUpdateEvent){
+			var tile:Tile = event.getTile();
+			farmMap.updateTile(farmMap.getFarmTile(tile));
+			currentPlayer.updateToServer();
 		}
 	}
 }

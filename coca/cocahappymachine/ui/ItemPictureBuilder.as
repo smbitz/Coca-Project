@@ -120,6 +120,8 @@
 	import Resources.AddItemFertilizerBDisableButton;
 	import Resources.AddItemVaccineBDisableButton;
 	import Resources.AddItemMicroorganismBDisableButton;
+	import flash.display.DisplayObjectContainer;
+	import flash.display.DisplayObject;
 	
 	public class ItemPictureBuilder {
 		//Coupon Item id
@@ -491,7 +493,6 @@
 					return new AddItemPelletFoodDisableButton();
 				}
 			}
-			
 			return null;
 		}
 		
@@ -537,6 +538,11 @@
 			}
 			
 			return null;
+		}
+		
+		public static function createItemGetPicture(itemID:String):DisplayObject{
+			var d: DisplayObject = new AddItemFertilizerBEnableButton();
+			return d;
 		}
 	}
 }

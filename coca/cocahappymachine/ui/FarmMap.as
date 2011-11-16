@@ -8,6 +8,7 @@
 	import Resources.Shop;
 	import flash.events.Event;
 	import Resources.PurchaseTile;
+	import Resources.Map;
 	
 	public class FarmMap extends MovieClip{
 		
@@ -16,6 +17,14 @@
 		
 		public static const SHOP_CLICK:String = "SHOP_CLICK";
 
+
+		private static const INIT_X:int = -300;
+		private static const INIT_Y:int = -200;
+		private static const SHOP_X:int = 500;
+		private static const SHOP_Y:int = 300;
+		private static const FARMTILE_START_X:int = 300;
+		private static const FARMTILE_START_Y:int = 300;
+		
 		private static const FARMTILE_X:int = 8;
 		private static const FARMTILE_Y:int = 8;
 		private static const FARMSIZE_X:int = 3000;
@@ -30,21 +39,25 @@
 		private var shop:Shop;
 		private var currentPlayer:Player;
 		private var currentZoomStep:int;
+		private var map:MovieClip;
 		
 		public function FarmMap() {
 			//---- draw farm bg ----//
-			this.graphics.beginFill(0x55BB55, 1.0);
-			this.graphics.drawRect(-FARMSIZE_X,-FARMSIZE_Y, FARMSIZE_X * 2, FARMSIZE_Y * 2);
-			this.graphics.endFill();
-															   
+			map = new Map();
+			this.addChild(map);
+			
 			DragManager.getInstance().addObject(this);
 			
 			shop = new Shop();
 			shop.addEventListener(MouseEvent.CLICK, onShopClick);
+			shop.x = SHOP_X;
+			shop.y = SHOP_Y;
 			currentZoomStep = START_ZOOM_STEP;
 			this.scaleX = ZOOM_STEP[currentZoomStep];
 			this.scaleY = ZOOM_STEP[currentZoomStep];
 			this.addChild(shop);
+			this.x = INIT_X;
+			this.y = INIT_Y;
 		}
 		
 		public function zoomIn(){
@@ -76,7 +89,7 @@
 		public function setCurrentPlayer(p:Player){
 			currentPlayer = p;
 			var tileData:Tile;
-			farmTile = new Array(FARMTILE_X * FARMTILE_Y);
+			farmTile = new Array();
 			//---- Create Tile ----//
 			for(var loop1:int = 0; loop1 < FARMTILE_X * FARMTILE_Y; loop1++){
 				tileData = currentPlayer.getTile()[loop1];
@@ -86,8 +99,8 @@
 				farmTile.push(tile);
 				var xPosition:int = loop1 % FARMTILE_X;
 				var yPosition:int = int(loop1 / FARMTILE_X);
-				tile.x = (xPosition * X_OFFSET_COLUMN) + (yPosition * X_OFFSET_ROW);
-				tile.y = (xPosition * Y_OFFSET_COLUMN) + (yPosition * Y_OFFSET_ROW);
+				tile.x = FARMTILE_START_X + (xPosition * X_OFFSET_COLUMN) + (yPosition * X_OFFSET_ROW);
+				tile.y = FARMTILE_START_Y + (xPosition * Y_OFFSET_COLUMN) + (yPosition * Y_OFFSET_ROW);
 				this.addChild(tile);
 			}
 			//---- Create PurchaseTile on top of tile ----//
@@ -102,8 +115,8 @@
 						purchaseTile.setData(tileData);
 						xPosition = loop2 % FARMTILE_X;
 						yPosition = int(loop2 / FARMTILE_X);
-						purchaseTile.x = (xPosition * X_OFFSET_COLUMN) + (yPosition * X_OFFSET_ROW);
-						purchaseTile.y = (xPosition * Y_OFFSET_COLUMN) + (yPosition * Y_OFFSET_ROW);
+						purchaseTile.x = FARMTILE_START_X + (xPosition * X_OFFSET_COLUMN) + (yPosition * X_OFFSET_ROW);
+						purchaseTile.y = FARMTILE_START_Y + (xPosition * Y_OFFSET_COLUMN) + (yPosition * Y_OFFSET_ROW);
 						purchaseTile.addEventListener(MouseEvent.CLICK, onPurchaseTileClick);
 						this.addChild(purchaseTile);						
 					}
@@ -159,6 +172,19 @@
 			newTile.addEventListener(MouseEvent.CLICK, onTileClick);
 			farmTile[arrayIndex] = newTile;
 			this.addChildAt(newTile, childIndex);
+		}
+		
+		public function getFarmTile(t:Tile):AbstractFarmTile{
+			for(var loop1:int = 0; loop1 < farmTile.length; loop1++){
+				trace(farmTile);
+				trace("Loop Check"+loop1);
+				if(farmTile[loop1].getData() == t){
+					trace("Match");
+					return farmTile[loop1];
+				}
+			}
+			trace("No Match");
+			return null;
 		}
 	}
 }

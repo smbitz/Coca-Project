@@ -13,6 +13,9 @@
 	import flash.events.EventDispatcher;
 	import cocahappymachine.ui.CodeViewEvent;
 	import cocahappymachine.ui.CouponEvent;
+	import cocahappymachine.ui.FarmMapEvent;
+	import cocahappymachine.ui.TileUpdateEvent;
+	import cocahappymachine.ui.ItemPairEvent;
 	
 	public class Player extends EventDispatcher {
 
@@ -189,7 +192,13 @@
 		public function update(elapse:int){
 			//update all building progress with elapse
 			for(var a:int = 0; a<tile.length; a++){
+				var tileStatus:int = tile[a].getBuildingStatus();
 				tile[a].update(elapse);
+				if(tileStatus != tile[a].getBuildingStatus()){
+					var e:TileUpdateEvent = new TileUpdateEvent(TileUpdateEvent.TILE_UPDATE);
+					e.setTile(tile[a]);
+					this.dispatchEvent(e);
+				}
 			}
 		}
 		public function build(currentTile:Tile, building:Building){
@@ -468,7 +477,12 @@
 			if(resultInput=="fail"){
 				this.dispatchEvent(new Event(SPECIAL_CODE_FAIL));
 			}else{
-				this.dispatchEvent(new Event(SPECIAL_CODE_SUCCESS));
+				var e:ItemPairEvent = new ItemPairEvent(SPECIAL_CODE_SUCCESS);
+				var pair:ItemQuantityPair = new ItemQuantityPair();
+				pair.setItemId("50110");
+				pair.setItemQty(5);
+				e.setItemPair(pair);
+				this.dispatchEvent(e);
 				//add item
 				this.addItemToBackpack(resultInput, QUANTITY_FROM_SPECIAL_CODE);
 				
