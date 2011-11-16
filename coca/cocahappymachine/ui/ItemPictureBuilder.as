@@ -1,6 +1,7 @@
 ﻿package cocahappymachine.ui {
 	import cocahappymachine.data.Item;
 	import flash.display.MovieClip;
+	import flash.display.SimpleButton;
 	import Resources.CE1MorningGloryItem;
 	import Resources.MoveButton;
 	import Resources.CE2ChickenItem;
@@ -195,6 +196,14 @@
 		private static const ITEM_SCALLOPS_ID:String = "340";
 		private static const ITEM_SHRIMP_ID:String = "350";
 		private static const ITEM_OYSTER_ID:String = "360";
+		
+		//Special item id
+		private static const ITEM_FERTILIZER_A_ID:String = "7010";
+		private static const ITEM_FERTILIZER_B_ID:String = "7020";
+		private static const ITEM_VACCINE_A_ID:String = "7030";
+		private static const ITEM_VACCINE_B_ID:String = "7040";
+		private static const ITEM_MICROORGANISM_A_ID:String = "7050";
+		private static const ITEM_MICROORGANISM_B_ID:String = "7060";
 		
 		//Building Type
 		private static const BUILD_TYPE_VAGE:String = "vege";
@@ -475,7 +484,7 @@
 			return null;
 		}
 		
-		public static function createAddItemSupplyButton(building:Building, isSupply:Boolean){
+		public static function createAddItemSupplyButton(building:Building, isSupply:Boolean):SimpleButton{
 			if(isSupply){
 				if(building.getBuildingType()==BUILD_TYPE_VAGE){
 					return new AddItemWaterEnableButton();
@@ -496,7 +505,7 @@
 			return null;
 		}
 		
-		public static function createAddItemExtra1Button(building:Building, isExtra1:Boolean){
+		public static function createAddItemExtra1Button(building:Building, isExtra1:Boolean):SimpleButton{
 			if(isExtra1){
 				if(building.getBuildingType()==BUILD_TYPE_VAGE){
 					return new AddItemFertilizerAEnableButton();
@@ -518,7 +527,7 @@
 			return null;
 		}
 		
-		public static function createAddItemExtra2Button(building:Building, isExtra2:Boolean){
+		public static function createAddItemExtra2Button(building:Building, isExtra2:Boolean):SimpleButton{
 			if(isExtra2){
 				if(building.getBuildingType()==BUILD_TYPE_VAGE){
 					return new AddItemFertilizerBEnableButton();
@@ -541,7 +550,22 @@
 		}
 		
 		public static function createItemGetPicture(itemID:String):DisplayObject{
-			var d: DisplayObject = new AddItemFertilizerBEnableButton();
+			var d:DisplayObject;
+			
+			if(itemID==ITEM_FERTILIZER_A_ID){
+				d = new AddItemFertilizerAEnableButton()
+			}else if(itemID==ITEM_FERTILIZER_B_ID){
+				d = new AddItemFertilizerBEnableButton()
+			}else if(itemID==ITEM_VACCINE_A_ID){
+				d = new AddItemVaccineAEnableButton()
+			}else if(itemID==ITEM_VACCINE_B_ID){
+				d = new AddItemVaccineBEnableButton()
+			}else if(itemID==ITEM_MICROORGANISM_A_ID){
+				d = new AddItemMicroorganismAEnableButton()
+			}else if(itemID==ITEM_MICROORGANISM_B_ID){
+				d = new AddItemMicroorganismBEnableButton()
+			}
+			
 			return d;
 		}
 	}

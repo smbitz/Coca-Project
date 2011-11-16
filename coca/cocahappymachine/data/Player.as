@@ -29,7 +29,6 @@
 		private static const NUM_FULL_PROGRESS:int = 1;
 		private static const FIRST_LEVEL:int = 1;
 		private static const COUPON_RECEIVE_EACH_TIME:int = 1;
-		private static const QUANTITY_FROM_SPECIAL_CODE:int = 1;
 		
 		//Extra item id
 		private static const ITEM_ID_FERTILIZER_A:String = "7010";
@@ -201,6 +200,7 @@
 				}
 			}
 		}
+		
 		public function build(currentTile:Tile, building:Building){
 			var moneyItem:int = iManager.howMoney(building.getBuildItemId());
 			if(currentTile.isAllowToBuild(building)){
@@ -479,18 +479,22 @@
 		//---- Callback function for specialCodeInput() ----//
 		public function onSpecialCodeInputReply(event:Event){
 			var resultInput:String = event.target.data.toString();
-
+			var arrayReturn:Array = resultInput.split(",");
+			var itemId:String = arrayReturn[0];
+			var itemQty:int = arrayReturn[1];
+			
 			if(resultInput=="fail"){
 				this.dispatchEvent(new Event(SPECIAL_CODE_FAIL));
 			}else{
 				var e:ItemPairEvent = new ItemPairEvent(SPECIAL_CODE_SUCCESS);
 				var pair:ItemQuantityPair = new ItemQuantityPair();
-				pair.setItemId("50110");
-				pair.setItemQty(5);
+				pair.setItemId(itemId);
+				pair.setItemQty(itemQty);
+				pair.setItem(iManager.getMatchItem(itemId));
 				e.setItemPair(pair);
 				this.dispatchEvent(e);
 				//add item
-				this.addItemToBackpack(resultInput, QUANTITY_FROM_SPECIAL_CODE);
+				this.addItemToBackpack(itemId, itemQty);
 				
 				this.dispatchEvent(new Event(ITEM_UPDATE));
 			}
