@@ -47,8 +47,6 @@
 			
 			SystemConstructor.getInstance().construct(onSystemComplete);
 			Debug.getInstance().debug("Load Data Complete");
-			//Debug.getInstance().debug("This is Facebook Id : " + facebookId);
-			//Debug.getInstance().debug("This is Facebook Name : " + facebookName);
 		}		
 
 		public function onSystemComplete(player:Player){

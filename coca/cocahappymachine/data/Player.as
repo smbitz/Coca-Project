@@ -283,6 +283,12 @@
 				
 				//Harvest Money
 				var getYieldMoney:int = t.getBuilding().generateYieldMoney();
+				
+				//If tile rotted get 50% of item quantity.
+				if(t.getBuildingStatus()==Tile.BUILDING_ROTTED){
+					getYieldMoney = Math.round(getYieldMoney*ROTTED_ITEM_QTY_PERCENT);
+				}
+				
 				this.money += getYieldMoney;
 				
 				//Clear Tile
@@ -478,8 +484,6 @@
 		
 		//---- Supply item to targetTile
 		public function supplyItem(targetTile:Tile):Boolean{
-			//reduce item quantity or reduce money if player don't have that item
-			//building parameter change to effect supply item
 			var supplyItemId:String = targetTile.getBuilding().getSupplyId();
 			var moneySupply:int = iManager.howMoney(supplyItemId);
 				
@@ -504,8 +508,6 @@
 		
 		//---- add extraItem to targetTile
 		public function extraItem(targetTile:Tile, extraItem:Item):Boolean{
-			//reduce item quantity (extra item can't purchase)
-			//building paramter change to effect extra item
 			var extraItemId1:String = targetTile.getBuilding().getExtraItem1().getId();
 			var extraItemId2:String = targetTile.getBuilding().getExtraItem2().getId();
 
@@ -551,8 +553,7 @@
 			return false;
 		}
 		
-		//---- Check for player extra condition (1) player must have that item ----//
-		//---- (2) tile didn't extra yet ----//
+		//---- Check for player extra condition (1) ----//
 		public function isAllowToExtra1(activeTile:Tile):Boolean{
 			var requireExtraId:String = activeTile.getBuilding().getExtraItem1().getId();
 
@@ -562,8 +563,7 @@
 			return false;
 		}
 		
-		//---- Check for player extra condition (1) player must have that item ----//
-		//---- (2) tile didn't extra yet ----//
+		//---- Check for player extra condition (2) ----//
 		public function isAllowToExtra2(activeTile:Tile):Boolean{
 			var requireExtraId:String = activeTile.getBuilding().getExtraItem2().getId();
 
@@ -573,8 +573,7 @@
 			return false;
 		}
 		
-		//---- Check for possible move condtion (1) destinationTile and moveTile must be the same land type
-		//---- (2) destination must not have building on it ----//
+		//---- Check for possible move condtion (1) ----//
 		public function isMoveable(moveTile:Tile, destinationTile:Tile):Boolean{
 			var moveTileLandType:String = moveTile.getLandType();
 			var destinationTileLandType:String = destinationTile.getLandType();
@@ -682,7 +681,6 @@
 		}
 		
 		//---- find sellable item which owned by player ----//
-		//---- return array of ItemQuantityPair ----//
 		public function getSellableItem():Array{
 			var arraySellAbleItem:Array = new Array();
 			
@@ -697,9 +695,7 @@
 			return arraySellAbleItem;
 		}
 		
-		//---- find percentage of exp since the start of current level until level up
-		//---- return value must be between 0 - 1, 
-		//---- 0 : no exp since previous level up, 1 : exp full ready to level up
+		//---- find percentage of exp since the start of current level until level up ----//
 		public function getExpProgress():Number{
 			var currentProgress:Number;
 			var expAtStartLevel:int;
@@ -745,7 +741,6 @@
 		
 		//--- buy item ----//
 		public function buy(itemId:String, quantity:int){
-			// code here
 			var currentItem:Item = iManager.getMatchItem(itemId);
 			
 			if(this.money>=(currentItem.getPrice()*quantity)){
@@ -769,7 +764,6 @@
 		
 		//---- sell item----//
 		public function sell(itemId:String, quantity:int){
-			//code here
 			var itemPosition:int = findItemBackpackById(itemId);
 			
 			if(itemPosition>=0){
