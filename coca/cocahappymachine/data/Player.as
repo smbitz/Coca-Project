@@ -37,21 +37,21 @@
 		private static const ITEM_ID_MICROORGANISM_B:String = "7060";
 		
 		//Item id for check extra
-		private static const ITEM_ID_MORNING_GLORY = "220";
-		private static const ITEM_ID_CHINESE_CABBAGE = "230";
-		private static const ITEM_ID_PUMPKIN = "240";
-		private static const ITEM_ID_BABY_CORN = "250";
-		private static const ITEM_ID_STRAW_MUSHROOMS = "260";
-		private static const ITEM_ID_CHICKEN = "270";
-		private static const ITEM_ID_PIG = "280";
-		private static const ITEM_ID_COW = "290";
-		private static const ITEM_ID_SHEEP = "300";
-		private static const ITEM_ID_OSTRICH = "310";
-		private static const ITEM_ID_FISH = "320";
-		private static const ITEM_ID_SQUID = "330";
-		private static const ITEM_ID_SCALLOPS = "340";
-		private static const ITEM_ID_SHRIMP = "350";
-		private static const ITEM_ID_OYSTER = "360";
+		private static const ITEM_ID_MORNING_GLORY:String = "220";
+		private static const ITEM_ID_CHINESE_CABBAGE:String = "230";
+		private static const ITEM_ID_PUMPKIN:String = "240";
+		private static const ITEM_ID_BABY_CORN:String = "250";
+		private static const ITEM_ID_STRAW_MUSHROOMS:String = "260";
+		private static const ITEM_ID_CHICKEN:String = "270";
+		private static const ITEM_ID_PIG:String = "280";
+		private static const ITEM_ID_COW:String = "290";
+		private static const ITEM_ID_SHEEP:String = "300";
+		private static const ITEM_ID_OSTRICH:String = "310";
+		private static const ITEM_ID_FISH:String = "320";
+		private static const ITEM_ID_SQUID:String = "330";
+		private static const ITEM_ID_SCALLOPS:String = "340";
+		private static const ITEM_ID_SHRIMP:String = "350";
+		private static const ITEM_ID_OYSTER:String = "360";
 		
 		private var facebookId:String;
 		private var exp:int;
