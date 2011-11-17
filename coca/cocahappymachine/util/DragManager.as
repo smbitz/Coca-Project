@@ -75,6 +75,16 @@
 			var moveY:Number = (stage.mouseY - pointY) / 3;
 			draggingObject.x += moveX;
 			draggingObject.y += moveY;
+			if(draggingObject is DragConstrain){
+				var minX:Number = draggingObject.getMinX(stage);
+				var minY:Number = draggingObject.getMinY(stage);
+				var maxX:Number = draggingObject.getMaxX(stage);
+				var maxY:Number = draggingObject.getMaxY(stage);
+				draggingObject.x = Math.min(maxX, draggingObject.x);
+				draggingObject.x = Math.max(minX, draggingObject.x);
+				draggingObject.y = Math.min(maxY, draggingObject.y);
+				draggingObject.y = Math.max(minY, draggingObject.y);
+			}
 			pointX += moveX;
 			pointY += moveY;
 			if((Math.abs(dragCheckX - stage.mouseX) > 20) || (Math.abs(dragCheckY - stage.mouseY) > 20)){

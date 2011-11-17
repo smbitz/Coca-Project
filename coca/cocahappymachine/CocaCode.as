@@ -1,5 +1,4 @@
 ﻿package cocahappymachine {
-	
 	import flash.display.MovieClip;
 	import cocahappymachine.data.SystemConstructor;
 	import cocahappymachine.data.Player;
@@ -61,7 +60,7 @@
 		
 		private function startGame(){
 			this.removeChild(loadDialog);
-			var game:GamePlay = new GamePlay();
+			var game:GamePlay = new GamePlay(this.stage);
 			this.addChildAt(game, 0);
 		}
 

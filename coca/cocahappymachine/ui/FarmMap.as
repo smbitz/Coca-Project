@@ -7,10 +7,12 @@
 	import cocahappymachine.data.Tile;
 	import Resources.Shop;
 	import flash.events.Event;
+	import flash.display.Stage;
 	import Resources.PurchaseTile;
 	import Resources.Map;
+	import cocahappymachine.util.DragConstrain;
 	
-	public class FarmMap extends MovieClip{
+	public class FarmMap extends MovieClip implements DragConstrain {
 		
 		public static const ZOOM_STEP:Array = [0.6, 0.8, 1, 1.2];
 		public static const START_ZOOM_STEP:int = 1;
@@ -40,8 +42,10 @@
 		private var currentPlayer:Player;
 		private var currentZoomStep:int;
 		private var map:MovieClip;
+		private var s:Stage
 		
-		public function FarmMap() {
+		public function FarmMap(s:Stage) {
+			this.s = s;
 			//---- draw farm bg ----//
 			map = new Map();
 			this.addChild(map);
@@ -64,12 +68,21 @@
 			currentZoomStep = Math.min(ZOOM_STEP.length - 1, currentZoomStep + 1);
 			this.scaleX = ZOOM_STEP[currentZoomStep];
 			this.scaleY = ZOOM_STEP[currentZoomStep];
+			fixPosition();
 		}
 		
 		public function zoomOut(){
 			currentZoomStep = Math.max(0, currentZoomStep - 1);
 			this.scaleX = ZOOM_STEP[currentZoomStep];
-			this.scaleY = ZOOM_STEP[currentZoomStep];			
+			this.scaleY = ZOOM_STEP[currentZoomStep];
+			fixPosition();
+		}
+		
+		public function fixPosition(){
+			x = Math.min(getMaxX(stage), x);
+			x = Math.max(getMinX(stage), x);
+			y = Math.min(getMaxY(stage), y);
+			y = Math.max(getMinY(stage), y);
 		}
 		
 		public function isMaxZoomIn():Boolean{
@@ -185,6 +198,21 @@
 			}
 			trace("No Match");
 			return null;
+		}
+		
+		public function getMinX(stage:Stage):Number{
+			return stage.stageWidth - this.width;
+		}
+		
+		public function getMinY(stage:Stage):Number{
+			return stage.stageHeight - this.height;
+		}
+		
+		public function getMaxX(stage:Stage):Number{
+			return 0;
+		}
+		public function getMaxY(stage:Stage):Number{
+			return 0;
 		}
 	}
 }

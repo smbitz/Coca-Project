@@ -64,7 +64,18 @@
 	import cocahappymachine.ui.TileUpdateEvent;
 	import cocahappymachine.ui.ItemPairEvent;
 	import flash.display.DisplayObject;
-	
+	import flash.display.Stage;
+	import cocahappymachine.util.DragManager;
+	import flash.net.URLRequest;
+	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
+	import flash.events.IOErrorEvent
+	import flash.system.LoaderContext;
+	import flash.system.ApplicationDomain;
+	import flash.events.SecurityErrorEvent;
+	import cocahappymachine.util.Config;
+
+
 	public class GamePlay extends MovieClip{
 		
 		private static const PLAYSTATE_NORMAL:int = 1;
@@ -130,7 +141,7 @@
 		private var bigLevelFont:BitmapFont;
 		private var smallLevelFont:BitmapFont;
 		
-		public function GamePlay() {
+		public function GamePlay(s:Stage) {
 			currentPlayer = SystemConstructor.getInstance().getCurrentPlayer();
 			currentPlayer.addEventListener(Player.LEVELUP, onLevelUp);
 			currentPlayer.addEventListener(Player.UPDATE_EXP, onUpdateExp);
@@ -147,7 +158,7 @@
 			bigLevelFont = new BitmapFont(new BigLevelBitmapConstructor());
 			smallLevelFont = new BitmapFont(new SmallLevelBitmapConstructor());
 			//init FarmMap which consist of playTile, decorated area, market place
-			farmMap = new FarmMap();
+			farmMap = new FarmMap(s);
 			farmMap.setCurrentPlayer(currentPlayer);
 			couponButton = new CouponButton();
 			couponButton.addEventListener(MouseEvent.CLICK, onCouponButtonClick);
@@ -194,6 +205,15 @@
 			tutorialDialog.addEventListener(TutorialDialog.DIALOG_CLOSE, onTutorialClose);
 			this.addChild(tutorialDialog);
 			newspaperDialog = new NewspaperDialog();
+
+			var context:LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.dataFormat = URLLoaderDataFormat.TEXT;
+			urlLoader.addEventListener(Event.COMPLETE, onNewspaperComplete);
+			urlLoader.addEventListener(IOErrorEvent.IO_ERROR, onNewspaperError);
+			urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onNewspaperSecurityError);
+			var url:String = Config.getInstance().getData("NEWSPAPER_URL");
+			urlLoader.load(new URLRequest(url));
 			newspaperDialog.visible = false;
 			newspaperDialog.addEventListener(NewspaperDialog.DIALOG_CLOSE, onNewspaperClose);
 			this.addChild(newspaperDialog);
@@ -469,45 +489,47 @@
 		}
 		
 		public function onShopClick(event:Event){
-			shopDialog.visible = true;
-			var buyItem:Array = ItemManager.getInstance().getItemByType("normal");	//array of item
-			var sellItem:Array = currentPlayer.getSellableItem();					//array of ItemQuantityPair
-			var buyBoxList:Array = new Array();
-			var sellBoxList:Array = new Array();
-			//Add Tab 1
-			for each(var item:Item in buyItem){
-				var buyBox:ShopBuyItemBox = new ShopBuyItemBox();
-				buyBox.setItemId(item.getId());
-				buyBox.setPicture(ItemPictureBuilder.createShopItemBoxPicture(item));
-				var isEnoughMoney:Boolean = true;
-				if(currentPlayer.getMoney() < item.getPrice()){
-					isEnoughMoney = false;
+			if(!DragManager.getInstance().isDragging()){
+				shopDialog.visible = true;
+				var buyItem:Array = ItemManager.getInstance().getItemByType("normal");	//array of item
+				var sellItem:Array = currentPlayer.getSellableItem();					//array of ItemQuantityPair
+				var buyBoxList:Array = new Array();
+				var sellBoxList:Array = new Array();
+				//Add Tab 1
+				for each(var item:Item in buyItem){
+					var buyBox:ShopBuyItemBox = new ShopBuyItemBox();
+					buyBox.setItemId(item.getId());
+					buyBox.setPicture(ItemPictureBuilder.createShopItemBoxPicture(item));
+					var isEnoughMoney:Boolean = true;
+					if(currentPlayer.getMoney() < item.getPrice()){
+						isEnoughMoney = false;
+					}
+					buyBox.setPrice(item.getPrice(), isEnoughMoney);
+					buyBox.setName(item.getName());
+					var building:Building = BuildingManager.getInstance().getBuildingByBuildItem(item);
+					if(building != null){
+						buyBox.setTime(building.getBuildPeriod());
+					} else {
+						buyBox.setTime(0);
+					}
+					buyBoxList.push(buyBox);
 				}
-				buyBox.setPrice(item.getPrice(), isEnoughMoney);
-				buyBox.setName(item.getName());
-				var building:Building = BuildingManager.getInstance().getBuildingByBuildItem(item);
-				if(building != null){
-					buyBox.setTime(building.getBuildPeriod());
-				} else {
-					buyBox.setTime(0);
+				for each(var backpack:ItemQuantityPair in sellItem){
+					var sellBox:ShopSellItemBox = new ShopSellItemBox();
+					sellBox.setPicture(ItemPictureBuilder.createShopItemBoxPicture(backpack.getItem()));
+					sellBoxList.push(sellBox);
+					sellBox.setItemId(backpack.getItem().getId());
+					sellBox.setName(backpack.getItem().getName());
+					sellBox.setQuantity(backpack.getItemQty());
+					sellBox.setPrice(backpack.getItem().getSellPrice());
 				}
-				buyBoxList.push(buyBox);
+				sellPaging.setItem(sellBoxList);
+				sellPaging.setCurrentPage(0);
+				buyPaging.setItem(buyBoxList);
+				buyPaging.setCurrentPage(0);
+				shopDialog.setBuyItemBox(buyBoxList);
+				shopDialog.setSellItemBox(sellBoxList);
 			}
-			for each(var backpack:ItemQuantityPair in sellItem){
-				var sellBox:ShopSellItemBox = new ShopSellItemBox();
-				sellBox.setPicture(ItemPictureBuilder.createShopItemBoxPicture(backpack.getItem()));
-				sellBoxList.push(sellBox);
-				sellBox.setItemId(backpack.getItem().getId());
-				sellBox.setName(backpack.getItem().getName());
-				sellBox.setQuantity(backpack.getItemQty());
-				sellBox.setPrice(backpack.getItem().getSellPrice());
-			}
-			sellPaging.setItem(sellBoxList);
-			sellPaging.setCurrentPage(0);
-			buyPaging.setItem(buyBoxList);
-			buyPaging.setCurrentPage(0);
-			shopDialog.setBuyItemBox(buyBoxList);
-			shopDialog.setSellItemBox(sellBoxList);
 		}
 		
 		public function onCouponButtonClick(event:MouseEvent){
@@ -790,5 +812,18 @@
 			farmMap.updateTile(farmMap.getFarmTile(tile));
 			currentPlayer.updateToServer();
 		}
+		
+		public function onNewspaperComplete(event:Event){
+			newspaperDialog.setHTML(event.target.data);
+		}
+		
+		public function onNewspaperError(event:IOErrorEvent){
+			trace("Newspaper Error");
+		}
+		
+		public function onNewspaperSecurityError(event:SecurityErrorEvent){
+			trace("Security Error");
+		}
+
 	}
 }
