@@ -66,7 +66,16 @@
 	import flash.display.DisplayObject;
 	import flash.display.Stage;
 	import cocahappymachine.util.DragManager;
-	
+	import flash.net.URLRequest;
+	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
+	import flash.events.IOErrorEvent
+	import flash.system.LoaderContext;
+	import flash.system.ApplicationDomain;
+	import flash.events.SecurityErrorEvent;
+	import cocahappymachine.util.Config;
+
+
 	public class GamePlay extends MovieClip{
 		
 		private static const PLAYSTATE_NORMAL:int = 1;
@@ -196,6 +205,15 @@
 			tutorialDialog.addEventListener(TutorialDialog.DIALOG_CLOSE, onTutorialClose);
 			this.addChild(tutorialDialog);
 			newspaperDialog = new NewspaperDialog();
+
+			var context:LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.dataFormat = URLLoaderDataFormat.TEXT;
+			urlLoader.addEventListener(Event.COMPLETE, onNewspaperComplete);
+			urlLoader.addEventListener(IOErrorEvent.IO_ERROR, onNewspaperError);
+			urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onNewspaperSecurityError);
+			var url:String = Config.getInstance().getData("NEWSPAPER_URL");
+			urlLoader.load(new URLRequest(url));
 			newspaperDialog.visible = false;
 			newspaperDialog.addEventListener(NewspaperDialog.DIALOG_CLOSE, onNewspaperClose);
 			this.addChild(newspaperDialog);
@@ -794,5 +812,18 @@
 			farmMap.updateTile(farmMap.getFarmTile(tile));
 			currentPlayer.updateToServer();
 		}
+		
+		public function onNewspaperComplete(event:Event){
+			newspaperDialog.setHTML(event.target.data);
+		}
+		
+		public function onNewspaperError(event:IOErrorEvent){
+			trace("Newspaper Error");
+		}
+		
+		public function onNewspaperSecurityError(event:SecurityErrorEvent){
+			trace("Security Error");
+		}
+
 	}
 }
