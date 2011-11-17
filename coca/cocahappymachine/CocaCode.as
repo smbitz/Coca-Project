@@ -1,5 +1,4 @@
 ﻿package cocahappymachine {
-	
 	import flash.display.MovieClip;
 	import cocahappymachine.data.SystemConstructor;
 	import cocahappymachine.data.Player;
