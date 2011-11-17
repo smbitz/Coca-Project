@@ -85,6 +85,8 @@
 		private static const RECEIVE_EXP_BUY_SELL_ITEM:int = 10;
 		private static const RECEIVE_EXP_EXCHANGE_COUPON:int = 500;
 		
+		private static const NUMBER_PERCENTS_TO_ADD_SUPPLY:int = 95;
+		
 		public function Player(facebookId:String,playerName:String) {
 			this.facebookId = facebookId;
 			this.name = playerName;
@@ -504,22 +506,25 @@
 		public function supplyItem(targetTile:Tile):Boolean{
 			var supplyItemId:String = targetTile.getBuilding().getSupplyId();
 			var moneySupply:int = iManager.howMoney(supplyItemId);
-				
-			if(isItemEnough(supplyItemId, QTY_USE_SUPPLY)){
-				var searchSupply:int = this.searchBackpackItem(supplyItemId);
-				var currentQty:int = this.backpack[searchSupply].getItemQty();
-				
-				if(searchSupply>=0){
-					this.backpack[searchSupply].setItemQty(currentQty-1);
+			var currentTileSupplyPercents:int = targetTile.getSupplyPercentage()*100;
+			
+			if(currentTileSupplyPercents<NUMBER_PERCENTS_TO_ADD_SUPPLY){
+				if(isItemEnough(supplyItemId, QTY_USE_SUPPLY)){
+					var searchSupply:int = this.searchBackpackItem(supplyItemId);
+					var currentQty:int = this.backpack[searchSupply].getItemQty();
+					
+					if(searchSupply>=0){
+						this.backpack[searchSupply].setItemQty(currentQty-1);
+						targetTile.setSupply(targetTile.getBuilding().getSupplyPeriod());
+						this.reciveExp(RECEIVE_EXP_SUPPLY);
+						return true;
+					}
+				}else if(this.money > moneySupply){
+					this.money -= moneySupply;
 					targetTile.setSupply(targetTile.getBuilding().getSupplyPeriod());
 					this.reciveExp(RECEIVE_EXP_SUPPLY);
 					return true;
 				}
-			}else if(this.money > moneySupply){
-				this.money -= moneySupply;
-				targetTile.setSupply(targetTile.getBuilding().getSupplyPeriod());
-				this.reciveExp(RECEIVE_EXP_SUPPLY);
-				return true;
 			}
 			return false;
 		}

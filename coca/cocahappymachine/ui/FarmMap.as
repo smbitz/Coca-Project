@@ -18,10 +18,10 @@
 		public static const SHOP_CLICK:String = "SHOP_CLICK";
 
 
-		private static const INIT_X:int = -800;
-		private static const INIT_Y:int = -450;
-		private static const SHOP_X:int = 500;
-		private static const SHOP_Y:int = 300;
+		private static const INIT_X:int = -1180;
+		private static const INIT_Y:int = -500;
+		private static const SHOP_X:int = 1405;
+		private static const SHOP_Y:int = 460;
 		private static const FARMTILE_START_X:int = 1354;
 		private static const FARMTILE_START_Y:int = 838;
 		
