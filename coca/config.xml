@@ -6,7 +6,7 @@
 	<string name="GENERATE_COUPON_URL" value="http://uatcoca.cakethai.com/cocaproject/php/coupon/generate_coupon.php" />
 	<string name="VIEW_COUPON_URL" value="http://uatcoca.cakethai.com/cocaproject/php/coupon/view_coupon.php" />
 	<string name="USE_SPECIAL_CODE_URL" value="http://uatcoca.cakethai.com/cocaproject/php/specialCode/use_special_code.php" />
-	<string name="NEWSPAPER_URL" value="http://www.codegears.co.th/test.html" />
+	<string name="NEWSPAPER_URL" value="http://uatcoca.cakethai.com/cocaproject/php/newspaper/newspaper.html" />
 	
 	<string name="AUDIO_LIST" value="MUSIC_1,MUSIC_2" />
 	<string name="MUSIC_1" value="http://uatcoca.cakethai.com/cocaproject/music/bgmusic1.mp3" />
