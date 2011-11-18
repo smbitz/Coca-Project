@@ -15,9 +15,17 @@
 		public var leftButton:SimpleButton;
 		public var rightButton:SimpleButton;
 		public var paging:MovieClip;
+		public var bgMC:MovieClip;
 		
 		public function BuildPanel() {
 			closeButton.addEventListener(MouseEvent.CLICK, onCloseButtonClick);
+			this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+		}
+		
+		public function onEnterFrame(event:Event){
+			if(this.totalFrames == this.currentFrame){
+				this.stop();
+			}
 		}
 		
 		public function onCloseButtonClick(event:MouseEvent){

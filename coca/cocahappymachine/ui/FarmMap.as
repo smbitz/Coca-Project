@@ -182,6 +182,11 @@
 			newTile.x = tile.x;
 			newTile.y =  tile.y;
 			newTile.setData(tile.getData());
+			if((tile.getData().getBuilding() == null) || (tile.getData().getSupply() > 0)){
+				newTile.setBubble(null);
+			} else if(tile.getData().getSupply() <= 0){
+				newTile.setBubble(ItemPictureBuilder.createSupplyBubblePicture(tile.getData().getBuilding()));
+			}
 			newTile.addEventListener(MouseEvent.CLICK, onTileClick);
 			farmTile[arrayIndex] = newTile;
 			this.addChildAt(newTile, childIndex);
@@ -189,14 +194,10 @@
 		
 		public function getFarmTile(t:Tile):AbstractFarmTile{
 			for(var loop1:int = 0; loop1 < farmTile.length; loop1++){
-				trace(farmTile);
-				trace("Loop Check"+loop1);
 				if(farmTile[loop1].getData() == t){
-					trace("Match");
 					return farmTile[loop1];
 				}
 			}
-			trace("No Match");
 			return null;
 		}
 		

@@ -432,6 +432,7 @@
 		public function onTileBuild(event:FarmMapEvent){
 			activeTile = event.getClickedTile();
 			buildPanel.visible =true;
+			buildPanel.gotoAndPlay(0);
 			var tile:Tile = event.getClickedTile().getData();
 			var buildingList:Array = BuildingManager.getInstance().getBuildingForLandType(tile.getLandType());
 			var itemBox:Array = createBuildItemBox(buildingList);
@@ -625,6 +626,7 @@
 		public function onSupplyItem(event:Event){
 			addItemPanel.visible = false;
 			currentPlayer.supplyItem(activeTile.getData());
+			farmMap.updateTile(activeTile);			
 			currentPlayer.updateToServer();
 		}
 		
