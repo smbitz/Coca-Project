@@ -123,6 +123,9 @@
 	import Resources.AddItemMicroorganismBDisableButton;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.DisplayObject;
+	import Resources.SupplyWaterBubble;
+	import Resources.SupplyStrawBubble;
+	import Resources.SupplyPelletFoodBubble;
 	
 	public class ItemPictureBuilder {
 		//Coupon Item id
@@ -567,6 +570,17 @@
 			}
 			
 			return d;
+		}
+		
+		public static function createSupplyBubblePicture(building:Building):DisplayObject{
+			if(building.getBuildingType()==BUILD_TYPE_VAGE){
+				return new SupplyWaterBubble();
+			}else if(building.getBuildingType()==BUILD_TYPE_MEAT){
+				return new SupplyStrawBubble();
+			}else if(building.getBuildingType()==BUILD_TYPE_SEA){
+				return new SupplyPelletFoodBubble();
+			}
+			return null;
 		}
 	}
 }

@@ -9,6 +9,11 @@
 		
 		public function EmptyFarmTile() {
 			// constructor code
+			glowFilter.knockout = true;
+			glowFilter.blurX = 20;
+			glowFilter.blurY = 20;
+			glowFilter.strength = 3;
+			bubble.visible = false;
 		}
 	}
 	

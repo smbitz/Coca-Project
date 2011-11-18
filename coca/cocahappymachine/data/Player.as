@@ -194,11 +194,16 @@
 			//update all building progress with elapse
 			for(var a:int = 0; a<tile.length; a++){
 				var tileStatus:int = tile[a].getBuildingStatus();
+				var supply:int = tile[a].getSupply();
 				tile[a].update(elapse);
 				if(tileStatus != tile[a].getBuildingStatus()){
-					var e:TileUpdateEvent = new TileUpdateEvent(TileUpdateEvent.TILE_UPDATE);
-					e.setTile(tile[a]);
-					this.dispatchEvent(e);
+					var e1:TileUpdateEvent = new TileUpdateEvent(TileUpdateEvent.TILE_UPDATE);
+					e1.setTile(tile[a]);
+					this.dispatchEvent(e1);
+				} else if((supply > 0) && (tile[a].getSupply() <= 0)){
+					var e2:TileUpdateEvent = new TileUpdateEvent(TileUpdateEvent.TILE_UPDATE);
+					e2.setTile(tile[a]);
+					this.dispatchEvent(e2);					
 				}
 			}
 		}

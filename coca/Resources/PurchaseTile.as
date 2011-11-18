@@ -16,6 +16,7 @@
 			this.mouseChildren = false;
 			hitMC.alpha = 0;
 			this.addChild(hitMC);
+			bubble.visible = false;
 		}
 		
 		public override function onMouseOver(event:MouseEvent){
