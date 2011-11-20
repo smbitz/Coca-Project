@@ -23,6 +23,13 @@
 		
 		public function ShopDialog() {
 			closeButton.addEventListener(MouseEvent.CLICK, onCloseButtonClick);
+			this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+		}
+		
+		public function onEnterFrame(event:Event){
+			if(this.currentFrame == this.totalFrames){
+				this.stop();
+			}
 		}
 		
 		public function onCloseButtonClick(event:MouseEvent){

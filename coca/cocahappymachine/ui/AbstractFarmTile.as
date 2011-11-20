@@ -44,11 +44,7 @@
 				bubble.visible = false;
 			} else {
 				bubble.visible = true;
-				while(bubble.numChildren > 1){
-					bubble.removeChildAt(1);
-				}
-				mc.y = - bubble.width / 2 - 10;
-				bubble.addChild(mc);
+				bubble.setItemMC(mc);
 			}
 		}
 		
