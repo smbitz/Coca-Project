@@ -22,6 +22,13 @@
 		public function CouponConfirmDialog() {
 			closeButton.addEventListener(MouseEvent.CLICK, onCloseButtonClick);
 			confirmButton.addEventListener(MouseEvent.CLICK, onConfirmButtonClick);
+			this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+		}
+		
+		public function onEnterFrame(event:Event){
+			if(this.currentFrame == this.totalFrames){
+				this.stop();
+			}
 		}
 		
 		public function setItemId(id:String){

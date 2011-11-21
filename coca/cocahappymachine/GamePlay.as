@@ -345,7 +345,7 @@
 			t.addEventListener(GameTimer.GAMETIMER_RUN, onRun);
 			t.start();
 			
-			AudioManager.getInstance().playBG("MUSIC_1");
+			AudioManager.getInstance().playBG("MUSIC_BG");
 			this.addChild(mouseCursor);
 		}
 		
@@ -721,6 +721,7 @@
 			var bigMC:MovieClip = bigLevelFont.getMovieClip(currentPlayer.getLevel().toString(), 
 							BitmapFont.H_CENTER | BitmapFont.TOP);
 			levelUpDialog.setNumberMC(bigMC);
+			AudioManager.getInstance().playEffect("EFFECT_LEVELUP");
 		}
 		
 		public function onUpdateExp(event:Event){
@@ -741,6 +742,7 @@
 			getItemDialog.visible = true;
 			var mc:DisplayObject = ItemPictureBuilder.createItemGetPicture(event.getItemPair().getItemId());
 			getItemDialog.setData(mc, event.getItemPair());
+			AudioManager.getInstance().playEffect("EFFECT_BONUS");
 		}
 		
 		public function onCodeReceive(event:CodeViewEvent){
@@ -780,6 +782,7 @@
 		
 		public function onExchangeSuccess(event:CodeViewEvent){
 			currentPlayer.couponCodeView(event.getItemId());
+			AudioManager.getInstance().playEffect("EFFECT_BONUS");
 		}
 		
 		public function onOptionBarOpen(event:Event){

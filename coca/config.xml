@@ -8,8 +8,8 @@
 	<string name="USE_SPECIAL_CODE_URL" value="http://uatcoca.cakethai.com/cocaproject/php/specialCode/use_special_code.php" />
 	<string name="NEWSPAPER_URL" value="http://uatcoca.cakethai.com/cocaproject/php/newspaper/newspaper.html" />
 	
-	<string name="AUDIO_LIST" value="MUSIC_1,MUSIC_2,MUSIC_3" />
-	<string name="MUSIC_1" value="http://uatcoca.cakethai.com/cocaproject/music/bg.mp3" />
-	<string name="MUSIC_2" value="http://uatcoca.cakethai.com/cocaproject/music/level_up.mp3" />
-	<string name="MUSIC_3" value="http://uatcoca.cakethai.com/cocaproject/music/bonus.mp3" />
+	<string name="AUDIO_LIST" value="MUSIC_BG,EFFECT_LEVELUP,EFFECT_BONUS" />
+	<string name="MUSIC_BG" value="http://uatcoca.cakethai.com/cocaproject/music/bg.mp3" />
+	<string name="EFFECT_LEVELUP" value="http://uatcoca.cakethai.com/cocaproject/music/level_up.mp3" />
+	<string name="EFFECT_BONUS" value="http://uatcoca.cakethai.com/cocaproject/music/bonus.mp3" />
 </config>
