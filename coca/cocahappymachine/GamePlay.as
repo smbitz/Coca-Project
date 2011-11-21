@@ -492,6 +492,7 @@
 		public function onShopClick(event:Event){
 			if(!DragManager.getInstance().isDragging()){
 				shopDialog.visible = true;
+				shopDialog.gotoAndPlay(0);
 				var buyItem:Array = ItemManager.getInstance().getItemByType("normal");	//array of item
 				var sellItem:Array = currentPlayer.getSellableItem();					//array of ItemQuantityPair
 				var buyBoxList:Array = new Array();
@@ -535,6 +536,7 @@
 		
 		public function onCouponButtonClick(event:MouseEvent){
 			couponExchangeDialog.visible = true;
+			couponExchangeDialog.gotoAndPlay(0);
 			var itemBoxList:Array = new Array();
 			var availableBoxList:Array = new Array();
 			var unavailableBoxList:Array = new Array();

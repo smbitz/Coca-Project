@@ -115,6 +115,7 @@
 				tile.x = FARMTILE_START_X + (xPosition * X_OFFSET_COLUMN) + (yPosition * X_OFFSET_ROW);
 				tile.y = FARMTILE_START_Y + (xPosition * Y_OFFSET_COLUMN) + (yPosition * Y_OFFSET_ROW);
 				this.addChild(tile);
+				this.updateTile(tile);
 			}
 			//---- Create PurchaseTile on top of tile ----//
 			for(var loop2:int = 0; loop2 < FARMTILE_X * FARMTILE_Y; loop2++){
