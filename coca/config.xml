@@ -8,8 +8,13 @@
 	<string name="USE_SPECIAL_CODE_URL" value="http://uatcoca.cakethai.com/cocaproject/php/specialCode/use_special_code.php" />
 	<string name="NEWSPAPER_URL" value="http://uatcoca.cakethai.com/cocaproject/php/newspaper/newspaper.html" />
 	
-	<string name="AUDIO_LIST" value="MUSIC_BG,EFFECT_LEVELUP,EFFECT_BONUS" />
+	<string name="AUDIO_LIST" value="MUSIC_BG,EFFECT_LEVELUP,EFFECT_BONUS,EFFECT_BUTTON_CLICK,EFFECT_COIN,EFFECT_LAND_CLICK,EFFECT_ON_OFF_CLICK,EFFECT_CHOOSE_CLICK" />
 	<string name="MUSIC_BG" value="http://uatcoca.cakethai.com/cocaproject/music/bg.mp3" />
 	<string name="EFFECT_LEVELUP" value="http://uatcoca.cakethai.com/cocaproject/music/level_up.mp3" />
 	<string name="EFFECT_BONUS" value="http://uatcoca.cakethai.com/cocaproject/music/bonus.mp3" />
+	<string name="EFFECT_BUTTON_CLICK" value="http://uatcoca.cakethai.com/cocaproject/music/button.mp3" />
+	<string name="EFFECT_COIN" value="http://uatcoca.cakethai.com/cocaproject/music/coin.mp3" />
+	<string name="EFFECT_LAND_CLICK" value="http://uatcoca.cakethai.com/cocaproject/music/Land_click.mp3" />
+	<string name="EFFECT_ON_OFF_CLICK" value="http://uatcoca.cakethai.com/cocaproject/music/on_off.mp3" />
+	<string name="EFFECT_CHOOSE_CLICK" value="http://uatcoca.cakethai.com/cocaproject/music/choose_click.WAV" />
 </config>
