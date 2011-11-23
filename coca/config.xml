@@ -16,5 +16,5 @@
 	<string name="EFFECT_COIN" value="http://uatcoca.cakethai.com/cocaproject/music/coin.mp3" />
 	<string name="EFFECT_LAND_CLICK" value="http://uatcoca.cakethai.com/cocaproject/music/Land_click.mp3" />
 	<string name="EFFECT_ON_OFF_CLICK" value="http://uatcoca.cakethai.com/cocaproject/music/on_off.mp3" />
-	<string name="EFFECT_CHOOSE_CLICK" value="http://uatcoca.cakethai.com/cocaproject/music/on_off.mp3" />
+	<string name="EFFECT_CHOOSE_CLICK" value="http://uatcoca.cakethai.com/cocaproject/music/choose_click.mp3" />
 </config>
