@@ -2,6 +2,7 @@
 	import flash.display.MovieClip;
 	import flash.display.SimpleButton;
 	import flash.events.MouseEvent;
+	import cocahappymachine.audio.AudioManager;
 	
 	public class Paging extends MovieClip {
 
@@ -106,12 +107,16 @@
 		}
 		
 		public function onLeft(event:MouseEvent){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			currentPage--;
 			currentPage = Math.max(0, currentPage);
 			calculate();
 		}
 		
 		public function onRight(event:MouseEvent){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			currentPage++;
 			var maxPage:int = getMaxPage();
 			currentPage = Math.min(currentPage, maxPage);

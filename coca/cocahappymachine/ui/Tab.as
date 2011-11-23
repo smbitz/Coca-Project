@@ -3,6 +3,7 @@
 	import flash.display.MovieClip;
 	import flash.display.SimpleButton;
 	import flash.events.MouseEvent;
+	import cocahappymachine.audio.AudioManager;
 	
 	public class Tab extends MovieClip {
 
@@ -38,6 +39,8 @@
 		}
 		
 		public function onTabClick(event:MouseEvent){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			trace("Tab Click");
 			for each(var t:TabData in tabList){
 				if(t.getUnselected() == event.target){

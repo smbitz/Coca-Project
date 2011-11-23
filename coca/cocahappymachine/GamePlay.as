@@ -390,11 +390,15 @@
 		}
 		
 		public function onTutorialClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			tutorialDialog.visible = false;
 			setStateNewspaper();
 		}
 		
 		public function onNewspaperClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			newspaperDialog.visible = false;
 		}
 		
@@ -619,27 +623,39 @@
 		}
 		
 		public function onSpeicalCodeClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			specialCodeDialog.visible = false;
 		}
 		
 		public function onSpecialCodeConfirm(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			specialCodeDialog.visible = false;
 			currentPlayer.specialCodeInput(specialCodeDialog.getCode());
 		}
 		
 		public function onCouponExchangeDialogClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			couponExchangeDialog.visible = false;
 		}
 		
 		public function onBuildPanelClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			buildPanel.visible = false;
 		}
 		
 		public function onAddItemPanelClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			addItemPanel.visible = false;
 		}
 		
 		public function onSupplyItem(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			addItemPanel.visible = false;
 			currentPlayer.supplyItem(activeTile.getData());
 			farmMap.updateTile(activeTile);			
@@ -647,6 +663,8 @@
 		}
 		
 		public function onExtraItem1(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			addItemPanel.visible = false;
 			var i:Item = activeTile.getData().getBuilding().getExtraItem1();
 			currentPlayer.extraItem(activeTile.getData(), i);
@@ -654,6 +672,8 @@
 		}
 	
 		public function onExtraItem2(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			addItemPanel.visible = false;
 			var i:Item = activeTile.getData().getBuilding().getExtraItem2();
 			currentPlayer.extraItem(activeTile.getData(), i);
@@ -661,6 +681,8 @@
 		}
 		
 		public function onMoveBuilding(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			trace("move");
 			addItemPanel.visible = false;
 			setPlayStateMoving();
@@ -668,10 +690,14 @@
 		}
 		
 		public function onOccupyClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			occupyDialog.visible = false;
 		}
 		
 		public function onOccupyConfirm(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			occupyDialog.visible = false;
 			currentPlayer.purchase(activeTile.getData());
 			farmMap.removeChild(activeTile);
@@ -679,6 +705,8 @@
 		}
 		
 		public function onBuildPanelBuild(event:BuildEvent){
+			AudioManager.getInstance().playEffect("EFFECT_LAND_CLICK");
+			
 			buildPanel.visible = false;
 			var buildId:String = event.getBuildingId();
 			var b:Building = BuildingManager.getInstance().getMatchBuilding(buildId);
@@ -692,6 +720,8 @@
 			setPlayStateNormal();
 			var destinationTile:Tile = event.getClickedTile().getData();
 			if(currentPlayer.isMoveable(activeTile.getData(), destinationTile)){
+				AudioManager.getInstance().playEffect("EFFECT_LAND_CLICK");
+				
 				currentPlayer.moveTile(activeTile.getData(), destinationTile);
 				farmMap.updateTile(activeTile);
 				farmMap.updateTile(event.getClickedTile());
@@ -699,10 +729,14 @@
 		}
 		
 		public function onCouponExchangeViewCode(event:CouponEvent){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			currentPlayer.couponCodeView(event.getItemId());
 		}
 		
 		public function onCouponExchangeExchange(event:CouponEvent){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			couponConfirmDialog.visible = true;
 			var c:CouponExchangeItemBox2 = couponConfirmDialog.getCoupon();
 			var item:Item = ItemManager.getInstance().getMatchItem(event.getItemId());
@@ -716,6 +750,8 @@
 		}
 		
 		public function onShopDialogClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			shopDialog.visible = false;
 		}
 		
@@ -757,10 +793,11 @@
 		}
 		
 		public function onSpecialCodeSuccess(event:ItemPairEvent){
+			AudioManager.getInstance().playEffect("EFFECT_BONUS");
+			
 			getItemDialog.visible = true;
 			var mc:DisplayObject = ItemPictureBuilder.createItemGetPicture(event.getItemPair().getItemId());
 			getItemDialog.setData(mc, event.getItemPair());
-			AudioManager.getInstance().playEffect("EFFECT_BONUS");
 		}
 		
 		public function onCodeReceive(event:CodeViewEvent){
@@ -773,6 +810,8 @@
 		}
 		
 		public function onGetItemDialogClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			getItemDialog.visible = false;
 		}
 		
@@ -786,15 +825,21 @@
 		}
 		
 		public function onCouponConfirmClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			couponConfirmDialog.visible = false;
 		}
 		
 		public function onCouponConfirmConfirm(event:CouponEvent){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			couponConfirmDialog.visible = false;
 			currentPlayer.exchange(event.getItemId());
 		}
 		
 		public function onCouponViewClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			couponViewDialog.visible = false;
 		}
 		
