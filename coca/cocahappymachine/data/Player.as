@@ -310,6 +310,7 @@
 				//Clear Tile
 				t.clearTile();
 				this.reciveExp(RECEIVE_EXP_HARVEST);
+				return getYieldItem;
 			}else{
 				throw new Error("Unexpected from harvest in Player.as");
 			}

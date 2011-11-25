@@ -11,6 +11,7 @@
 	import Resources.PurchaseTile;
 	import Resources.Map;
 	import cocahappymachine.util.DragConstrain;
+	import com.greensock.TweenLite;
 	
 	public class FarmMap extends MovieClip implements DragConstrain {
 		
@@ -27,8 +28,8 @@
 		private static const FARMTILE_START_X:int = 1354;
 		private static const FARMTILE_START_Y:int = 838;
 		
-		private static const FARMTILE_X:int = 8;
-		private static const FARMTILE_Y:int = 8;
+		public static const FARMTILE_X:int = 8;
+		public static const FARMTILE_Y:int = 8;
 		private static const FARMSIZE_X:int = 3000;
 		private static const FARMSIZE_Y:int = 3000;
 		
@@ -43,9 +44,11 @@
 		private var currentZoomStep:int;
 		private var map:MovieClip;
 		private var s:Stage
+		private var popItem:Array;		//array of MovieClip
 		
 		public function FarmMap(s:Stage) {
 			this.s = s;
+			popItem = new Array();
 			//---- draw farm bg ----//
 			map = new Map();
 			this.addChild(map);
@@ -115,20 +118,24 @@
 				tile.x = FARMTILE_START_X + (xPosition * X_OFFSET_COLUMN) + (yPosition * X_OFFSET_ROW);
 				tile.y = FARMTILE_START_Y + (xPosition * Y_OFFSET_COLUMN) + (yPosition * Y_OFFSET_ROW);
 				this.addChild(tile);
-				this.updateTile(tile);
-			}
+				if(tileData.getBuildingStatus() == Tile.BUILDING_NOTOCCUPY){
+					tile.visible = false;
+				} else {
+					this.updateTile(tile);
+				}
+//			}
 			//---- Create PurchaseTile on top of tile ----//
-			for(var loop2:int = 0; loop2 < FARMTILE_X * FARMTILE_Y; loop2++){
-				tileData = currentPlayer.getTile()[loop2];
+//			for(var loop2:int = 0; loop2 < FARMTILE_X * FARMTILE_Y; loop2++){
+				tileData = currentPlayer.getTile()[loop1];
 				var tStatus = tileData.getBuildingStatus();
 				if(tStatus == Tile.BUILDING_NOTOCCUPY){
-					var tX:int = loop2 % FARMTILE_X;
-					var tY:int = loop2 / FARMTILE_X;
+					var tX:int = loop1 % FARMTILE_X;
+					var tY:int = loop1 / FARMTILE_X;
 					if((tX % 2 == 0) && (tY % 2 == 0)){
 						var purchaseTile:PurchaseTile = new PurchaseTile();
 						purchaseTile.setData(tileData);
-						xPosition = loop2 % FARMTILE_X;
-						yPosition = int(loop2 / FARMTILE_X);
+						xPosition = loop1 % FARMTILE_X;
+						yPosition = int(loop1 / FARMTILE_X);
 						purchaseTile.x = FARMTILE_START_X + (xPosition * X_OFFSET_COLUMN) + (yPosition * X_OFFSET_ROW);
 						purchaseTile.y = FARMTILE_START_Y + (xPosition * Y_OFFSET_COLUMN) + (yPosition * Y_OFFSET_ROW);
 						purchaseTile.addEventListener(MouseEvent.CLICK, onPurchaseTileClick);
@@ -188,6 +195,7 @@
 			} else if(tile.getData().getSupply() <= 0){
 				newTile.setBubble(ItemPictureBuilder.createSupplyBubblePicture(tile.getData().getBuilding()));
 			}
+			newTile.setAnimate(ItemPictureBuilder.createTileAnimation(tile.getData().getExtraId()));
 			newTile.addEventListener(MouseEvent.CLICK, onTileClick);
 			farmTile[arrayIndex] = newTile;
 			this.addChildAt(newTile, childIndex);
@@ -213,8 +221,30 @@
 		public function getMaxX(stage:Stage):Number{
 			return 0;
 		}
+		
 		public function getMaxY(stage:Stage):Number{
 			return 0;
+		}
+		
+		public function setPopItem(t:AbstractFarmTile, mcArray:Array){
+			var i:int = 0;
+			for each(var mc:MovieClip in mcArray){
+				mc.x = t.x + t.width / 2;
+				mc.y = t.y;
+				TweenLite.to(mc, 0.5, {y: t.y - 20, delay:i/4 } );
+				TweenLite.to(mc, 1, {y: t.y + 20, delay:0.5 + i/4, overwrite:false} );
+				TweenLite.to(mc, 1.5, {x: mc.x + (Math.random() * 200) - 100, overwrite:false} );
+				TweenLite.to(mc, 0.2, {alpha: 0, delay:1.3, overwrite:false});
+				TweenLite.delayedCall(5, onRemovePopItem, [mc]);
+				this.addChild(mc);
+				popItem.push(mc);
+				i++;
+			}
+		}
+		
+		public function onRemovePopItem(mc:MovieClip){
+			this.removeChild(mc);
+			popItem.slice(popItem.indexOf(mc), 1);
 		}
 	}
 }
