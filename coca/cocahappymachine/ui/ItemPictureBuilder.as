@@ -126,6 +126,8 @@
 	import Resources.SupplyWaterBubble;
 	import Resources.SupplyStrawBubble;
 	import Resources.SupplyPelletFoodBubble;
+	import Resources.AddTileWater;
+	import Resources.TileAnimateNone;
 	
 	public class ItemPictureBuilder {
 		//Coupon Item id
@@ -581,6 +583,18 @@
 				return new SupplyPelletFoodBubble();
 			}
 			return null;
+		}
+		
+		public static function createAddTile(itemId:String):MovieClip {
+			return new AddTileWater();
+		}
+		
+		public static function createTileAnimation(extraId:String):MovieClip{
+			return new TileAnimateNone();
+		}
+		
+		public static function createPopItem(itemId:String):MovieClip{
+			return new SupplyWaterBubble();
 		}
 	}
 }

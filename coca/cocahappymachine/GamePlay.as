@@ -345,7 +345,7 @@
 			t.addEventListener(GameTimer.GAMETIMER_RUN, onRun);
 			t.start();
 			
-			AudioManager.getInstance().playBG("MUSIC_1");
+			AudioManager.getInstance().playBG("MUSIC_BG");
 			this.addChild(mouseCursor);
 		}
 		
@@ -390,11 +390,15 @@
 		}
 		
 		public function onTutorialClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			tutorialDialog.visible = false;
 			setStateNewspaper();
 		}
 		
 		public function onNewspaperClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			newspaperDialog.visible = false;
 		}
 		
@@ -414,6 +418,8 @@
 		}
 		
 		public function onTilePurchase(event:FarmMapEvent){
+			AudioManager.getInstance().playEffect("EFFECT_LAND_CLICK");
+			
 			activeTile = event.getClickedTile();
 			occupyDialog.visible = true;
 			var level:int = currentPlayer.getLevelRequiredForPurchaseTile();
@@ -430,6 +436,8 @@
 		}
 		
 		public function onTileBuild(event:FarmMapEvent){
+			AudioManager.getInstance().playEffect("EFFECT_LAND_CLICK");
+			
 			activeTile = event.getClickedTile();
 			buildPanel.visible =true;
 			buildPanel.gotoAndPlay(0);
@@ -461,6 +469,8 @@
 		}
 		
 		public function onTileAddItem(event:FarmMapEvent){
+			AudioManager.getInstance().playEffect("EFFECT_LAND_CLICK");
+			
 			activeTile = event.getClickedTile();
 			var isSupply:Boolean = currentPlayer.isAllowToSupply(activeTile.getData());
 			var isExtra1:Boolean = currentPlayer.isAllowToExtra1(activeTile.getData());
@@ -483,13 +493,22 @@
 		}
 		
 		public function onTileHarvest(event:FarmMapEvent){
+			AudioManager.getInstance().playEffect("EFFECT_LAND_CLICK");
+			
 			activeTile = event.getClickedTile();
-			currentPlayer.harvest(event.getClickedTile().getData());
+			var receiveItem:Array = currentPlayer.harvest(event.getClickedTile().getData());	//array of ItemQuantityPair
+			var mcArray:Array = new Array();
+			for each(var itemPair:ItemQuantityPair in receiveItem){
+				mcArray.push(ItemPictureBuilder.createPopItem(itemPair.getItemId()));
+			}
+			farmMap.setPopItem(activeTile, mcArray);
 			farmMap.updateTile(event.getClickedTile());
 			currentPlayer.updateToServer();
 		}
 		
 		public function onShopClick(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_BUTTON_CLICK");
+			
 			if(!DragManager.getInstance().isDragging()){
 				shopDialog.visible = true;
 				shopDialog.gotoAndPlay(0);
@@ -535,6 +554,8 @@
 		}
 		
 		public function onCouponButtonClick(event:MouseEvent){
+			AudioManager.getInstance().playEffect("EFFECT_BUTTON_CLICK");
+			
 			couponExchangeDialog.visible = true;
 			couponExchangeDialog.gotoAndPlay(0);
 			var itemBoxList:Array = new Array();
@@ -588,6 +609,7 @@
 				}
 				itemBoxList.push(box);
 			}
+			
 			var allArray:Array = new Array();
 			allArray = allArray.concat(itemBoxList);
 			allArray = allArray.concat(availableBoxList);
@@ -601,38 +623,55 @@
 		}
 		
 		public function onSpecialCodeButtonClick(event:MouseEvent){
+			AudioManager.getInstance().playEffect("EFFECT_BUTTON_CLICK");
 			setStateSpecialCode();
 		}
 		
 		public function onSpeicalCodeClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			specialCodeDialog.visible = false;
 		}
 		
 		public function onSpecialCodeConfirm(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			specialCodeDialog.visible = false;
 			currentPlayer.specialCodeInput(specialCodeDialog.getCode());
 		}
 		
 		public function onCouponExchangeDialogClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			couponExchangeDialog.visible = false;
 		}
 		
 		public function onBuildPanelClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			buildPanel.visible = false;
 		}
 		
 		public function onAddItemPanelClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			addItemPanel.visible = false;
 		}
 		
 		public function onSupplyItem(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			addItemPanel.visible = false;
 			currentPlayer.supplyItem(activeTile.getData());
-			farmMap.updateTile(activeTile);			
+			farmMap.updateTile(activeTile);
+			var t:AbstractFarmTile = farmMap.getFarmTile(activeTile.getData());
+			t.setAddTile(ItemPictureBuilder.createAddTile(activeTile.getData().getBuilding().getSupplyId()));
 			currentPlayer.updateToServer();
 		}
 		
 		public function onExtraItem1(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			addItemPanel.visible = false;
 			var i:Item = activeTile.getData().getBuilding().getExtraItem1();
 			currentPlayer.extraItem(activeTile.getData(), i);
@@ -640,6 +679,8 @@
 		}
 	
 		public function onExtraItem2(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			addItemPanel.visible = false;
 			var i:Item = activeTile.getData().getBuilding().getExtraItem2();
 			currentPlayer.extraItem(activeTile.getData(), i);
@@ -647,6 +688,8 @@
 		}
 		
 		public function onMoveBuilding(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			trace("move");
 			addItemPanel.visible = false;
 			setPlayStateMoving();
@@ -654,17 +697,29 @@
 		}
 		
 		public function onOccupyClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			occupyDialog.visible = false;
 		}
 		
 		public function onOccupyConfirm(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			occupyDialog.visible = false;
 			currentPlayer.purchase(activeTile.getData());
 			farmMap.removeChild(activeTile);
+			var tileArray:Array = currentPlayer.getTile();
+			var index = tileArray.indexOf(activeTile.getData());
+			farmMap.getFarmTile(tileArray[index]).visible = true;
+			farmMap.getFarmTile(tileArray[index + 1]).visible = true;
+			farmMap.getFarmTile(tileArray[index + FarmMap.FARMTILE_X]).visible = true;
+			farmMap.getFarmTile(tileArray[index + FarmMap.FARMTILE_X + 1]).visible = true;
 			currentPlayer.updateToServer();
 		}
 		
 		public function onBuildPanelBuild(event:BuildEvent){
+			AudioManager.getInstance().playEffect("EFFECT_LAND_CLICK");
+			
 			buildPanel.visible = false;
 			var buildId:String = event.getBuildingId();
 			var b:Building = BuildingManager.getInstance().getMatchBuilding(buildId);
@@ -678,6 +733,8 @@
 			setPlayStateNormal();
 			var destinationTile:Tile = event.getClickedTile().getData();
 			if(currentPlayer.isMoveable(activeTile.getData(), destinationTile)){
+				AudioManager.getInstance().playEffect("EFFECT_LAND_CLICK");
+				
 				currentPlayer.moveTile(activeTile.getData(), destinationTile);
 				farmMap.updateTile(activeTile);
 				farmMap.updateTile(event.getClickedTile());
@@ -685,10 +742,14 @@
 		}
 		
 		public function onCouponExchangeViewCode(event:CouponEvent){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			currentPlayer.couponCodeView(event.getItemId());
 		}
 		
 		public function onCouponExchangeExchange(event:CouponEvent){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			couponConfirmDialog.visible = true;
 			var c:CouponExchangeItemBox2 = couponConfirmDialog.getCoupon();
 			var item:Item = ItemManager.getInstance().getMatchItem(event.getItemId());
@@ -702,14 +763,20 @@
 		}
 		
 		public function onShopDialogClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			shopDialog.visible = false;
 		}
 		
 		public function onShopDialogBuy(event:ShopEvent){
+			AudioManager.getInstance().playEffect("EFFECT_COIN");
+			
 			currentPlayer.buy(event.getItemId(), 1);
 		}
 		
 		public function onShopDialogSell(event:ShopEvent){
+			AudioManager.getInstance().playEffect("EFFECT_COIN");
+			
 			currentPlayer.sell(event.getItemId(), 1);
 		}
 		
@@ -721,6 +788,7 @@
 			var bigMC:MovieClip = bigLevelFont.getMovieClip(currentPlayer.getLevel().toString(), 
 							BitmapFont.H_CENTER | BitmapFont.TOP);
 			levelUpDialog.setNumberMC(bigMC);
+			AudioManager.getInstance().playEffect("EFFECT_LEVELUP");
 		}
 		
 		public function onUpdateExp(event:Event){
@@ -738,6 +806,8 @@
 		}
 		
 		public function onSpecialCodeSuccess(event:ItemPairEvent){
+			AudioManager.getInstance().playEffect("EFFECT_BONUS");
+			
 			getItemDialog.visible = true;
 			var mc:DisplayObject = ItemPictureBuilder.createItemGetPicture(event.getItemPair().getItemId());
 			getItemDialog.setData(mc, event.getItemPair());
@@ -753,6 +823,8 @@
 		}
 		
 		public function onGetItemDialogClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			getItemDialog.visible = false;
 		}
 		
@@ -766,28 +838,39 @@
 		}
 		
 		public function onCouponConfirmClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			couponConfirmDialog.visible = false;
 		}
 		
 		public function onCouponConfirmConfirm(event:CouponEvent){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			couponConfirmDialog.visible = false;
 			currentPlayer.exchange(event.getItemId());
 		}
 		
 		public function onCouponViewClose(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
 			couponViewDialog.visible = false;
 		}
 		
 		public function onExchangeSuccess(event:CodeViewEvent){
 			currentPlayer.couponCodeView(event.getItemId());
+			AudioManager.getInstance().playEffect("EFFECT_BONUS");
 		}
 		
 		public function onOptionBarOpen(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_BUTTON_CLICK");
+			
 			var expanded:OptionBarExpand = optionBar.getExpaned();
 			expanded.setOption(expanded.isSoundOn(), !farmMap.isMaxZoomIn(), !farmMap.isMaxZoomOut());
 		}
 		
 		public function onSoundOn(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_ON_OFF_CLICK");
+			
 			var expanded:OptionBarExpand = optionBar.getExpaned();
 			AudioManager.getInstance().setSound(false);
 			expanded.setOption(false, expanded.isZoomInEnable(), expanded.isZoomOutEnable());
@@ -800,12 +883,16 @@
 		}
 		
 		public function onZoomIn(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_ON_OFF_CLICK");
+			
 			var expanded:OptionBarExpand = optionBar.getExpaned();
 			farmMap.zoomIn();
 			expanded.setOption(expanded.isSoundOn(), !farmMap.isMaxZoomIn(), !farmMap.isMaxZoomOut());
 		}
 		
 		public function onZoomOut(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_ON_OFF_CLICK");
+			
 			var expanded:OptionBarExpand = optionBar.getExpaned();
 			farmMap.zoomOut();
 			expanded.setOption(expanded.isSoundOn(), !farmMap.isMaxZoomIn(), !farmMap.isMaxZoomOut());
