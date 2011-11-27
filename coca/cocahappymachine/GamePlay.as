@@ -499,7 +499,7 @@
 			var receiveItem:Array = currentPlayer.harvest(event.getClickedTile().getData());	//array of ItemQuantityPair
 			var mcArray:Array = new Array();
 			for each(var itemPair:ItemQuantityPair in receiveItem){
-				mcArray.push(ItemPictureBuilder.createPopItem(itemPair.getItemId()));
+				mcArray.push(ItemPictureBuilder.createPopItem(itemPair.getItem().getId()));
 			}
 			farmMap.setPopItem(activeTile, mcArray);
 			farmMap.updateTile(event.getClickedTile());
@@ -675,6 +675,9 @@
 			addItemPanel.visible = false;
 			var i:Item = activeTile.getData().getBuilding().getExtraItem1();
 			currentPlayer.extraItem(activeTile.getData(), i);
+			farmMap.updateTile(activeTile);
+			var t:AbstractFarmTile = farmMap.getFarmTile(activeTile.getData());
+			t.setAddTile(ItemPictureBuilder.createAddTile(activeTile.getData().getBuilding().getExtraItem1().getId()));
 			currentPlayer.updateToServer();
 		}
 	
@@ -684,6 +687,9 @@
 			addItemPanel.visible = false;
 			var i:Item = activeTile.getData().getBuilding().getExtraItem2();
 			currentPlayer.extraItem(activeTile.getData(), i);
+			farmMap.updateTile(activeTile);
+			var t:AbstractFarmTile = farmMap.getFarmTile(activeTile.getData());
+			t.setAddTile(ItemPictureBuilder.createAddTile(activeTile.getData().getBuilding().getExtraItem2().getId()));
 			currentPlayer.updateToServer();
 		}
 		

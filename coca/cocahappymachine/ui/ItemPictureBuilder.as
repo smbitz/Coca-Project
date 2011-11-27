@@ -128,6 +128,14 @@
 	import Resources.SupplyPelletFoodBubble;
 	import Resources.AddTileWater;
 	import Resources.TileAnimateNone;
+	import Resources.AddTileSappanWood;
+	import Resources.AddTilePelletFood;
+	import Resources.AddTileFertilizerA;
+	import Resources.AddTileFertilizerB;
+	import Resources.AddTileVaccineA;
+	import Resources.AddTileVaccineB;
+	import Resources.AddTileMicroorganismA;
+	import Resources.AddTileMicroorganismB;
 	
 	public class ItemPictureBuilder {
 		//Coupon Item id
@@ -214,6 +222,17 @@
 		private static const BUILD_TYPE_VAGE:String = "vege";
 		private static const BUILD_TYPE_MEAT:String = "meat";
 		private static const BUILD_TYPE_SEA:String = "sea";
+		
+		//Suppy item id
+		private static const SUPPLY_WATER:String = "160";
+		private static const SUPPLY_SAPPANWOOD:String = "170";
+		private static const SUPPLY_PELLETFOOD:String = "180";
+		private static const SUPPLY_FERTILEZER_A:String = "7010";
+		private static const SUPPLY_FERTILEZER_B:String = "7020";
+		private static const SUPPLY_VACCINE_A:String = "7030";
+		private static const SUPPLY_VACCINE_B:String = "7040";
+		private static const SUPPLY_MICROORGANISM_A:String = "7050";
+		private static const SUPPLY_MICROORGANISM_B:String = "7060";
 		
 		public function ItemPictureBuilder() {
 			// constructor code
@@ -586,7 +605,27 @@
 		}
 		
 		public static function createAddTile(itemId:String):MovieClip {
-			return new AddTileWater();
+			if(itemId==SUPPLY_WATER){
+				return new AddTileWater();
+			}else if(itemId==SUPPLY_SAPPANWOOD){
+				return new AddTileSappanWood();
+			}else if(itemId==SUPPLY_PELLETFOOD){
+				return new AddTilePelletFood();
+			}else if(itemId==SUPPLY_FERTILEZER_A){
+				return new AddTileFertilizerA();
+			}else if(itemId==SUPPLY_FERTILEZER_B){
+				return new AddTileFertilizerB();
+			}else if(itemId==SUPPLY_VACCINE_A){
+				return new AddTileVaccineA();
+			}else if(itemId==SUPPLY_VACCINE_B){
+				return new AddTileVaccineB();
+			}else if(itemId==SUPPLY_MICROORGANISM_A){
+				return new AddTileMicroorganismA();
+			}else if(itemId==SUPPLY_MICROORGANISM_B){
+				return new AddTileMicroorganismB();
+			}
+			
+			return null;
 		}
 		
 		public static function createTileAnimation(extraId:String):MovieClip{
@@ -594,7 +633,81 @@
 		}
 		
 		public static function createPopItem(itemId:String):MovieClip{
-			return new SupplyWaterBubble();
+			if(itemId==ITEM_MORNING_GLORY_SEED_ID){
+				return new ShopMorningGlorySeedItem();
+			}else if(itemId==ITEM_CHINESE_CABBAGE_SEED_ID){
+				return new ShopChineseCabbageSeedItem();
+			}else if(itemId==ITEM_PUMPKIN_SEED_ID){
+				return new ShopPumpkinSeedItem();
+			}else if(itemId==ITEM_BABY_CORN_SEED_ID){
+				return new ShopBabyCornSeedItem();
+			}else if(itemId==ITEM_STRAW_MUSHROOMS_SEED_ID){
+				return new ShopStrawMushroomsSeedItem();
+			}else if(itemId==ITEM_CHICKEN_BABY_ID){
+				return new ShopChickenBabyItem();
+			}else if(itemId==ITEM_PIG_BABY_ID){
+				return new ShopPigBabyItem();
+			}else if(itemId==ITEM_COW_BABY_ID){
+				return new ShopCowBabyItem();
+			}else if(itemId==ITEM_SHEEP_BABY_ID){
+				return new ShopSheepBabyItem();
+			}else if(itemId==ITEM_OSTRICH_BABY_ID){
+				return new ShopOstrichBabyItem();
+			}else if(itemId==ITEM_FISH_BABY_ID){
+				return new ShopFishBabyItem();
+			}else if(itemId==ITEM_SQUID_BABY_ID){
+				return new ShopSquidBabyItem();
+			}else if(itemId==ITEM_SCALLOPS_BABY_ID){
+				return new ShopScallopsBabyItem();
+			}else if(itemId==ITEM_SHRIMP_BABY_ID){
+				return new ShopShrimpBabyItem();
+			}else if(itemId==ITEM_OYSTER_BABY_ID){
+				return new ShopOysterBabyItem();
+			}else if(itemId==ITEM_WATER_ID){
+				return new ShopWaterItem();
+			}else if(itemId==ITEM_FANG_DRY_ID){
+				return new ShopSappanWoodItem();
+			}else if(itemId==ITEM_PELLET_FOOD_ID){
+				return new ShopPelletFoodItem();
+			}else if(itemId==ITEM_PEARL_ID){
+				return new ShopPearlItem();
+			}else if(itemId==ITEM_GOLD_ID){
+				return new ShopGoldItem();
+			}else if(itemId==ITEM_DIAMOND_ID){
+				return new ShopDiamondItem();
+			}else if(itemId==ITEM_MORNING_GLORY_ID){
+				return new ShopMorningGloryItem();
+			}else if(itemId==ITEM_CHINESE_CABBAGE_ID){
+				return new ShopChineseCabbageItem();
+			}else if(itemId==ITEM_PUMPKIN_ID){
+				return new ShopPumpkinItem();
+			}else if(itemId==ITEM_BABY_CORN_ID){
+				return new ShopBabyCornItem();
+			}else if(itemId==ITEM_STRAW_MUSHROOMS_ID){
+				return new ShopStrawMushroomsItem();
+			}else if(itemId==ITEM_CHICKEN_ID){
+				return new ShopChickenItem();
+			}else if(itemId==ITEM_PIG_ID){
+				return new ShopPigItem();
+			}else if(itemId==ITEM_COW_ID){
+				return new ShopCowItem();
+			}else if(itemId==ITEM_SHEEP_ID){
+				return new ShopSheepItem();
+			}else if(itemId==ITEM_OSTRICH_ID){
+				return new ShopOstrichItem();
+			}else if(itemId==ITEM_FISH_ID){
+				return new ShopFishItem();
+			}else if(itemId==ITEM_SQUID_ID){
+				return new ShopSquidItem();
+			}else if(itemId==ITEM_SCALLOPS_ID){
+				return new ShopScallopsItem();
+			}else if(itemId==ITEM_SHRIMP_ID){
+				return new ShopShrimpItem();
+			}else if(itemId==ITEM_OYSTER_ID){
+				return new ShopOysterItem();
+			}
+			
+			return null;
 		}
 	}
 }
