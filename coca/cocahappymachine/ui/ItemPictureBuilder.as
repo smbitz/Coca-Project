@@ -136,6 +136,8 @@
 	import Resources.AddTileVaccineB;
 	import Resources.AddTileMicroorganismA;
 	import Resources.AddTileMicroorganismB;
+	import Resources.TileAnimationExtraA;
+	import Resources.TileAnimateExtraB;
 	
 	public class ItemPictureBuilder {
 		//Coupon Item id
@@ -629,7 +631,13 @@
 		}
 		
 		public static function createTileAnimation(extraId:String):MovieClip{
-			return new TileAnimateNone();
+			if(extraId==SUPPLY_FERTILEZER_A||extraId==SUPPLY_VACCINE_A||extraId==SUPPLY_MICROORGANISM_A){
+				return new TileAnimationExtraA();
+			}else if(extraId==SUPPLY_FERTILEZER_B||extraId==SUPPLY_VACCINE_B||extraId==SUPPLY_MICROORGANISM_B){
+				return new TileAnimateExtraB();
+			}else {
+				return new TileAnimateNone();
+			}
 		}
 		
 		public static function createPopItem(itemId:String):MovieClip{

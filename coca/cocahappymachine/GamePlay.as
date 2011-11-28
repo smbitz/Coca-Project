@@ -207,6 +207,7 @@
 			newspaperDialog = new NewspaperDialog();
 
 			var context:LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
+			
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.dataFormat = URLLoaderDataFormat.TEXT;
 			urlLoader.addEventListener(Event.COMPLETE, onNewspaperComplete);
@@ -216,7 +217,19 @@
 			urlLoader.load(new URLRequest(url));
 			newspaperDialog.visible = false;
 			newspaperDialog.addEventListener(NewspaperDialog.DIALOG_CLOSE, onNewspaperClose);
+			
+			var urlLoaderPage2:URLLoader = new URLLoader();
+			urlLoaderPage2.dataFormat = URLLoaderDataFormat.TEXT;
+			urlLoaderPage2.addEventListener(Event.COMPLETE, onNewspaperPage2Complete);
+			urlLoaderPage2.addEventListener(IOErrorEvent.IO_ERROR, onNewspaperError);
+			urlLoaderPage2.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onNewspaperSecurityError);
+			var urlPage2:String = Config.getInstance().getData("NEWSPAPER_URL_PAGE_2");
+			urlLoaderPage2.load(new URLRequest(urlPage2));
+			newspaperDialog.visible = false;
+			newspaperDialog.addEventListener(NewspaperDialog.DIALOG_CLOSE, onNewspaperClose);
+			
 			this.addChild(newspaperDialog);
+			
 			specialCodeDialog = new SpecialCodeDialog();
 			specialCodeDialog.visible = false;
 			specialCodeDialog.addEventListener(SpecialCodeDialog.DIALOG_CLOSE, onSpeicalCodeClose);
@@ -912,6 +925,10 @@
 		
 		public function onNewspaperComplete(event:Event){
 			newspaperDialog.setHTML(event.target.data);
+		}
+		
+		public function onNewspaperPage2Complete(event:Event){
+			newspaperDialog.setHTMLPage2(event.target.data);
 		}
 		
 		public function onNewspaperError(event:IOErrorEvent){

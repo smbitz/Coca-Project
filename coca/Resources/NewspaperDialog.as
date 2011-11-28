@@ -13,6 +13,7 @@
 		public static const DIALOG_CLOSE:String = "DIALOG_CLOSE";
 		
 		public var html:TextField;
+		public var htmlPage2:TextField;
 		public var closeButton:SimpleButton;
 		
 		public function NewspaperDialog() {
@@ -25,6 +26,10 @@
 		
 		public function setHTML(d:String){
 			html.htmlText = d;
+		}
+		
+		public function setHTMLPage2(d:String){
+			htmlPage2.htmlText = d;
 		}
 	}
 	
