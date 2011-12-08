@@ -627,23 +627,28 @@
 		
 		//---- Update Player data to Server ----//
 		public function updateToServer(){
-			//Create player xml.
-			var xml:XML = <player facebook_id={this.facebookId} exp={this.exp} money={this.money} is_new={this.isNew}/>;
-			var xmlLand:XML = <land/>;
+			var checkValue:int;
+			
 			//getTileData and change millisec to sec.
+			var xmlLand:XML = <land/>;
 			for each(var tileData:Tile in this.tile){
+				checkValue+=(int(tileData.getProgress()/1000)+int(tileData.getSupply()/1000)+int(tileData.getRottenPeriod()/1000));
 				xmlLand.appendChild(<tile land_type={tileData.getLandType()} is_occupy={tileData.getIsOccupy()} building_id={tileData.getBuildingId()} progress={(tileData.getProgress()/1000)} supply_left={(tileData.getSupply()/1000)} extra_id={tileData.getExtraId()} rotten_period={(tileData.getRottenPeriod()/1000)}/>);
 			}
 			
 			//getBackpackItem
 			var xmlBackpack:XML = <backpack/>;
 			for each(var backpackItem:ItemQuantityPair in this.backpack){
+				checkValue-=int(backpackItem.getItemQty());
 				xmlBackpack.appendChild(<item id={backpackItem.getItemId()} quantity={backpackItem.getItemQty()}/>);
 			}
 			
+			//Create player xml.
+			var xml:XML = <player facebook_id={this.facebookId} exp={this.exp} money={this.money} is_new={this.isNew} c1={checkValue}/>;
+			
 			xml.appendChild(xmlLand);
 			xml.appendChild(xmlBackpack);
-
+			
 			var urlRequest:URLRequest = new URLRequest(Config.getInstance().getData("PLAYER_UPDATE_URL"));
 			urlRequest.data = xml;
 			urlRequest.contentType = "text/xml";

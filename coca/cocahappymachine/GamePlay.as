@@ -160,14 +160,17 @@
 			//init FarmMap which consist of playTile, decorated area, market place
 			farmMap = new FarmMap(s);
 			farmMap.setCurrentPlayer(currentPlayer);
+			
 			couponButton = new CouponButton();
 			couponButton.addEventListener(MouseEvent.CLICK, onCouponButtonClick);
 			couponButton.x = COUPONBUTTON_X;
 			couponButton.y = COUPONBUTTON_Y;
+			
 			specialCodeButton = new SpecialCodeButton();
 			specialCodeButton.addEventListener(MouseEvent.CLICK, onSpecialCodeButtonClick);
 			specialCodeButton.x = SPECIALCODEBUTTON_X;
 			specialCodeButton.y = SPECIALCODEBUTTON_Y;
+			
 			moneyUI = new MoneyUI();
 			moneyUI.setMoney(currentPlayer.getMoney());
 			moneyUI.x = MONEYUI_X;
@@ -185,6 +188,7 @@
 			expProgress.setProgress(currentPlayer.getExpProgress());
 			statusUI.setProgressMC(expProgress);
 			optionBar = new OptionBar();
+			optionBar.addEventListener(MouseEvent.CLICK, onOptionBarClick);
 			optionBar.addEventListener(OptionBar.OPEN, onOptionBarOpen);
 			var expanded:OptionBarExpand = optionBar.getExpaned();
 			expanded.addEventListener(OptionBarExpand.SOUND_ON, onSoundOn);
@@ -640,6 +644,10 @@
 			setStateSpecialCode();
 		}
 		
+		public function onOptionBarClick(event:MouseEvent){
+			AudioManager.getInstance().playEffect("EFFECT_BUTTON_CLICK");
+		}
+		
 		public function onSpeicalCodeClose(event:Event){
 			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
 			
@@ -722,7 +730,7 @@
 		}
 		
 		public function onOccupyConfirm(event:Event){
-			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			AudioManager.getInstance().playEffect("EFFECT_COIN");
 			
 			occupyDialog.visible = false;
 			currentPlayer.purchase(activeTile.getData());
@@ -881,8 +889,6 @@
 		}
 		
 		public function onOptionBarOpen(event:Event){
-			AudioManager.getInstance().playEffect("EFFECT_BUTTON_CLICK");
-			
 			var expanded:OptionBarExpand = optionBar.getExpaned();
 			expanded.setOption(expanded.isSoundOn(), !farmMap.isMaxZoomIn(), !farmMap.isMaxZoomOut());
 		}
