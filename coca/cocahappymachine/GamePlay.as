@@ -208,6 +208,7 @@
 			tutorialDialog.visible = false;
 			tutorialDialog.addEventListener(TutorialDialog.DIALOG_CLOSE, onTutorialClose);
 			this.addChild(tutorialDialog);
+			
 			newspaperDialog = new NewspaperDialog();
 
 			var context:LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
