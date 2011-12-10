@@ -47,7 +47,8 @@
 			urlLoader.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
 			urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onSecurityError);
 			var url:String = Config.getInstance().getData("BUILDING_URL");
-			urlLoader.load(new URLRequest(url));
+			var request:URLRequest = new URLRequest(url);
+			urlLoader.load(request);
 		}
 		
 		public function onXmlComplete(event:Event){

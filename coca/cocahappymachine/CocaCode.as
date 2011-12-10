@@ -17,11 +17,12 @@
 	import cocahappymachine.util.InputableDebugConsole;
 	import cocahappymachine.util.DebugEvent;
 	import cocahappymachine.util.DragManager;
-	
+	import cocahappymachine.ui.LoadingPage;	
+	import cocahappymachine.ui.LoadEvent;
 	
 	public class CocaCode extends MovieClip {
 		
-		private var loadDialog:LoadingDialog;
+		private var loadDialog:LoadingPage;
 		private var state:int;
 		
 		public function CocaCode() {
@@ -41,12 +42,17 @@
 			SystemConstructor.getInstance().setPlayerName(facebookName);
 			*/
 			
+			SystemConstructor.getInstance().addEventListener(SystemConstructor.LOAD_PROGRESS, onLoadProgress);
 			SystemConstructor.getInstance().setFacebookId("2222");
 			SystemConstructor.getInstance().setPlayerName("Name");
 			
 			SystemConstructor.getInstance().construct(onSystemComplete);
 			Debug.getInstance().debug("Load Data Complete");
 		}		
+		
+		public function onLoadProgress(event:LoadEvent){
+			loadDialog.setPercent(event.getProgress());
+		}
 
 		public function onSystemComplete(player:Player){
 			Debug.getInstance().debug("all load complete");
@@ -54,7 +60,7 @@
 		}
 		
 		private function startLoading(){
-			loadDialog = new LoadingDialog();
+			loadDialog = new LoadingPage();
 			this.addChild(loadDialog);
 		}
 		

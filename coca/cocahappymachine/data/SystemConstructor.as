@@ -11,11 +11,14 @@
 	import flash.display.Loader;
 	import flash.system.LoaderContext;
 	import flash.system.ApplicationDomain;
+	import flash.events.EventDispatcher;
+	import cocahappymachine.ui.LoadEvent;
 
 
 	//Instanctiate all necessary data using in application, then callback to one function
-	public class SystemConstructor {
+	public class SystemConstructor extends EventDispatcher {
 		
+		public static const LOAD_PROGRESS:String = "LOAD_PROGRESS";
 		private static var instance:SystemConstructor = null;
 		
 		private var facebookId:String;
@@ -118,7 +121,27 @@
 			}
 		}
 		
+		private function getPercentComplete():int {
+			var count:int = 0;
+			if(iManager.isLoadComplete()){
+				count++;
+			}
+			if(bManager.isLoadComplete()){
+				count++;
+			}
+			if(currentPlayer.isLoadComplete()){
+				count++;
+			}
+			if(aManager.isLoadComplete()){
+				count++;
+			}
+			if(isAsset){
+				count++;
+			}
+			return int(count * 100 / 4);			
+		}
 		private function isAllLoadComplete():Boolean{
+			this.dispatchEvent(new LoadEvent(LOAD_PROGRESS, getPercentComplete()));
 			if(iManager.isLoadComplete() && bManager.isLoadComplete() && 
 			   currentPlayer.isLoadComplete() && aManager.isLoadComplete() && isAsset){
 				manageData();
