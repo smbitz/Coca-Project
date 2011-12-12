@@ -100,6 +100,13 @@
 		private static const ADDITEMPANEL_POSITIONY_MIN:int = 220;
 		private static const ADDITEMPANEL_POSITIONY_MAX:int = 550;
 		
+		private static const FIRST_TUTORIAL_1:int = 0;
+		private static const FIRST_TUTORIAL_2:int = 1;
+		private static const FIRST_TUTORIAL_3:int = 2;
+		private static const FIRST_TUTORIAL_4:int = 3;
+		private static const FIRST_TUTORIAL_5:int = 4;
+		private static const FIRST_TUTORIAL_6:int = 5;
+		
 		private var currentPlayer:Player;
 		
 		private var tutorialDialog:TutorialDialog;
@@ -141,6 +148,8 @@
 		private var bigLevelFont:BitmapFont;
 		private var smallLevelFont:BitmapFont;
 		
+		private var currentTutorialPage:int;
+		
 		public function GamePlay(s:Stage) {
 			currentPlayer = SystemConstructor.getInstance().getCurrentPlayer();
 			currentPlayer.addEventListener(Player.LEVELUP, onLevelUp);
@@ -154,9 +163,13 @@
 			mouseCursor = new MouseCursor();
 			mouseCursor.mouseEnabled = false;
 			Mouse.hide();
+			
+			currentTutorialPage = FIRST_TUTORIAL_1;
+			
 			//---- init interface ----
 			bigLevelFont = new BitmapFont(new BigLevelBitmapConstructor());
 			smallLevelFont = new BitmapFont(new SmallLevelBitmapConstructor());
+			
 			//init FarmMap which consist of playTile, decorated area, market place
 			farmMap = new FarmMap(s);
 			farmMap.setCurrentPlayer(currentPlayer);
@@ -202,11 +215,14 @@
 			this.addChild(specialCodeButton);
 			this.addChild(moneyUI);
 			this.addChild(statusUI);
-			this.addChild(optionBar);			
+			this.addChild(optionBar);
+			
 			//---- init all dialog ----
 			tutorialDialog = new TutorialDialog();
 			tutorialDialog.visible = false;
 			tutorialDialog.addEventListener(TutorialDialog.DIALOG_CLOSE, onTutorialClose);
+			tutorialDialog.addEventListener(TutorialDialog.NEXT_BUTTON, onNextButtonClick);
+			tutorialDialog.addEventListener(TutorialDialog.BACK_BUTTON, onBackButtonClick);
 			this.addChild(tutorialDialog);
 			
 			newspaperDialog = new NewspaperDialog();
@@ -232,7 +248,6 @@
 			urlLoaderPage2.load(new URLRequest(urlPage2));
 			newspaperDialog.visible = false;
 			newspaperDialog.addEventListener(NewspaperDialog.DIALOG_CLOSE, onNewspaperClose);
-			
 			this.addChild(newspaperDialog);
 			
 			specialCodeDialog = new SpecialCodeDialog();
@@ -240,6 +255,7 @@
 			specialCodeDialog.addEventListener(SpecialCodeDialog.DIALOG_CLOSE, onSpeicalCodeClose);
 			specialCodeDialog.addEventListener(SpecialCodeDialog.DIALOG_CONFIRM, onSpecialCodeConfirm);
 			this.addChild(specialCodeDialog);
+			
 			couponExchangeDialog = new CouponExchangeDialog();
 			couponExchangeDialog.visible = false;
 			couponExchangeDialog.addEventListener(CouponExchangeDialog.DIALOG_CLOSE, onCouponExchangeDialogClose);
@@ -412,6 +428,74 @@
 			
 			tutorialDialog.visible = false;
 			setStateNewspaper();
+		}
+		
+		public function onNextButtonClick(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
+			switch(currentTutorialPage){
+				case FIRST_TUTORIAL_1:
+				tutorialDialog.tutorialPage1.visible = false;
+				tutorialDialog.tutorialPage2.visible = true;
+				tutorialDialog.backButton.visible = true;
+				currentTutorialPage = FIRST_TUTORIAL_2;
+					break;
+				case FIRST_TUTORIAL_2:
+				tutorialDialog.tutorialPage2.visible = false;
+				tutorialDialog.tutorialPage3.visible = true;
+				currentTutorialPage = FIRST_TUTORIAL_3;
+					break;
+				case FIRST_TUTORIAL_3:
+				tutorialDialog.tutorialPage3.visible = false;
+				tutorialDialog.tutorialPage4.visible = true;
+				currentTutorialPage = FIRST_TUTORIAL_4;
+					break;
+				case FIRST_TUTORIAL_4:
+				tutorialDialog.tutorialPage4.visible = false;
+				tutorialDialog.tutorialPage5.visible = true;
+				currentTutorialPage = FIRST_TUTORIAL_5;
+					break;
+				case FIRST_TUTORIAL_5:
+				tutorialDialog.tutorialPage5.visible = false;
+				tutorialDialog.tutorialPage6.visible = true;
+				tutorialDialog.nextButton.visible = false;
+				currentTutorialPage = FIRST_TUTORIAL_6;
+					break;
+			}
+		}
+		
+		public function onBackButtonClick(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
+			
+			switch(currentTutorialPage){
+				case FIRST_TUTORIAL_6:
+				tutorialDialog.tutorialPage6.visible = false;
+				tutorialDialog.tutorialPage5.visible = true;
+				tutorialDialog.nextButton.visible = true;
+				currentTutorialPage = FIRST_TUTORIAL_5;
+					break;
+				case FIRST_TUTORIAL_5:
+				tutorialDialog.tutorialPage5.visible = false;
+				tutorialDialog.tutorialPage4.visible = true;
+				currentTutorialPage = FIRST_TUTORIAL_4;
+					break;
+				case FIRST_TUTORIAL_4:
+				tutorialDialog.tutorialPage4.visible = false;
+				tutorialDialog.tutorialPage3.visible = true;
+				currentTutorialPage = FIRST_TUTORIAL_3;
+					break;
+				case FIRST_TUTORIAL_3:
+				tutorialDialog.tutorialPage3.visible = false;
+				tutorialDialog.tutorialPage2.visible = true;
+				currentTutorialPage = FIRST_TUTORIAL_2;
+					break;
+				case FIRST_TUTORIAL_2:
+				tutorialDialog.tutorialPage2.visible = false;
+				tutorialDialog.tutorialPage1.visible = true;
+				tutorialDialog.backButton.visible = false;
+				currentTutorialPage = FIRST_TUTORIAL_1;
+					break;
+			}
 		}
 		
 		public function onNewspaperClose(event:Event){

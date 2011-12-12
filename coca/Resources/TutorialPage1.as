@@ -8,7 +8,6 @@
 		
 		public function TutorialPage1() {
 			// constructor code
-			this.visible = false;
 		}
 	}
 	

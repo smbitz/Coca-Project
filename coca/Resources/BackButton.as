@@ -8,6 +8,7 @@
 		
 		public function BackButton() {
 			// constructor code
+			this.visible = false;
 		}
 	}
 	
