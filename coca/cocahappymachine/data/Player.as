@@ -39,21 +39,21 @@
 		private static const ITEM_ID_MICROORGANISM_B:String = "7060";
 		
 		//Item id for check extra
-		private static const ITEM_ID_MORNING_GLORY:String = "220";
-		private static const ITEM_ID_CHINESE_CABBAGE:String = "230";
-		private static const ITEM_ID_PUMPKIN:String = "240";
-		private static const ITEM_ID_BABY_CORN:String = "250";
-		private static const ITEM_ID_STRAW_MUSHROOMS:String = "260";
-		private static const ITEM_ID_CHICKEN:String = "270";
-		private static const ITEM_ID_PIG:String = "280";
-		private static const ITEM_ID_COW:String = "290";
-		private static const ITEM_ID_SHEEP:String = "300";
-		private static const ITEM_ID_OSTRICH:String = "310";
-		private static const ITEM_ID_FISH:String = "320";
-		private static const ITEM_ID_SQUID:String = "330";
-		private static const ITEM_ID_SCALLOPS:String = "340";
-		private static const ITEM_ID_SHRIMP:String = "350";
-		private static const ITEM_ID_OYSTER:String = "360";
+		private static const ITEM_ID_MORNING_GLORY:String = "160";
+		private static const ITEM_ID_CHINESE_CABBAGE:String = "170";
+		private static const ITEM_ID_PUMPKIN:String = "180";
+		private static const ITEM_ID_BABY_CORN:String = "190";
+		private static const ITEM_ID_STRAW_MUSHROOMS:String = "200";
+		private static const ITEM_ID_CHICKEN:String = "210";
+		private static const ITEM_ID_PIG:String = "220";
+		private static const ITEM_ID_COW:String = "230";
+		private static const ITEM_ID_SHEEP:String = "240";
+		private static const ITEM_ID_OSTRICH:String = "250";
+		private static const ITEM_ID_FISH:String = "260";
+		private static const ITEM_ID_SQUID:String = "270";
+		private static const ITEM_ID_SCALLOPS:String = "280";
+		private static const ITEM_ID_SHRIMP:String = "290";
+		private static const ITEM_ID_OYSTER:String = "300";
 		
 		private var facebookId:String;
 		private var exp:int;
@@ -75,7 +75,6 @@
 		private static const QTY_USE_SUPPLY:int = 1;
 		private static const QTY_USE_EXTRA:int = 1;
 		private static const BUY_EACH_AREA:int = 4;
-		private static const ROTTED_ITEM_QTY_PERCENT:Number = 0.5;
 		private static const QTY_START_FARM_PLAYER:int = 16;
 		private static const NOT_SELL_VALUE_1:String = "coupon";
 		private static const NOT_SELL_VALUE_2:String = "special";
@@ -249,7 +248,9 @@
 		
 		//---- Harvest completed building on that tile ----//
 		public function harvest(t:Tile){
-			if(t.getBuildingStatus()==Tile.BUILDING_COMPLETED||t.getBuildingStatus()==Tile.BUILDING_ROTTED){
+			var getYieldMoney:int = t.getBuilding().generateYieldMoney();
+			
+			if(t.getBuildingStatus()==Tile.BUILDING_COMPLETED){
 				//Harvest Yield Item
 				var getYieldItem:Array = t.getBuilding().generateYieldItem();
 				var getTileExtraId:String = t.getExtraId();
@@ -277,18 +278,8 @@
 					if(itemPositionBackpack>=0){
 						var currentBackpackQty:int = this.backpack[itemPositionBackpack].getItemQty();
 						
-						//If tile rotted get 50% of item quantity.
-						if(t.getBuildingStatus()==Tile.BUILDING_ROTTED){
-							yieldItemQty = Math.round(yieldItemQty*ROTTED_ITEM_QTY_PERCENT);
-						}
-						
 						this.backpack[itemPositionBackpack].setItemQty(currentBackpackQty+yieldItemQty);
 					}else{
-						//If tile rotted get 50% of item quantity.
-						if(t.getBuildingStatus()==Tile.BUILDING_ROTTED){
-							yieldItemQty = Math.round(yieldItemQty*ROTTED_ITEM_QTY_PERCENT);
-						}
-						
 						var b:ItemQuantityPair = new ItemQuantityPair();
 						b.setItemQty(yieldItemQty);
 						b.setItem(arrayGetYieldItem.getItem());
@@ -298,13 +289,14 @@
 				}
 				
 				//Harvest Money
-				var getYieldMoney:int = t.getBuilding().generateYieldMoney();
+				this.money += getYieldMoney;
 				
-				//If tile rotted get 50% of item quantity.
-				if(t.getBuildingStatus()==Tile.BUILDING_ROTTED){
-					getYieldMoney = Math.round(getYieldMoney*ROTTED_ITEM_QTY_PERCENT);
-				}
-				
+				//Clear Tile
+				t.clearTile();
+				this.reciveExp(RECEIVE_EXP_HARVEST);
+				return getYieldItem;
+			}else if(t.getBuildingStatus()==Tile.BUILDING_ROTTED){
+				//Harvest Money
 				this.money += getYieldMoney;
 				
 				//Clear Tile

@@ -9,6 +9,7 @@
 	public class OptionBar extends MovieClip {
 		
 		public static const OPEN:String = "OPEN";
+		public static const CLICK:String = "CLICK";
 		
 		public var expandedMC:OptionBarExpand;
 		public var button:SimpleButton;
@@ -19,6 +20,8 @@
 		}
 		
 		public function onClick(event:MouseEvent){
+			this.dispatchEvent(new Event(CLICK));
+			
 			expandedMC.visible = !expandedMC.visible;
 			if(expandedMC.visible){
 				this.dispatchEvent(new Event(OPEN));

@@ -50,7 +50,7 @@
 		private function onXmlComplete(event:Event){
 			//get list of building node
 			var dataXml:XML = new XML(event.target.data);
-			
+
 			//for each building node
 			for each(var item_root:XML in dataXml.item){
 				//create new building

@@ -201,8 +201,8 @@
 			expProgress.setProgress(currentPlayer.getExpProgress());
 			statusUI.setProgressMC(expProgress);
 			optionBar = new OptionBar();
-			optionBar.addEventListener(MouseEvent.CLICK, onOptionBarClick);
 			optionBar.addEventListener(OptionBar.OPEN, onOptionBarOpen);
+			optionBar.addEventListener(OptionBar.CLICK, onOptionBarClick);
 			var expanded:OptionBarExpand = optionBar.getExpaned();
 			expanded.addEventListener(OptionBarExpand.SOUND_ON, onSoundOn);
 			expanded.addEventListener(OptionBarExpand.SOUND_OFF, onSoundOff);
@@ -339,13 +339,13 @@
 			shopDialog.addEventListener(ShopDialog.BUY, onShopDialogBuy);
 			shopDialog.addEventListener(ShopDialog.SELL, onShopDialogSell);
 			sellPaging = new Paging();
-			sellPaging.setGap(90, 200);
-			sellPaging.setItemPerPage(6, 1);
+			sellPaging.setGap(115, 200);
+			sellPaging.setItemPerPage(5, 1);
 			sellPaging.setLeftRightButton(shopDialog.getSellLeftButton(), shopDialog.getSellRightButton());
 			shopDialog.setSellPaging(sellPaging);
 			buyPaging = new Paging();
-			buyPaging.setGap(90, 200);
-			buyPaging.setItemPerPage(6, 1);
+			buyPaging.setGap(115, 200);
+			buyPaging.setItemPerPage(5, 1);
 			buyPaging.setLeftRightButton(shopDialog.getBuyLeftButton(), shopDialog.getBuyRightButton());
 			shopDialog.setBuyPaging(buyPaging);
 			shopDialog.visible = false;
@@ -637,6 +637,10 @@
 					}
 					buyBoxList.push(buyBox);
 				}
+				
+				//Sort Sell Item
+				sellItem.sort(sortOnItemId);
+				
 				for each(var backpack:ItemQuantityPair in sellItem){
 					var sellBox:ShopSellItemBox = new ShopSellItemBox();
 					sellBox.setPicture(ItemPictureBuilder.createShopItemBoxPicture(backpack.getItem()));
@@ -652,6 +656,19 @@
 				buyPaging.setCurrentPage(0);
 				shopDialog.setBuyItemBox(buyBoxList);
 				shopDialog.setSellItemBox(sellBoxList);
+			}
+		}
+		
+		public function sortOnItemId(a:ItemQuantityPair,b:ItemQuantityPair):Number{
+			var aItemId:Number = Number(a.getItemId());
+			var bItemId:Number = Number(b.getItemId());
+		
+			if(aItemId > bItemId) {
+				return 1;
+			} else if(aItemId < bItemId) {
+				return -1;
+			} else  {
+				return 0;
 			}
 		}
 		
@@ -727,10 +744,6 @@
 		public function onSpecialCodeButtonClick(event:MouseEvent){
 			AudioManager.getInstance().playEffect("EFFECT_BUTTON_CLICK");
 			setStateSpecialCode();
-		}
-		
-		public function onOptionBarClick(event:MouseEvent){
-			AudioManager.getInstance().playEffect("EFFECT_BUTTON_CLICK");
 		}
 		
 		public function onSpeicalCodeClose(event:Event){
@@ -872,6 +885,7 @@
 			c.setItemQuantity(currentPlayer.getItemQuantity(itemExchange.getItem()));
 			c.setItemRequire(itemExchange.getQuantity());
 			c.setPicture(ItemPictureBuilder.createCouponExchangeItemBox2Picture(item));
+			currentPlayer.updateToServer();
 		}
 		
 		public function onShopDialogClose(event:Event){
@@ -976,6 +990,10 @@
 		public function onOptionBarOpen(event:Event){
 			var expanded:OptionBarExpand = optionBar.getExpaned();
 			expanded.setOption(expanded.isSoundOn(), !farmMap.isMaxZoomIn(), !farmMap.isMaxZoomOut());
+		}
+		
+		public function onOptionBarClick(event:Event){
+			AudioManager.getInstance().playEffect("EFFECT_BUTTON_CLICK");
 		}
 		
 		public function onSoundOn(event:Event){

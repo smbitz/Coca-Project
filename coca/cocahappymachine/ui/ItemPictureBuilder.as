@@ -190,27 +190,27 @@
 		private static const ITEM_SCALLOPS_BABY_ID:String = "130";
 		private static const ITEM_SHRIMP_BABY_ID:String = "140";
 		private static const ITEM_OYSTER_BABY_ID:String = "150";
-		private static const ITEM_WATER_ID:String = "160";
-		private static const ITEM_FANG_DRY_ID:String = "170";
-		private static const ITEM_PELLET_FOOD_ID:String = "180";
-		private static const ITEM_PEARL_ID:String = "190";
-		private static const ITEM_GOLD_ID:String = "200";
-		private static const ITEM_DIAMOND_ID:String = "210";
-		private static const ITEM_MORNING_GLORY_ID:String = "220";
-		private static const ITEM_CHINESE_CABBAGE_ID:String = "230";
-		private static const ITEM_PUMPKIN_ID:String = "240";
-		private static const ITEM_BABY_CORN_ID:String = "250";
-		private static const ITEM_STRAW_MUSHROOMS_ID:String = "260";
-		private static const ITEM_CHICKEN_ID:String = "270";
-		private static const ITEM_PIG_ID:String = "280";
-		private static const ITEM_COW_ID:String = "290";
-		private static const ITEM_SHEEP_ID:String = "300";
-		private static const ITEM_OSTRICH_ID:String = "310";
-		private static const ITEM_FISH_ID:String = "320";
-		private static const ITEM_SQUID_ID:String = "330";
-		private static const ITEM_SCALLOPS_ID:String = "340";
-		private static const ITEM_SHRIMP_ID:String = "350";
-		private static const ITEM_OYSTER_ID:String = "360";
+		private static const ITEM_MORNING_GLORY_ID:String = "160";
+		private static const ITEM_CHINESE_CABBAGE_ID:String = "170";
+		private static const ITEM_PUMPKIN_ID:String = "180";
+		private static const ITEM_BABY_CORN_ID:String = "190";
+		private static const ITEM_STRAW_MUSHROOMS_ID:String = "200";
+		private static const ITEM_CHICKEN_ID:String = "210";
+		private static const ITEM_PIG_ID:String = "220";
+		private static const ITEM_COW_ID:String = "230";
+		private static const ITEM_SHEEP_ID:String = "240";
+		private static const ITEM_OSTRICH_ID:String = "250";
+		private static const ITEM_FISH_ID:String = "260";
+		private static const ITEM_SQUID_ID:String = "270";
+		private static const ITEM_SCALLOPS_ID:String = "280";
+		private static const ITEM_SHRIMP_ID:String = "290";
+		private static const ITEM_OYSTER_ID:String = "300";
+		private static const ITEM_WATER_ID:String = "310";
+		private static const ITEM_FANG_DRY_ID:String = "320";
+		private static const ITEM_PELLET_FOOD_ID:String = "330";
+		private static const ITEM_PEARL_ID:String = "340";
+		private static const ITEM_GOLD_ID:String = "350";
+		private static const ITEM_DIAMOND_ID:String = "360";
 		
 		//Special item id
 		private static const ITEM_FERTILIZER_A_ID:String = "7010";
@@ -226,9 +226,9 @@
 		private static const BUILD_TYPE_SEA:String = "sea";
 		
 		//Suppy item id
-		private static const SUPPLY_WATER:String = "160";
-		private static const SUPPLY_SAPPANWOOD:String = "170";
-		private static const SUPPLY_PELLETFOOD:String = "180";
+		private static const SUPPLY_WATER:String = "310";
+		private static const SUPPLY_SAPPANWOOD:String = "320";
+		private static const SUPPLY_PELLETFOOD:String = "330";
 		private static const SUPPLY_FERTILEZER_A:String = "7010";
 		private static const SUPPLY_FERTILEZER_B:String = "7020";
 		private static const SUPPLY_VACCINE_A:String = "7030";
