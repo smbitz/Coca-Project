@@ -16,14 +16,18 @@
 		public var closeButton:SimpleButton;
 		public var backButton:SimpleButton;
 		public var nextButton:SimpleButton;
-		public var tutorialText:TextField;
-		public var pageText:TextField;
 		public var tutorialPage1:TutorialPage1;
 		public var tutorialPage2:TutorialPage2;
 		public var tutorialPage3:TutorialPage3;
 		public var tutorialPage4:TutorialPage4;
 		public var tutorialPage5:TutorialPage5;
 		public var tutorialPage6:TutorialPage6;
+		public var pageNumber1:TutorialPageNumber1;
+		public var pageNumber2:TutorialPageNumber2;
+		public var pageNumber3:TutorialPageNumber3;
+		public var pageNumber4:TutorialPageNumber4;
+		public var pageNumber5:TutorialPageNumber5;
+		public var pageNumber6:TutorialPageNumber6;
 		
 		public function TutorialDialog() {
 			closeButton.addEventListener(MouseEvent.CLICK, onCloseButtonClick);

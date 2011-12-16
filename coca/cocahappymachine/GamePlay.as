@@ -436,28 +436,38 @@
 			switch(currentTutorialPage){
 				case FIRST_TUTORIAL_1:
 				tutorialDialog.tutorialPage1.visible = false;
+				tutorialDialog.pageNumber1.visible = false;
 				tutorialDialog.tutorialPage2.visible = true;
+				tutorialDialog.pageNumber2.visible = true;
 				tutorialDialog.backButton.visible = true;
 				currentTutorialPage = FIRST_TUTORIAL_2;
 					break;
 				case FIRST_TUTORIAL_2:
 				tutorialDialog.tutorialPage2.visible = false;
+				tutorialDialog.pageNumber2.visible = false;
 				tutorialDialog.tutorialPage3.visible = true;
+				tutorialDialog.pageNumber3.visible = true;
 				currentTutorialPage = FIRST_TUTORIAL_3;
 					break;
 				case FIRST_TUTORIAL_3:
 				tutorialDialog.tutorialPage3.visible = false;
+				tutorialDialog.pageNumber3.visible = false;
 				tutorialDialog.tutorialPage4.visible = true;
+				tutorialDialog.pageNumber4.visible = true;
 				currentTutorialPage = FIRST_TUTORIAL_4;
 					break;
 				case FIRST_TUTORIAL_4:
 				tutorialDialog.tutorialPage4.visible = false;
+				tutorialDialog.pageNumber4.visible = false;
 				tutorialDialog.tutorialPage5.visible = true;
+				tutorialDialog.pageNumber5.visible = true;
 				currentTutorialPage = FIRST_TUTORIAL_5;
 					break;
 				case FIRST_TUTORIAL_5:
 				tutorialDialog.tutorialPage5.visible = false;
+				tutorialDialog.pageNumber5.visible = false;
 				tutorialDialog.tutorialPage6.visible = true;
+				tutorialDialog.pageNumber6.visible = true;
 				tutorialDialog.nextButton.visible = false;
 				currentTutorialPage = FIRST_TUTORIAL_6;
 					break;
@@ -470,28 +480,38 @@
 			switch(currentTutorialPage){
 				case FIRST_TUTORIAL_6:
 				tutorialDialog.tutorialPage6.visible = false;
+				tutorialDialog.pageNumber6.visible = false;
 				tutorialDialog.tutorialPage5.visible = true;
+				tutorialDialog.pageNumber5.visible = true;
 				tutorialDialog.nextButton.visible = true;
 				currentTutorialPage = FIRST_TUTORIAL_5;
 					break;
 				case FIRST_TUTORIAL_5:
 				tutorialDialog.tutorialPage5.visible = false;
+				tutorialDialog.pageNumber5.visible = false;
 				tutorialDialog.tutorialPage4.visible = true;
+				tutorialDialog.pageNumber4.visible = true;
 				currentTutorialPage = FIRST_TUTORIAL_4;
 					break;
 				case FIRST_TUTORIAL_4:
 				tutorialDialog.tutorialPage4.visible = false;
+				tutorialDialog.pageNumber4.visible = false;
 				tutorialDialog.tutorialPage3.visible = true;
+				tutorialDialog.pageNumber3.visible = true;
 				currentTutorialPage = FIRST_TUTORIAL_3;
 					break;
 				case FIRST_TUTORIAL_3:
 				tutorialDialog.tutorialPage3.visible = false;
+				tutorialDialog.pageNumber3.visible = false;
 				tutorialDialog.tutorialPage2.visible = true;
+				tutorialDialog.pageNumber2.visible = true;
 				currentTutorialPage = FIRST_TUTORIAL_2;
 					break;
 				case FIRST_TUTORIAL_2:
 				tutorialDialog.tutorialPage2.visible = false;
+				tutorialDialog.pageNumber2.visible = false;
 				tutorialDialog.tutorialPage1.visible = true;
+				tutorialDialog.pageNumber1.visible = true;
 				tutorialDialog.backButton.visible = false;
 				currentTutorialPage = FIRST_TUTORIAL_1;
 					break;
