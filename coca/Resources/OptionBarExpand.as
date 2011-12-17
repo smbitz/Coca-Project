@@ -4,6 +4,7 @@
 	import flash.display.SimpleButton;
 	import flash.events.MouseEvent;
 	import flash.events.Event;
+	import flash.display.StageDisplayState;
 	
 	
 	public class OptionBarExpand extends MovieClip {
@@ -17,12 +18,14 @@
 		public var soundOff:SimpleButton;
 		public var zoomIn:SimpleButton;
 		public var zoomOut:SimpleButton;
+		public var fullscreen:SimpleButton;
 		
 		public function OptionBarExpand() {
 			soundOn.addEventListener(MouseEvent.CLICK, onSoundOn);
 			soundOff.addEventListener(MouseEvent.CLICK, onSoundOff);
 			zoomIn.addEventListener(MouseEvent.CLICK, onZoomIn);
 			zoomOut.addEventListener(MouseEvent.CLICK, onZoomOut);
+			fullscreen.addEventListener(MouseEvent.CLICK, onFullscreen);
 		}
 		
 		public function isSoundOn():Boolean{
@@ -71,6 +74,11 @@
 		
 		public function onZoomOut(event:MouseEvent){
 			this.dispatchEvent(new Event(ZOOM_OUT));
+		}
+		
+		public function onFullscreen(event:MouseEvent){
+			trace("fullscreen");
+			this.stage.displayState = StageDisplayState.FULL_SCREEN;
 		}
 	}
 }

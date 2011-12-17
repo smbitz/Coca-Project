@@ -3,6 +3,7 @@
 	import flash.display.MovieClip;
 	import cocahappymachine.data.Building;
 	import flash.text.TextField;
+	import flash.filters.ColorMatrixFilter;
 	
 	
 	public class BuildItemBox extends MovieClip {
@@ -61,6 +62,13 @@
 				} else {
 					priceField.textColor = CANT_BUILD_COLOR;
 					isBuildable =false;
+					var m:Array = new Array();
+					m = m.concat([1, 0, 0, -0.3, 0]);
+					m = m.concat([0, 1, 0, -0.3, 0]);
+					m = m.concat([0, 0, 1, -0.3, 0]);
+					m = m.concat([0, 0, 0, 1, 0]);
+					var f:ColorMatrixFilter = new ColorMatrixFilter(m);
+					this.filters = [f];					
 				}
 			}
 		}

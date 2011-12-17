@@ -153,10 +153,14 @@
 				var tStatus:int = tileData.getBuildingStatus();
 				if(tStatus == Tile.BUILDING_EMPTY){
 					farmEvent = new FarmMapEvent(FarmMapEvent.TILE_BUILD);
-				} else if((tStatus == Tile.BUILDING_PROCESS1) || (tStatus == Tile.BUILDING_PROCESS2)){
-					farmEvent = new FarmMapEvent(FarmMapEvent.TILE_ADDITEM);
 				} else if((tStatus == Tile.BUILDING_COMPLETED) || (tStatus == Tile.BUILDING_ROTTED)){
 					farmEvent = new FarmMapEvent(FarmMapEvent.TILE_HARVEST);
+				} else if((tStatus == Tile.BUILDING_PROCESS1) || (tStatus == Tile.BUILDING_PROCESS2)){
+					if(tileData.getSupply() <= 0){
+						farmEvent = new FarmMapEvent(FarmMapEvent.TILE_SHOTCUTSUPPLY);
+					} else {
+						farmEvent = new FarmMapEvent(FarmMapEvent.TILE_ADDITEM);
+					}
 				} else {
 					throw new Error("cocahappymachine.ui.FarmMap onTileClick() : Unexpected case occur");
 				}
@@ -192,7 +196,9 @@
 			newTile.setData(tile.getData());
 			if((tile.getData().getBuilding() == null) || (tile.getData().getSupply() > 0)){
 				newTile.setBubble(null);
-			} else if(tile.getData().getSupply() <= 0){
+			} else if((tile.getData().getSupply() <= 0) && 
+					  ((tile.getData().getBuildingStatus() == Tile.BUILDING_PROCESS1)
+					   || (tile.getData().getBuildingStatus() == Tile.BUILDING_PROCESS2))){
 				newTile.setBubble(ItemPictureBuilder.createSupplyBubblePicture(tile.getData().getBuilding()));
 			}
 			newTile.setAnimate(ItemPictureBuilder.createTileAnimation(tile.getData().getExtraId()));

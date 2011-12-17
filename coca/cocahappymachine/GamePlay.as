@@ -392,6 +392,7 @@
 			farmMap.addEventListener(FarmMapEvent.TILE_BUILD, onTileBuild);
 			farmMap.addEventListener(FarmMapEvent.TILE_ADDITEM, onTileAddItem);
 			farmMap.addEventListener(FarmMapEvent.TILE_HARVEST, onTileHarvest);
+			farmMap.addEventListener(FarmMapEvent.TILE_SHOTCUTSUPPLY, onTileShotcutSupply);
 			farmMap.addEventListener(FarmMap.SHOP_CLICK, onShopClick);
 			farmMap.removeEventListener(FarmMapEvent.MOVE_DESTINATION, onMoveDestination);
 		}
@@ -795,6 +796,11 @@
 			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
 			
 			addItemPanel.visible = false;
+		}
+		
+		public function onTileShotcutSupply(event:FarmMapEvent){
+			activeTile = event.getClickedTile();
+			onSupplyItem(null);
 		}
 		
 		public function onSupplyItem(event:Event){

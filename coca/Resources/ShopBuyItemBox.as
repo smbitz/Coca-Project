@@ -7,6 +7,8 @@
 	import cocahappymachine.ui.ShopEvent;
 	import flash.text.TextFormat;
 	import flash.text.TextLineMetrics;
+	import flash.geom.Matrix;
+	import flash.filters.ColorMatrixFilter;
 	
 	
 	public class ShopBuyItemBox extends MovieClip {
@@ -68,6 +70,13 @@
 				priceField.textColor = CAN_BUY_COLOR;
 			} else {
 				priceField.textColor = CANT_BUY_COLOR;
+				var m:Array = new Array();
+				m = m.concat([1, 0, 0, -0.3, 0]);
+				m = m.concat([0, 1, 0, -0.3, 0]);
+				m = m.concat([0, 0, 1, -0.3, 0]);
+				m = m.concat([0, 0, 0, 1, 0]);
+				var f:ColorMatrixFilter = new ColorMatrixFilter(m);
+				this.filters = [f];
 			}
 		}
 		
