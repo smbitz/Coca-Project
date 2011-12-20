@@ -247,12 +247,12 @@
 		}
 		
 		//---- Harvest completed building on that tile ----//
-		public function harvest(t:Tile){
+		public function harvest(t:Tile):Array{
 			var getYieldMoney:int = t.getBuilding().generateYieldMoney();
+			var getYieldItem:Array = t.getBuilding().generateYieldItem();
 			
 			if(t.getBuildingStatus()==Tile.BUILDING_COMPLETED){
 				//Harvest Yield Item
-				var getYieldItem:Array = t.getBuilding().generateYieldItem();
 				var getTileExtraId:String = t.getExtraId();
 				var harvestPercentsExtraA:Number = (t.getBuilding().getExtra()[0].getResult())/100;
 				var harvestPercentsExtraB:Number = (t.getBuilding().getExtra()[1].getResult())/100;
@@ -313,7 +313,7 @@
 			var moneyToPurchase:int = getMoneyRequiredForPurchaseTile();
 			var levelToPurchase:int = getLevelRequiredForPurchaseTile();
 			
-			if(this.money>moneyToPurchase&&this.getLevel()>=levelToPurchase){
+			if(this.money>=moneyToPurchase&&this.getLevel()>=levelToPurchase){
 				//Calculate money
 				this.money -= moneyToPurchase;
 				
@@ -339,7 +339,7 @@
 				}
 			}
 			totalPlayerFarm -= QTY_START_FARM_PLAYER;
-			totalPlayerFarm = totalPlayerFarm/BUY_EACH_AREA;
+			totalPlayerFarm = (totalPlayerFarm/BUY_EACH_AREA)+1;
 			return totalPlayerFarm;
 		}
 		

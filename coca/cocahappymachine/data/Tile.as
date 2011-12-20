@@ -53,7 +53,8 @@
 			if(!isOccupy){
 				return BUILDING_NOTOCCUPY;
 			}
-			if(building){
+			
+			if(building!=null){
 				if(progress>=(building.getBuildPeriod()*0.5)){
 					//if progress >= 0 - 50%
 					return BUILDING_PROCESS1;

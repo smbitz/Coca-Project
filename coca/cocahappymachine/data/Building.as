@@ -172,7 +172,7 @@
 		}
 		
 		public function generateYieldMoney():int {
-			var totalYieldMoney = 0;
+			var totalYieldMoney:int = 0;
 			
 			for each(var arrayOfYieldItem:BuildingYieldItem in yieldItem){
 				if(arrayOfYieldItem.getId()=="money"){
