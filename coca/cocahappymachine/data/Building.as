@@ -144,7 +144,7 @@
 			return extraItem1;
 		}
 		
-		//---- return extra item1  ----//
+		//---- return extra item2  ----//
 		public function getExtraItem2():Item{
 			var extraItem2:Item = extra[1].getItem();
 			return extraItem2;

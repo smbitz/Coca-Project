@@ -11,6 +11,13 @@
 		private static const NUM_FULL_PERCEN:int = 1;
 		private static const NUM_SUPPY_OUT_PERCEN:int = 0;
 		
+		private static const LAND_TYPE_LAND:String = "land";
+		private static const LAND_TYPE_SEA:String = "sea";
+		
+		private static const BUILDING_TYPE_VEGE:String = "vege";
+		private static const BUILDING_TYPE_MEAT:String = "meat";
+		private static const BUILDING_TYPE_SEA:String = "sea";
+		
 		private var landType:String;
 		private var isOccupy:Boolean;
 		private var buildingId:String;
@@ -175,24 +182,24 @@
 		}
 		
 		//player.build(1, 1, "1");
-		public function build(building:Building){
-			this.buildingId = building.getId();
-			this.progress = building.getBuildPeriod();
+		public function build(buildingValue:Building){
+			this.buildingId = buildingValue.getId();
+			this.progress = buildingValue.getBuildPeriod();
 			this.supply = 0;
 			this.extraId = "NULL";
-			this.rottenPeriod = building.getRottenPeriod();
+			this.rottenPeriod = buildingValue.getRottenPeriod();
 			
-			this.setBuilding(BuildingManager.getInstance().getMatchBuilding(this.buildingId));
+			this.setBuilding(buildingValue);
 		}
 		
 		public function isAllowToBuild(building:Building):Boolean{
-			if(landType=="land" && building.getBuildingType()=="vege" && isOccupy==true||
-			   landType=="land" && building.getBuildingType()=="meat" && isOccupy==true||
-			   landType=="sea" && building.getBuildingType()=="sea" && isOccupy==true){
+			if(landType==LAND_TYPE_LAND && building.getBuildingType()==BUILDING_TYPE_VEGE && isOccupy==true||
+			   landType==LAND_TYPE_LAND && building.getBuildingType()==BUILDING_TYPE_MEAT && isOccupy==true||
+			   landType==LAND_TYPE_SEA && building.getBuildingType()==BUILDING_TYPE_SEA && isOccupy==true){
 				   return true;
-			   } else {
+			} else {
 				   return false;
-			   }
+			}
 		}
 		
 		public function clearTile(){
