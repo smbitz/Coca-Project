@@ -249,9 +249,11 @@
 		//---- Harvest completed building on that tile ----//
 		public function harvest(t:Tile):Array{
 			var getYieldMoney:int = t.getBuilding().generateYieldMoney();
-			var getYieldItem:Array = t.getBuilding().generateYieldItem();
+			var getYieldItem:Array;
 			
 			if(t.getBuildingStatus()==Tile.BUILDING_COMPLETED){
+				getYieldItem = t.getBuilding().generateYieldItem();
+				
 				//Harvest Yield Item
 				var getTileExtraId:String = t.getExtraId();
 				var harvestPercentsExtraA:Number = (t.getBuilding().getExtra()[0].getResult())/100;

@@ -78,7 +78,11 @@
 		
 		public function onFullscreen(event:MouseEvent){
 			trace("fullscreen");
-			this.stage.displayState = StageDisplayState.FULL_SCREEN;
+			if(this.stage.displayState==StageDisplayState.NORMAL){
+				this.stage.displayState = StageDisplayState.FULL_SCREEN;
+			}else{
+				this.stage.displayState = StageDisplayState.NORMAL
+			}
 		}
 	}
 }
