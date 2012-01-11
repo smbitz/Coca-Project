@@ -348,15 +348,20 @@
 		//---- Calculate and return money required for purchase tile ----//
 		public function getMoneyRequiredForPurchaseTile():int{
 			var currentPlayerFarm:int = getCurrentPlayerFarm();
-			var requireMoney:int = 500 + (500 * (Math.pow(currentPlayerFarm, 2)) );
+			var requireMoney:int = 5000 + (700 * (Math.pow(currentPlayerFarm, 3)) );
 			return requireMoney;
 		}
 		
 		//---- Calculate and return level required for purchase tile ----//
 		public function getLevelRequiredForPurchaseTile():int{
 			var currentPlayerFarm:int = getCurrentPlayerFarm();
-			var requireLevel:int = 5 * currentPlayerFarm;
+			var requireLevel:int = 7 * currentPlayerFarm;
 			return requireLevel;
+		}
+		
+		//---- Calculate exp for level up ----//
+		public function getCalculateExp(getValue:int):int{
+			return 200+(300*(Math.pow(getValue, 2)));
 		}
 		
 		public function isItemEnough(itemId:String, quantity:int):Boolean{
@@ -685,7 +690,7 @@
 			
 			while(checkExp>=expForNextLevel){
 				checkLevel++;
-				expForNextLevel = 50+(50*(Math.pow(checkLevel, 2)));
+				expForNextLevel = getCalculateExp( checkLevel );
 			}
 			
 			if(currentLevel<checkLevel){
@@ -702,7 +707,7 @@
 			
 			while(this.exp>=expForNextLevel){
 				currentPlayerLevel++;
-				expForNextLevel = 50+(50*(Math.pow(currentPlayerLevel, 2)));
+				expForNextLevel = getCalculateExp(currentPlayerLevel);
 			}
 			
 			return currentPlayerLevel;
@@ -732,10 +737,10 @@
 			if(this.getLevel()==FIRST_LEVEL){
 				expAtStartLevel = 0;
 			}else{
-				expAtStartLevel = 50+(50*(Math.pow((this.getLevel()-1), 2)));
+				expAtStartLevel = getCalculateExp(this.getLevel()-1);
 			}
 			
-			var expForNextLevel:int = 50+(50*(Math.pow(this.getLevel(), 2)));
+			var expForNextLevel:int = getCalculateExp(this.getLevel());
 			var diffExp:int = (expForNextLevel-expAtStartLevel);
 			var currentExp:int = this.exp-expAtStartLevel;
 			
