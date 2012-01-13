@@ -15,8 +15,8 @@
 	
 	public class FarmMap extends MovieClip implements DragConstrain {
 		
-		public static const ZOOM_STEP:Array = [0.6, 0.8, 1, 1.2];
-		public static const START_ZOOM_STEP:int = 1;
+		public static const ZOOM_STEP:Array = [0.48, 0.6, 0.8, 1, 1.2];
+		public static const START_ZOOM_STEP:int = 2;
 		
 		public static const SHOP_CLICK:String = "SHOP_CLICK";
 

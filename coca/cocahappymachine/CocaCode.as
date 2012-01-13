@@ -34,18 +34,18 @@
 //			this.addChild(debugConsole);
 			
 			//---- load data ----
-			/*
+			
 			var facebookId:String = LoaderInfo(this.root.loaderInfo).parameters.userFacebookId.toString();
 			var facebookName:String = LoaderInfo(this.root.loaderInfo).parameters.userFacebookName.toString();
 			
 			SystemConstructor.getInstance().setFacebookId(facebookId);
 			SystemConstructor.getInstance().setPlayerName(facebookName);
-			*/
 			
+			/*
 			SystemConstructor.getInstance().addEventListener(SystemConstructor.LOAD_PROGRESS, onLoadProgress);
 			SystemConstructor.getInstance().setFacebookId("2222");
 			SystemConstructor.getInstance().setPlayerName("Name");
-			
+			*/
 			SystemConstructor.getInstance().construct(onSystemComplete);
 			Debug.getInstance().debug("Load Data Complete");
 		}		
