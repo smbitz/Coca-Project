@@ -5,6 +5,7 @@
 	import flash.events.MouseEvent;
 	import flash.events.Event;
 	import cocahappymachine.ui.ShopEvent;
+	import cocahappymachine.ui.Paging;
 	
 	
 	public class ShopDialog extends MovieClip {
@@ -20,10 +21,19 @@
 		public var buyRightButton:SimpleButton;
 		public var sellLeftButton:SimpleButton;
 		public var sellRightButton:SimpleButton;
+		private var currentBuyPage:int;
+		private var currentSellPage:int;
 		
 		public function ShopDialog() {
 			closeButton.addEventListener(MouseEvent.CLICK, onCloseButtonClick);
 			this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			currentBuyPage = 0;
+			currentSellPage = 0;
+		}
+		
+		public function restoreCurrentPage(){
+			Paging(buyPaging.getChildAt(0)).setCurrentPage( currentBuyPage );
+			Paging(sellPaging.getChildAt(0)).setCurrentPage( currentSellPage );			
 		}
 		
 		public function onEnterFrame(event:Event){
@@ -33,6 +43,10 @@
 		}
 		
 		public function onCloseButtonClick(event:MouseEvent){
+			//reset paging
+			currentBuyPage = 0;
+			currentSellPage = 0;
+			
 			this.dispatchEvent(new Event(DIALOG_CLOSE));
 		}
 		
@@ -59,16 +73,21 @@
 		}
 		
 		public function onSell(event:ShopEvent){
+			currentSellPage = Paging(sellPaging.getChildAt(0)).getCurrentPage();
+			currentBuyPage = Paging(buyPaging.getChildAt(0)).getCurrentPage();
 			var e:ShopEvent = new ShopEvent(SELL);
 			e.setItemId(event.getItemId());
 			this.dispatchEvent(e);
 		}
 		
 		public function onBuy(event:ShopEvent){
+			currentSellPage = Paging(sellPaging.getChildAt(0)).getCurrentPage();
+			currentBuyPage = Paging(buyPaging.getChildAt(0)).getCurrentPage();
 			var e:ShopEvent = new ShopEvent(BUY);
 			e.setItemId(event.getItemId());
 			this.dispatchEvent(e);
 		}
+		
 		public function getBuyLeftButton():SimpleButton{
 			return buyLeftButton;
 		}

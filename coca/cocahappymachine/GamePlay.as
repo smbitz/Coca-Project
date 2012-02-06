@@ -570,6 +570,16 @@
 			buildPanel.setBuildItemBox(itemBox);
 			buildPaging.setItem(itemBox);
 			buildPaging.setCurrentPage(0);
+			//Filter land type sea.
+			if( tile.getLandType()==Tile.LAND_TYPE_SEA ){
+				if(buildPaging.getMaxPage()<buildPanel.getCurrentPage()){
+					buildPanel.setCurrentPage(buildPaging.getMaxPage()-1);
+				}else{
+					buildPanel.restoreCurrentPage();
+				}
+			}else{
+				buildPanel.restoreCurrentPage();
+			}
 		}
 		
 		public function createBuildItemBox(buildingArray:Array):Array{
@@ -677,6 +687,7 @@
 				buyPaging.setCurrentPage(0);
 				shopDialog.setBuyItemBox(buyBoxList);
 				shopDialog.setSellItemBox(sellBoxList);
+				shopDialog.restoreCurrentPage();
 			}
 		}
 		
@@ -922,7 +933,6 @@
 		
 		public function onShopDialogBuy(event:ShopEvent){
 			AudioManager.getInstance().playEffect("EFFECT_COIN");
-			
 			currentPlayer.buy(event.getItemId(), 1);
 		}
 		

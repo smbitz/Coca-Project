@@ -57,8 +57,13 @@
 		}
 
 		public function setCurrentPage(page:int){
+			//debug WHO SET, set to what?
 			currentPage = page;
 			calculate();
+		}
+		
+		public function getCurrentPage(){
+			return this.currentPage;
 		}
 		
 		private function calculate(){
@@ -107,16 +112,20 @@
 		}
 		
 		public function onLeft(event:MouseEvent){
+			//debug
 			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
 			
+			//show currentPage
 			currentPage--;
 			currentPage = Math.max(0, currentPage);
 			calculate();
 		}
 		
 		public function onRight(event:MouseEvent){
+			//debug
 			AudioManager.getInstance().playEffect("EFFECT_CHOOSE_CLICK");
 			
+			//show currentPage, maxPage
 			currentPage++;
 			var maxPage:int = getMaxPage();
 			currentPage = Math.min(currentPage, maxPage);

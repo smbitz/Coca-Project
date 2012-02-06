@@ -11,8 +11,8 @@
 		private static const NUM_FULL_PERCEN:int = 1;
 		private static const NUM_SUPPY_OUT_PERCEN:int = 0;
 		
-		private static const LAND_TYPE_LAND:String = "land";
-		private static const LAND_TYPE_SEA:String = "sea";
+		public static const LAND_TYPE_LAND:String = "land";
+		public static const LAND_TYPE_SEA:String = "sea";
 		
 		private static const BUILDING_TYPE_VEGE:String = "vege";
 		private static const BUILDING_TYPE_MEAT:String = "meat";
