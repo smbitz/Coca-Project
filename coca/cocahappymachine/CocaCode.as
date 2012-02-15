@@ -37,6 +37,7 @@
 			/*
 			var facebookId:String = LoaderInfo(this.root.loaderInfo).parameters.userFacebookId.toString();
 			var facebookName:String = LoaderInfo(this.root.loaderInfo).parameters.userFacebookName.toString();
+			var facebookGender:String = LoaderInfo(this.root.loaderInfo).parameters.userGender.toString();
 			
 			SystemConstructor.getInstance().setFacebookId(facebookId);
 			SystemConstructor.getInstance().setPlayerName(facebookName);

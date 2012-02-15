@@ -5,6 +5,7 @@
 	import flash.events.Event;
 	import cocahappymachine.ui.BuildEvent;
 	import flash.display.SimpleButton;
+	import cocahappymachine.ui.Paging;
 	
 	public class BuildPanel extends MovieClip {
 		
@@ -16,10 +17,16 @@
 		public var rightButton:SimpleButton;
 		public var paging:MovieClip;
 		public var bgMC:MovieClip;
+		private var currentPage:int;
 		
 		public function BuildPanel() {
 			closeButton.addEventListener(MouseEvent.CLICK, onCloseButtonClick);
 			this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			currentPage = 0;
+		}
+		
+		public function restoreCurrentPage(){
+			Paging(paging.getChildAt(0)).setCurrentPage( currentPage );	
 		}
 		
 		public function onEnterFrame(event:Event){
@@ -29,6 +36,9 @@
 		}
 		
 		public function onCloseButtonClick(event:MouseEvent){
+			//reset paging
+			currentPage = 0;
+			
 			this.dispatchEvent(new Event(DIALOG_CLOSE));
 		}
 		
@@ -55,6 +65,7 @@
 		}
 		
 		public function onItemBoxClick(event:MouseEvent){
+			currentPage = Paging(paging.getChildAt(0)).getCurrentPage();
 			var box:BuildItemBox = BuildItemBox(event.currentTarget);
 			var buildingIdToBuild:String = box.getBuildingId();
 			var bEvent:BuildEvent = new BuildEvent(BUILD);
@@ -64,6 +75,14 @@
 		
 		public function setPaging(p:MovieClip){
 			paging.addChild(p);
+		}
+		
+		public function setCurrentPage(setPageValue:int){
+			this.currentPage = setPageValue;
+		}
+		
+		public function getCurrentPage():int{
+			return currentPage;
 		}
 		
 		public function getLeftButton():SimpleButton{
