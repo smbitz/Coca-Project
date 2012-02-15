@@ -61,6 +61,9 @@
 			calculate();
 		}
 		
+		public function getCurrentPage():int {
+			return currentPage;
+		}
 		private function calculate(){
 			var pageSize:int = xGap * itemPerPageHorizontal;
 			var ySize:int = yGap * itemPerPageVertical;

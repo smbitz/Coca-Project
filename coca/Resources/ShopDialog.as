@@ -20,14 +20,17 @@
 		public var buyRightButton:SimpleButton;
 		public var sellLeftButton:SimpleButton;
 		public var sellRightButton:SimpleButton;
+		private var buyPage:int;
 		
 		public function ShopDialog() {
 			closeButton.addEventListener(MouseEvent.CLICK, onCloseButtonClick);
 			this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			buyPage = 0;
 		}
 		
 		public function onEnterFrame(event:Event){
 			if(this.currentFrame == this.totalFrames){
+				buyPaging.setCurrentPage(buyPage);
 				this.stop();
 			}
 		}
@@ -59,12 +62,15 @@
 		}
 		
 		public function onSell(event:ShopEvent){
+			//record page
+			buyPage = Paging(sellPaging).getCurrentPage();
 			var e:ShopEvent = new ShopEvent(SELL);
 			e.setItemId(event.getItemId());
 			this.dispatchEvent(e);
 		}
 		
 		public function onBuy(event:ShopEvent){
+			//record page
 			var e:ShopEvent = new ShopEvent(BUY);
 			e.setItemId(event.getItemId());
 			this.dispatchEvent(e);
