@@ -44,7 +44,7 @@
 			*/
 			
 			SystemConstructor.getInstance().addEventListener(SystemConstructor.LOAD_PROGRESS, onLoadProgress);
-			SystemConstructor.getInstance().setFacebookId("4321");
+			SystemConstructor.getInstance().setFacebookId("2222");
 			SystemConstructor.getInstance().setPlayerName("Name");
 			
 			SystemConstructor.getInstance().construct(onSystemComplete);
