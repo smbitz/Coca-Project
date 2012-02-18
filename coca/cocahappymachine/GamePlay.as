@@ -74,6 +74,7 @@
 	import flash.system.ApplicationDomain;
 	import flash.events.SecurityErrorEvent;
 	import cocahappymachine.util.Config;
+	import cocahappymachine.ui.Character;
 
 
 	public class GamePlay extends MovieClip{
@@ -163,6 +164,7 @@
 			mouseCursor = new MouseCursor();
 			mouseCursor.mouseEnabled = false;
 			Mouse.hide();
+			
 			
 			currentTutorialPage = FIRST_TUTORIAL_1;
 			

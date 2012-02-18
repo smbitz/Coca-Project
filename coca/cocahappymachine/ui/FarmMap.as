@@ -19,7 +19,13 @@
 		public static const START_ZOOM_STEP:int = 2;
 		
 		public static const SHOP_CLICK:String = "SHOP_CLICK";
-
+		
+		private static const CHARACTER_START_X:int = 1200;
+		private static const CHARACTER_START_Y:int = 1000;
+		public static const CHARACTER_MIN_X:int = 400;
+		public static const CHARACTER_MIN_Y:int = 600;
+		public static const CHARACTER_MAX_X:int = 2400;
+		public static const CHARACTER_MAX_Y:int = 2000;
 
 		private static const INIT_X:int = -1180;
 		private static const INIT_Y:int = -500;
@@ -45,6 +51,8 @@
 		private var map:MovieClip;
 		private var s:Stage
 		private var popItem:Array;		//array of MovieClip
+		
+		private var character:Character;
 		
 		public function FarmMap(s:Stage) {
 			this.s = s;
@@ -103,6 +111,9 @@
 		}
 		
 		public function setCurrentPlayer(p:Player){
+			character = new Character();
+			character.x = CHARACTER_START_X;
+			character.y = CHARACTER_START_Y;
 			currentPlayer = p;
 			var tileData:Tile;
 			farmTile = new Array();
@@ -143,6 +154,7 @@
 					}
 				}
 			}
+			this.addChild(character);
 		}
 		
 		public function onTileClick(event:MouseEvent){
@@ -187,6 +199,9 @@
 		}
 		
 		public function updateTile(tile:AbstractFarmTile){
+			if(this.contains(character)){
+				this.removeChild(character);
+			}
 			var childIndex:int = this.getChildIndex(tile);
 			this.removeChild(tile);
 			var arrayIndex:int = farmTile.indexOf(tile);
@@ -205,6 +220,7 @@
 			newTile.addEventListener(MouseEvent.CLICK, onTileClick);
 			farmTile[arrayIndex] = newTile;
 			this.addChildAt(newTile, childIndex);
+			this.addChild(character);
 		}
 		
 		public function getFarmTile(t:Tile):AbstractFarmTile{
