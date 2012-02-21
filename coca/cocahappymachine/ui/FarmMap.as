@@ -12,6 +12,7 @@
 	import Resources.Map;
 	import cocahappymachine.util.DragConstrain;
 	import com.greensock.TweenLite;
+	import flash.display.Shape;
 	
 	public class FarmMap extends MovieClip implements DragConstrain {
 		
@@ -20,12 +21,12 @@
 		
 		public static const SHOP_CLICK:String = "SHOP_CLICK";
 		
-		private static const CHARACTER_START_X:int = 1200;
-		private static const CHARACTER_START_Y:int = 1000;
-		public static const CHARACTER_MIN_X:int = 400;
-		public static const CHARACTER_MIN_Y:int = 600;
-		public static const CHARACTER_MAX_X:int = 2400;
-		public static const CHARACTER_MAX_Y:int = 2000;
+		private static const CHARACTER_START_X:int = 2258;
+		private static const CHARACTER_START_Y:int = 1020;
+		public static const CHARACTER_MIN_X:int = 600;
+		public static const CHARACTER_MIN_Y:int = 1020;
+		public static const CHARACTER_MAX_X:int = 2258;
+		public static const CHARACTER_MAX_Y:int = 1278;
 
 		private static const INIT_X:int = -1180;
 		private static const INIT_Y:int = -500;

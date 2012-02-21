@@ -8,6 +8,7 @@
 		
 		public function CharacterBoyFront1() {
 			// constructor code
+			
 		}
 	}
 	
