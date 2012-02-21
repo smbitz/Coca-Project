@@ -38,7 +38,7 @@
 		private var waterFront:MovieClip;
 		private var plantFront:MovieClip;
 		
-		public function Character(sex:int = SEX_MALE) {
+		public function Character( sex:int ) {
 			this.sex = sex;
 			if(sex == SEX_MALE){
 				walkBack = new CharacterBoyBack2();

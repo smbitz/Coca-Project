@@ -8,6 +8,8 @@
 	<string name="USE_SPECIAL_CODE_URL" value="http://coca.flexintelligent.com/cocaproject/php/specialCode/use_special_code.php" />
 	<string name="NEWSPAPER_URL" value="http://coca.flexintelligent.com/cocaproject/php/newspaper/newspaper.html" />
 	<string name="NEWSPAPER_URL_PAGE_2" value="http://coca.flexintelligent.com/cocaproject/php/newspaper/newspaperPage2.html" />
+	<string name="NEWSPAPER_MOBILE" value="http://coca.flexintelligent.com/cocaproject/php/newspaper/img/newspaper_mobile.png" />
+	<string name="NEWSPAPER_TABLET" value="http://coca.flexintelligent.com/cocaproject/php/newspaper/img/newspaper_tablet.png" />
 	
 	<string name="AUDIO_LIST" value="MUSIC_BG,EFFECT_LEVELUP,EFFECT_BONUS,EFFECT_BUTTON_CLICK,EFFECT_COIN,EFFECT_LAND_CLICK,EFFECT_ON_OFF_CLICK,EFFECT_CHOOSE_CLICK" />
 	<string name="MUSIC_BG" value="http://coca.flexintelligent.com/cocaproject/music/bg.mp3" />

@@ -21,12 +21,12 @@
 		
 		public static const SHOP_CLICK:String = "SHOP_CLICK";
 		
-		private static const CHARACTER_START_X:int = 2258;
+		private static const CHARACTER_START_X:int = 2300;
 		private static const CHARACTER_START_Y:int = 1020;
-		public static const CHARACTER_MIN_X:int = 600;
+		public static const CHARACTER_MIN_X:int = 620;
 		public static const CHARACTER_MIN_Y:int = 1020;
-		public static const CHARACTER_MAX_X:int = 2258;
-		public static const CHARACTER_MAX_Y:int = 1278;
+		public static const CHARACTER_MAX_X:int = 2318;
+		public static const CHARACTER_MAX_Y:int = 1460;
 
 		private static const INIT_X:int = -1180;
 		private static const INIT_Y:int = -500;
@@ -112,7 +112,7 @@
 		}
 		
 		public function setCurrentPlayer(p:Player){
-			character = new Character();
+			character = new Character( p.getSex() );
 			character.x = CHARACTER_START_X;
 			character.y = CHARACTER_START_Y;
 			currentPlayer = p;

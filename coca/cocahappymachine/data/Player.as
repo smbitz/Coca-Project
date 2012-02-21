@@ -16,6 +16,7 @@
 	import cocahappymachine.ui.FarmMapEvent;
 	import cocahappymachine.ui.TileUpdateEvent;
 	import cocahappymachine.ui.ItemPairEvent;
+	import cocahappymachine.ui.Character;
 	
 	public class Player extends EventDispatcher {
 
@@ -55,13 +56,17 @@
 		private static const ITEM_ID_SHRIMP:String = "290";
 		private static const ITEM_ID_OYSTER:String = "300";
 		
+		private static const SEX_MALE = "male";
+		private static const SEX_FEMALE = "female";
+		
 		private var facebookId:String;
 		private var exp:int;
 		private var money:int;
-		private var isNew:Boolean;
+		private var isNew:String;
 		private var tile:Array;		//array of Tile
 		private var backpack:Array;	//array of BackpackItem
 		private var name:String;
+		private var sex:int;
 		
 		private var isLoad:Boolean;
 		private var loadCallback:Function;
@@ -86,9 +91,16 @@
 		
 		private static const NUMBER_PERCENTS_TO_ADD_SUPPLY:int = 95;
 		
-		public function Player(facebookId:String,playerName:String) {
+		public function Player(facebookId:String,playerName:String,playerSex:String) {
 			this.facebookId = facebookId;
 			this.name = playerName;
+			
+			if( playerSex == SEX_MALE ){
+				this.sex = Character.SEX_MALE;
+			}else {
+				this.sex = Character.SEX_FEMALE;
+			}
+			
 			isLoad = false;
 			tile = new Array();
 			backpack = new Array();
@@ -106,6 +118,10 @@
 		
 		public function getName():String{
 			return name;
+		}
+		
+		public function getSex():int{
+			return sex;
 		}
 		
 		public function load(callback:Function){
@@ -142,7 +158,7 @@
 					}else if (playerDataAttributes.name()=="money") {
 						money = int(playerDataAttributes);
 					}else if (playerDataAttributes.name()=="is_new") {
-						isNew = Boolean(playerDataAttributes);
+						isNew = playerDataAttributes;
 					}
 				}
 				
@@ -186,7 +202,11 @@
 		}
 		
 		public function isNewGame():Boolean{
-			return isNew;
+			if( isNew == "true" ){
+				return true;
+			}else{
+				return false;
+			}
 		}
 		
 		public function update(elapse:int){

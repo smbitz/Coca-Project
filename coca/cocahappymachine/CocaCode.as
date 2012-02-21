@@ -41,11 +41,13 @@
 			
 			SystemConstructor.getInstance().setFacebookId(facebookId);
 			SystemConstructor.getInstance().setPlayerName(facebookName);
+			SystemConstructor.getInstance().setPlayerSex(facebookGender);
 			*/
-			
 			SystemConstructor.getInstance().addEventListener(SystemConstructor.LOAD_PROGRESS, onLoadProgress);
+			
 			SystemConstructor.getInstance().setFacebookId("2222");
 			SystemConstructor.getInstance().setPlayerName("Name");
+			SystemConstructor.getInstance().setPlayerSex("male");
 			
 			SystemConstructor.getInstance().construct(onSystemComplete);
 			Debug.getInstance().debug("Load Data Complete");

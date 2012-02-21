@@ -23,6 +23,7 @@
 		
 		private var facebookId:String;
 		private var playerName:String;
+		private var playerSex:String;
 
 		private var currentPlayer:Player;
 		private var isLoad:Boolean = false;
@@ -64,6 +65,10 @@
 			playerName = name;
 		}
 		
+		public function setPlayerSex(sex:String){
+			playerSex = sex;
+		}
+		
 		private function initData() {
 			//retrive all information from HTML
 			aManager = AudioManager.getInstance();
@@ -72,7 +77,7 @@
 			bManager = BuildingManager.getInstance();
 			iManager.load(onItemComplete);
 			bManager.load(onBuildingComplete);
-			currentPlayer = new Player(facebookId,playerName);
+			currentPlayer = new Player(facebookId,playerName,playerSex);
 			currentPlayer.load(onPlayerComplete);
 		
 			//---- Load External SWF ----//
