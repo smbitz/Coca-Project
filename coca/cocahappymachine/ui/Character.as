@@ -20,9 +20,11 @@
 	import Resources.CharacterGirlFront3;
 	import Resources.CharacterGirlFront4;
 	import flashx.textLayout.formats.Float;
+	import com.greensock.easing.Linear;
 	
 	public class Character extends MovieClip {
 	
+		private static const WALK_SPEED:Number = 40; //pixel per sec
 		public static const SEX_MALE:int = 1;
 		public static const SEX_FEMALE:int = 2;
 		
@@ -36,7 +38,7 @@
 		private var waterFront:MovieClip;
 		private var plantFront:MovieClip;
 		
-		public function Character(sex:int = 1) {
+		public function Character(sex:int = SEX_MALE) {
 			this.sex = sex;
 			if(sex == SEX_MALE){
 				walkBack = new CharacterBoyBack2();
@@ -65,6 +67,7 @@
 			this.removeChildAt(0);
 			var targetX:Number = Math.random() * (FarmMap.CHARACTER_MAX_X - FarmMap.CHARACTER_MIN_X) + FarmMap.CHARACTER_MIN_X;
 			var targetY:Number = Math.random() * (FarmMap.CHARACTER_MAX_Y - FarmMap.CHARACTER_MIN_Y) + FarmMap.CHARACTER_MIN_Y;
+			var distance:Number = Math.pow(Math.pow(x-targetX,2) + Math.pow(y-targetY,2), 0.5);
 			if(this.x > targetX){
 				this.scaleX = 1;
 			} else {
@@ -76,7 +79,7 @@
 			} else {
 				this.addChild(walkFront);
 			}
-			TweenLite.to(this, 1.5, {x:targetX, y:targetY, onComplete:onWalkComplete});
+			TweenLite.to(this, distance / WALK_SPEED, {x:targetX, y:targetY, onComplete:onWalkComplete, ease:Linear.easeNone});
 			function onWalkComplete(){
 				stand();
 			}
