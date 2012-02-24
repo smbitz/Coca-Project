@@ -21,6 +21,7 @@
 	import Resources.CharacterGirlFront4;
 	import flashx.textLayout.formats.Float;
 	import com.greensock.easing.Linear;
+	import cocahappymachine.data.Tile;
 	
 	public class Character extends MovieClip {
 	
@@ -91,6 +92,39 @@
 			TweenLite.to(this, Math.random()*20, {delay:1, onComplete:onStandComplete});
 			function onStandComplete(){
 				randomWalk();
+			}
+		}
+		
+		public function supplyAction(tile:AbstractFarmTile){
+			this.removeChildAt(0);
+			var targetX:Number = tile.x + 150;
+			var targetY:Number = tile.y + 75;
+			var characterFace:int;	//0 = front, 1 = back;
+			if(this.x > targetX){
+				this.scaleX = 1;
+				targetX += 100;
+			} else {
+				this.scaleX = -1;
+				targetX -= 100;
+			}
+			if(this.y > targetY){
+				this.addChild(walkBack);
+				this.scaleX *= -1;
+				characterFace = 1;
+			} else {
+				this.addChild(walkFront);
+				characterFace = 0;
+			}
+			TweenLite.to(this, 1, {x:targetX, y:targetY, onComplete:onWalkComplete, ease:Linear.easeNone});
+			function onWalkComplete(){
+				removeChildAt(0);
+				if(characterFace == 0){
+					waterFront.gotoAndPlay(0);
+					addChild(waterFront);
+				} else {
+					waterBack.gotoAndPlay(0);
+					addChild(waterBack);
+				}
 			}
 		}
 	}

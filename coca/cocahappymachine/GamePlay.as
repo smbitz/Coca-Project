@@ -821,6 +821,7 @@
 			
 			addItemPanel.visible = false;
 			currentPlayer.supplyItem(activeTile.getData());
+			farmMap.getCharacter().supplyAction(activeTile);
 			farmMap.updateTile(activeTile);
 			var t:AbstractFarmTile = farmMap.getFarmTile(activeTile.getData());
 			t.setAddTile(ItemPictureBuilder.createAddTile(activeTile.getData().getBuilding().getSupplyId()));

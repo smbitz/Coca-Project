@@ -269,5 +269,9 @@
 			this.removeChild(mc);
 			popItem.slice(popItem.indexOf(mc), 1);
 		}
+		
+		public function getCharacter():Character{
+			return this.character;
+		}
 	}
 }
