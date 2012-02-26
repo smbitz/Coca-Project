@@ -108,6 +108,12 @@
 		private static const FIRST_TUTORIAL_5:int = 4;
 		private static const FIRST_TUTORIAL_6:int = 5;
 		
+		private static const BUILDING_MORNING_GLORY_ID:String = "10";
+		private static const BUILDING_CHINESE_CABBAGE_ID:String = "20";
+		private static const BUILDING_PUMPKIN_ID:String = "30";
+		private static const BUILDING_BABY_CORN_ID:String = "40";
+		private static const BUILDING_STRAW_MUSHROOMS_ID:String = "50";
+		
 		private var currentPlayer:Player;
 		
 		private var tutorialDialog:TutorialDialog;
@@ -821,8 +827,16 @@
 			
 			addItemPanel.visible = false;
 			currentPlayer.supplyItem(activeTile.getData());
+			
 			// check condition on tile type, supplyAction only for vege tile
-			farmMap.getCharacter().supplyAction(activeTile);
+			if( activeTile.getData().getBuildingId() == BUILDING_MORNING_GLORY_ID ||
+			    activeTile.getData().getBuildingId() == BUILDING_CHINESE_CABBAGE_ID ||
+				activeTile.getData().getBuildingId() == BUILDING_PUMPKIN_ID ||
+				activeTile.getData().getBuildingId() == BUILDING_BABY_CORN_ID ||
+				activeTile.getData().getBuildingId() == BUILDING_STRAW_MUSHROOMS_ID ){
+				farmMap.getCharacter().supplyAction(activeTile);
+			}
+				
 			farmMap.updateTile(activeTile);
 			var t:AbstractFarmTile = farmMap.getFarmTile(activeTile.getData());
 			t.setAddTile(ItemPictureBuilder.createAddTile(activeTile.getData().getBuilding().getSupplyId()));
