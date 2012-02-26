@@ -125,6 +125,10 @@
 					waterBack.gotoAndPlay(0);
 					addChild(waterBack);
 				}
+				TweenLite.to(this, 1, {delay:2, onComplete:onAnimateComplete});
+				function onAnimateComplete(){
+					stand();
+				}
 			}
 		}
 	}

@@ -821,6 +821,7 @@
 			
 			addItemPanel.visible = false;
 			currentPlayer.supplyItem(activeTile.getData());
+			// check condition on tile type, supplyAction only for vege tile
 			farmMap.getCharacter().supplyAction(activeTile);
 			farmMap.updateTile(activeTile);
 			var t:AbstractFarmTile = farmMap.getFarmTile(activeTile.getData());
