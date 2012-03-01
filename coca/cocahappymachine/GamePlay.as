@@ -113,6 +113,11 @@
 		private static const BUILDING_PUMPKIN_ID:String = "30";
 		private static const BUILDING_BABY_CORN_ID:String = "40";
 		private static const BUILDING_STRAW_MUSHROOMS_ID:String = "50";
+		private static const BUILDING_CHICKEN_ID:String = "60";
+		private static const BUILDING_PIG_ID:String = "70";
+		private static const BUILDING_COW_ID:String = "80";
+		private static const BUILDING_SHEEP_ID:String = "90";
+		private static const BUILDING_OSTRICH_ID:String = "100";
 		
 		private var currentPlayer:Player;
 		
@@ -833,7 +838,11 @@
 			    activeTile.getData().getBuildingId() == BUILDING_CHINESE_CABBAGE_ID ||
 				activeTile.getData().getBuildingId() == BUILDING_PUMPKIN_ID ||
 				activeTile.getData().getBuildingId() == BUILDING_BABY_CORN_ID ||
-				activeTile.getData().getBuildingId() == BUILDING_STRAW_MUSHROOMS_ID ){
+				activeTile.getData().getBuildingId() == BUILDING_CHICKEN_ID ||
+				activeTile.getData().getBuildingId() == BUILDING_PIG_ID ||
+				activeTile.getData().getBuildingId() == BUILDING_COW_ID ||
+				activeTile.getData().getBuildingId() == BUILDING_SHEEP_ID ||
+				activeTile.getData().getBuildingId() == BUILDING_OSTRICH_ID ){
 				farmMap.getCharacter().supplyAction(activeTile);
 			}
 				

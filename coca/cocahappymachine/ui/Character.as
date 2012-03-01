@@ -29,6 +29,17 @@
 		public static const SEX_MALE:int = 1;
 		public static const SEX_FEMALE:int = 2;
 		
+		private static const BUILDING_MORNING_GLORY_ID:String = "10";
+		private static const BUILDING_CHINESE_CABBAGE_ID:String = "20";
+		private static const BUILDING_PUMPKIN_ID:String = "30";
+		private static const BUILDING_BABY_CORN_ID:String = "40";
+		private static const BUILDING_STRAW_MUSHROOMS_ID:String = "50";
+		private static const BUILDING_CHICKEN_ID:String = "60";
+		private static const BUILDING_PIG_ID:String = "70";
+		private static const BUILDING_COW_ID:String = "80";
+		private static const BUILDING_SHEEP_ID:String = "90";
+		private static const BUILDING_OSTRICH_ID:String = "100";
+		
 		private var sex:int;
 		private var walkBack:MovieClip;
 		private var standBack:MovieClip;
@@ -118,12 +129,26 @@
 			TweenLite.to(this, 1, {x:targetX, y:targetY, onComplete:onWalkComplete, ease:Linear.easeNone});
 			function onWalkComplete(){
 				removeChildAt(0);
-				if(characterFace == 0){
-					waterFront.gotoAndPlay(0);
-					addChild(waterFront);
-				} else {
-					waterBack.gotoAndPlay(0);
-					addChild(waterBack);
+				if( tile.getData().getBuildingId() == BUILDING_MORNING_GLORY_ID ||
+				    tile.getData().getBuildingId() == BUILDING_CHINESE_CABBAGE_ID ||
+					tile.getData().getBuildingId() == BUILDING_PUMPKIN_ID ||
+					tile.getData().getBuildingId() == BUILDING_BABY_CORN_ID ||
+					tile.getData().getBuildingId() == BUILDING_STRAW_MUSHROOMS_ID ){
+					if(characterFace == 0){
+						waterFront.gotoAndPlay(0);
+						addChild(waterFront);
+					} else {
+						waterBack.gotoAndPlay(0);
+						addChild(waterBack);
+					}
+				}else{
+					if(characterFace == 0){
+						plantFront.gotoAndPlay(0);
+						addChild(plantFront);
+					} else {
+						plantBack.gotoAndPlay(0);
+						addChild(plantBack);
+					}
 				}
 				TweenLite.to(this, 1, {delay:2, onComplete:onAnimateComplete});
 				function onAnimateComplete(){
