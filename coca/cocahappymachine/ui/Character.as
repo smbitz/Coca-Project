@@ -26,6 +26,7 @@
 	public class Character extends MovieClip {
 	
 		private static const WALK_SPEED:Number = 40; //pixel per sec
+		private static const WALK_SUPPLY_SPEED:Number = 170; //pixel per sec
 		public static const SEX_MALE:int = 1;
 		public static const SEX_FEMALE:int = 2;
 		
@@ -110,6 +111,7 @@
 			this.removeChildAt(0);
 			var targetX:Number = tile.x + 150;
 			var targetY:Number = tile.y + 75;
+			var distance:Number = Math.pow(Math.pow(x-targetX,2) + Math.pow(y-targetY,2), 0.5);
 			var characterFace:int;	//0 = front, 1 = back;
 			if(this.x > targetX){
 				this.scaleX = 1;
@@ -126,7 +128,7 @@
 				this.addChild(walkFront);
 				characterFace = 0;
 			}
-			TweenLite.to(this, 1, {x:targetX, y:targetY, onComplete:onWalkComplete, ease:Linear.easeNone});
+			TweenLite.to(this, distance / WALK_SUPPLY_SPEED, {x:targetX, y:targetY, onComplete:onWalkComplete, ease:Linear.easeNone});
 			function onWalkComplete(){
 				removeChildAt(0);
 				if( tile.getData().getBuildingId() == BUILDING_MORNING_GLORY_ID ||
@@ -150,7 +152,7 @@
 						addChild(plantBack);
 					}
 				}
-				TweenLite.to(this, 1, {delay:2, onComplete:onAnimateComplete});
+				TweenLite.to(this, distance / WALK_SUPPLY_SPEED, {delay:2, onComplete:onAnimateComplete});
 				function onAnimateComplete(){
 					stand();
 				}
