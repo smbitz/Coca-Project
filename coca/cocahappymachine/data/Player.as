@@ -472,6 +472,7 @@
 			var arrayReturn:Array = returnString.split(",");
 			var couponId:String = arrayReturn[0];
 			var itemId:String = arrayReturn[1];
+			var couponExpireDate:String = arrayReturn[2];
 			
 			if(returnString=="fail"){
 				trace("Code View Fail");
@@ -479,6 +480,7 @@
 				var e:CodeViewEvent = new CodeViewEvent(CODE_RECEIVE);
 				e.setCode(couponId);
 				e.setItemId(itemId);
+				e.setExpireDate(couponExpireDate);
 				this.dispatchEvent(e);
 			}
 		}

@@ -1008,7 +1008,9 @@
 			cBox.setName(item.getName());
 			cBox.setPicture(ItemPictureBuilder.createCouponExchangeItemBox3Picture(item));
 			couponViewDialog.setCoupon(event.getCode());
+			couponViewDialog.setExpireDate(event.getExpireDate());
 			couponViewDialog.visible = true;
+			currentPlayer.updateToServer();
 		}
 		
 		public function onGetItemDialogClose(event:Event){

@@ -5,6 +5,7 @@
 
 		private var itemId:String;
 		private var code:String;
+		private var expireDate:String;
 		
 		public function CodeViewEvent(type:String) {
 			super(type);
@@ -18,12 +19,20 @@
 			code = c;
 		}
 		
+		public function setExpireDate(e:String){
+			expireDate = e;
+		}
+		
 		public function getItemId():String{
 			return itemId;
 		}
 		
 		public function getCode():String{
 			return code;
+		}
+		
+		public function getExpireDate():String{
+			return expireDate;
 		}
 	}
 	
