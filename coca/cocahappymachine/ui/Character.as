@@ -105,6 +105,7 @@
 			function onStandComplete(){
 				randomWalk();
 			}
+			
 		}
 		
 		public function supplyAction(tile:AbstractFarmTile){

@@ -141,53 +141,93 @@
 				}
 			} else if(tileData.getBuildingId() == BUILDING_CHICKEN_ID){
 				if(tileData.getBuildingStatus() == Tile.BUILDING_PROCESS1){
-					return new Chicken1Tile();
+					var newChicken1Tile:Chicken1Tile = new Chicken1Tile();
+					newChicken1Tile.gotoAndPlay( int(Math.random()*100) );
+					return newChicken1Tile;
 				}else if(tileData.getBuildingStatus() == Tile.BUILDING_PROCESS2){
-					return new Chicken2Tile();
+					var newChicken2Tile:Chicken2Tile = new Chicken2Tile();
+					newChicken2Tile.gotoAndPlay( int(Math.random()*100) );
+					return newChicken2Tile;
 				}else if(tileData.getBuildingStatus() == Tile.BUILDING_COMPLETED){
-					return new Chicken3Tile();
+					var newChicken3Tile:Chicken3Tile = new Chicken3Tile();
+					newChicken3Tile.gotoAndPlay( int(Math.random()*100) );
+					return newChicken3Tile;
 				}else if(tileData.getBuildingStatus() == Tile.BUILDING_ROTTED){
-					return new Chicken4Tile();
+					var newChicken4Tile:Chicken4Tile = new Chicken4Tile();
+					newChicken4Tile.gotoAndPlay( int(Math.random()*100) );
+					return newChicken4Tile;
 				}
 			} else if(tileData.getBuildingId() == BUILDING_PIG_ID){
 				if(tileData.getBuildingStatus() == Tile.BUILDING_PROCESS1){
-					return new Pig1Tile();
+					var newPig1Tile:Pig1Tile = new Pig1Tile();
+					newPig1Tile.gotoAndPlay( int(Math.random()*100) );
+					return newPig1Tile;
 				}else if(tileData.getBuildingStatus() == Tile.BUILDING_PROCESS2){
-					return new Pig2Tile();
+					var newPig2Tile:Pig2Tile = new Pig2Tile();
+					newPig2Tile.gotoAndPlay( int(Math.random()*100) );
+					return newPig2Tile;
 				}else if(tileData.getBuildingStatus() == Tile.BUILDING_COMPLETED){
-					return new Pig3Tile();
+					var newPig3Tile:Pig3Tile = new Pig3Tile();
+					newPig3Tile.gotoAndPlay( int(Math.random()*100) );
+					return newPig3Tile;
 				}else if(tileData.getBuildingStatus() == Tile.BUILDING_ROTTED){
-					return new Pig4Tile();
+					var newPig4Tile:Pig4Tile = new Pig4Tile();
+					newPig4Tile.gotoAndPlay( int(Math.random()*100) );
+					return newPig4Tile;
 				}
 			} else if(tileData.getBuildingId() == BUILDING_COW_ID){
 				if(tileData.getBuildingStatus() == Tile.BUILDING_PROCESS1){
-					return new Cow1Tile();
+					var newCow1Tile:Cow1Tile = new Cow1Tile();
+					newCow1Tile.gotoAndPlay( int(Math.random()*100) );
+					return newCow1Tile;
 				}else if(tileData.getBuildingStatus() == Tile.BUILDING_PROCESS2){
-					return new Cow2Tile();
+					var newCow2Tile:Cow2Tile = new Cow2Tile();
+					newCow2Tile.gotoAndPlay( int(Math.random()*100) );
+					return newCow2Tile;
 				}else if(tileData.getBuildingStatus() == Tile.BUILDING_COMPLETED){
-					return new Cow3Tile();
+					var newCow3Tile:Cow3Tile = new Cow3Tile();
+					newCow3Tile.gotoAndPlay( int(Math.random()*100) );
+					return newCow3Tile;
 				}else if(tileData.getBuildingStatus() == Tile.BUILDING_ROTTED){
-					return new Cow4Tile();
+					var newCow4Tile:Cow4Tile = new Cow4Tile();
+					newCow4Tile.gotoAndPlay( int(Math.random()*100) );
+					return newCow4Tile;
 				}
 			} else if(tileData.getBuildingId() == BUILDING_SHEEP_ID){
 				if(tileData.getBuildingStatus() == Tile.BUILDING_PROCESS1){
-					return new Sheep1Tile();
+					var newSheep1Tile:Sheep1Tile = new Sheep1Tile();
+					newSheep1Tile.gotoAndPlay( int(Math.random()*100) );
+					return newSheep1Tile;
 				}else if(tileData.getBuildingStatus() == Tile.BUILDING_PROCESS2){
-					return new Sheep2Tile();
+					var newSheep2Tile:Sheep2Tile = new Sheep2Tile();
+					newSheep2Tile.gotoAndPlay( int(Math.random()*100) );
+					return newSheep2Tile;
 				}else if(tileData.getBuildingStatus() == Tile.BUILDING_COMPLETED){
-					return new Sheep3Tile();
+					var newSheep3Tile:Sheep3Tile = new Sheep3Tile();
+					newSheep3Tile.gotoAndPlay( int(Math.random()*100) );
+					return newSheep3Tile;
 				}else if(tileData.getBuildingStatus() == Tile.BUILDING_ROTTED){
-					return new Sheep4Tile();
+					var newSheep4Tile:Sheep4Tile = new Sheep4Tile();
+					newSheep4Tile.gotoAndPlay( int(Math.random()*100) );
+					return newSheep4Tile;
 				}
 			} else if(tileData.getBuildingId() == BUILDING_OSTRICH_ID){
 				if(tileData.getBuildingStatus() == Tile.BUILDING_PROCESS1){
-					return new Ostrich1Tile();
+					var newOstrich1Tile:Ostrich1Tile = new Ostrich1Tile();
+					newOstrich1Tile.gotoAndPlay( int(Math.random()*100) );
+					return newOstrich1Tile;
 				}else if(tileData.getBuildingStatus() == Tile.BUILDING_PROCESS2){
-					return new Ostrich2Tile();
+					var newOstrich2Tile:Ostrich2Tile = new Ostrich2Tile();
+					newOstrich2Tile.gotoAndPlay( int(Math.random()*100) );
+					return newOstrich2Tile;
 				}else if(tileData.getBuildingStatus() == Tile.BUILDING_COMPLETED){
-					return new Ostrich3Tile();
+					var newOstrich3Tile:Ostrich3Tile = new Ostrich3Tile();
+					newOstrich3Tile.gotoAndPlay( int(Math.random()*100) );
+					return newOstrich3Tile;
 				}else if(tileData.getBuildingStatus() == Tile.BUILDING_ROTTED){
-					return new Ostrich4Tile();
+					var newOstrich4Tile:Ostrich4Tile = new Ostrich4Tile();
+					newOstrich4Tile.gotoAndPlay( int(Math.random()*100) );
+					return newOstrich4Tile;
 				}
 			} else if(tileData.getBuildingId() == BUILDING_FISH_ID){
 				if(tileData.getBuildingStatus() == Tile.BUILDING_PROCESS1){
