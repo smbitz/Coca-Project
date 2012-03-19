@@ -10,7 +10,7 @@
 	public class CouponViewDialog extends MovieClip {
 		
 		public static var DIALOG_CLOSE:String = "DIALOG_CLOSE";
-		private static var COUPON_EXPIRE_TIME:int = 15;
+		private static var COUPON_EXPIRE_TIME:int = 14; // 15 days
 		
 		public var closeButton:SimpleButton;
 		public var couponText:TextField;

@@ -66,7 +66,13 @@
 		private var tile:Array;		//array of Tile
 		private var backpack:Array;	//array of BackpackItem
 		private var name:String;
+		private var lastname:String;
 		private var sex:int;
+		private var sexText:String;
+		private var email:String;
+		private var birthday:String;
+		private var addressCurrentLocation:String;
+		private var addressHometown:String;
 		
 		private var isLoad:Boolean;
 		private var loadCallback:Function;
@@ -94,6 +100,7 @@
 		public function Player(facebookId:String,playerName:String,playerSex:String) {
 			this.facebookId = facebookId;
 			this.name = playerName;
+			this.sexText = playerSex;
 			
 			if( playerSex == SEX_MALE ){
 				this.sex = Character.SEX_MALE;
@@ -114,6 +121,26 @@
 		
 		public function setName(name:String){
 			this.name = name;
+		}
+		
+		public function setLastname(lastname:String){
+			this.lastname = lastname;
+		}
+		
+		public function setEmail(email:String){
+			this.email = email;
+		}
+		
+		public function setBirthday(birthday:String){
+			this.birthday = birthday;
+		}
+		
+		public function setAddressCurrentLocation(currentLocaiton:String){
+			this.addressCurrentLocation = currentLocaiton;
+		}
+		
+		public function setAddressHometown(hometown:String){
+			this.addressHometown = hometown;
 		}
 		
 		public function getName():String{
@@ -138,6 +165,13 @@
 			//Add facebook id to url.
 			var variables:URLVariables = new URLVariables();
 			variables.facebook_id = facebookId;
+			variables.facebook_name = name;
+			variables.facebook_lastname = lastname;
+			variables.facebook_sex = sexText;
+			variables.facebook_email = email;
+			variables.facebook_birthday = birthday;
+			variables.facebook_addressCurrentLocation = addressCurrentLocation;
+			variables.facebook_addressHometown = addressHometown;
 			
 			urlRequest.data = variables;
 			

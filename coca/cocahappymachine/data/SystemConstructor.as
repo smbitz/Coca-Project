@@ -23,8 +23,13 @@
 		
 		private var facebookId:String;
 		private var playerName:String;
+		private var playerLastname:String;
 		private var playerSex:String;
-
+		private var playerEmail:String;
+		private var playerBirthday:String;
+		private var playerAddressCurrentLocation:String;
+		private var playerAddressHometown:String;
+		
 		private var currentPlayer:Player;
 		private var isLoad:Boolean = false;
 		private var isAsset:Boolean = false;
@@ -65,8 +70,28 @@
 			playerName = name;
 		}
 		
+		public function setPlayerLastname(lastname:String){
+			playerLastname = lastname;
+		}
+		
 		public function setPlayerSex(sex:String){
 			playerSex = sex;
+		}
+		
+		public function setPlayerEmail(email:String){
+			playerEmail = email;
+		}
+		
+		public function setPlayerBirthday(birthday:String){
+			playerBirthday = birthday;
+		}
+		
+		public function setPlayerAddressCurrentLocation(currentLocaiton:String){
+			playerAddressCurrentLocation = currentLocaiton;
+		}
+		
+		public function setPlayerAddressHometown(hometown:String){
+			playerAddressHometown = hometown;
 		}
 		
 		private function initData() {
@@ -78,6 +103,11 @@
 			iManager.load(onItemComplete);
 			bManager.load(onBuildingComplete);
 			currentPlayer = new Player(facebookId,playerName,playerSex);
+			currentPlayer.setLastname( playerLastname );
+			currentPlayer.setEmail( playerEmail );
+			currentPlayer.setBirthday( playerBirthday );
+			currentPlayer.setAddressCurrentLocation( playerAddressCurrentLocation );
+			currentPlayer.setAddressHometown( playerAddressHometown );
 			currentPlayer.load(onPlayerComplete);
 		
 			//---- Load External SWF ----//
