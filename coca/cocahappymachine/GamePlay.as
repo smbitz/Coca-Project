@@ -75,6 +75,7 @@
 	import flash.events.SecurityErrorEvent;
 	import cocahappymachine.util.Config;
 	import cocahappymachine.ui.Character;
+	import Resources.AgreementDialog;
 
 
 	public class GamePlay extends MovieClip{
@@ -133,6 +134,7 @@
 		private var getItemDialog:GetItemDialog;
 		private var couponConfirmDialog:CouponConfirmDialog;
 		private var couponViewDialog:CouponViewDialog;
+		private var agreementDialog:AgreementDialog;
 		
 		private var farmMap:FarmMap;
 		private var activeTile:AbstractFarmTile;
@@ -380,6 +382,14 @@
 			couponViewDialog.addEventListener(CouponViewDialog.DIALOG_CLOSE, onCouponViewClose);
 			couponViewDialog.visible = false;
 			this.addChild(couponViewDialog);
+			
+			if(currentPlayer.isNewGame()){
+				agreementDialog = new AgreementDialog();
+				agreementDialog.visible = true;
+				this.addChild(agreementDialog);				
+			}
+			
+			
 			//-------------------------
 			if(currentPlayer.isNewGame()){
 				setStateTutorial();
