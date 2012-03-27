@@ -386,6 +386,7 @@
 			if(currentPlayer.isNewGame()){
 				agreementDialog = new AgreementDialog();
 				agreementDialog.visible = true;
+				agreementDialog.x = 40;
 				this.addChild(agreementDialog);				
 			}
 			
