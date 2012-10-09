@@ -29,7 +29,10 @@
 		public function setExpireDate(setText:String){
 			//Caluculate expire date
 			var exchangeSetDate:Date = new Date( setText.slice(0, 4), setText.slice(5, 7), setText.slice(8, 10), 0, 0, 0, 0);
+			//var millisecondsPerDay:Number = 1000 * 60 * 60 * 24;
 			var expireSetDate:Date = new Date( exchangeSetDate.getFullYear(), exchangeSetDate.getMonth(), exchangeSetDate.getDate()+COUPON_EXPIRE_TIME, 0,0,0,0);
+			//var expireSetDate:Date = new Date();
+			//exporeSetDate.setTime( exchangeSetDate.getTime()+(millisecondsPerDay*COUPON_EXPIRE_TIME) );
 			
 			var expireDateText:String = expireSetDate.getDate().toString();
 			

@@ -34,6 +34,7 @@
 			var d:Date = new Date();
 			currentTime = d.getTime();
 			var elapse:int = currentTime - previousTime;
+			elapse = Math.min(elapse, 1000);
 			previousTime = currentTime;
 			
 			this.dispatchEvent(new GameTimerEvent(GAMETIMER_RUN, elapse) );
