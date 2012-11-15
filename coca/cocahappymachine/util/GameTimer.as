@@ -34,7 +34,17 @@
 			var d:Date = new Date();
 			currentTime = d.getTime();
 			var elapse:int = currentTime - previousTime;
-			elapse = Math.min(elapse, 1000);
+			
+			//Set min elapse to 1
+			if( elapse <= 0 ){
+				elapse = 1;
+			}
+			
+			//Set max elapse to 3000
+			if( elapse > 3000 ){
+				elapse = 3000;
+			}
+			
 			previousTime = currentTime;
 			
 			this.dispatchEvent(new GameTimerEvent(GAMETIMER_RUN, elapse) );

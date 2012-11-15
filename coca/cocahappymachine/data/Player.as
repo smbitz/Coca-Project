@@ -173,6 +173,9 @@
 			variables.facebook_addressCurrentLocation = addressCurrentLocation;
 			variables.facebook_addressHometown = addressHometown;
 			
+			//Debug
+			trace("Before Load Facebook_id : "+facebookId);
+			
 			urlRequest.data = variables;
 			
 			urlLoader.load(urlRequest);
@@ -210,6 +213,10 @@
 					backpack.push(newItem);
 				}
 			}
+			
+			//Debug
+			trace("After Load Facebook_id : "+facebookId);
+			
 			isLoad = true;
 			loadCallback();
 		}

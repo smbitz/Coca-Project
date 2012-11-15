@@ -54,8 +54,8 @@
 			SystemConstructor.getInstance().setPlayerAddressHometown( facebookAddressHometown );
 			
 			SystemConstructor.getInstance().addEventListener(SystemConstructor.LOAD_PROGRESS, onLoadProgress);
-			/*
-			SystemConstructor.getInstance().setFacebookId( "2222" );
+			
+			/*SystemConstructor.getInstance().setFacebookId( "2222" );
 			SystemConstructor.getInstance().setPlayerName( "Name" );
 			SystemConstructor.getInstance().setPlayerLastname( "Lastname" );
 			SystemConstructor.getInstance().setPlayerSex( "male" );
@@ -63,7 +63,9 @@
 			SystemConstructor.getInstance().setPlayerBirthday( "00/00/00" );
 			SystemConstructor.getInstance().setPlayerAddressCurrentLocation( "Bangkok" );
 			SystemConstructor.getInstance().setPlayerAddressHometown( "Bangkok" );
-			*/
+			
+			SystemConstructor.getInstance().addEventListener(SystemConstructor.LOAD_PROGRESS, onLoadProgress);*/
+			
 			SystemConstructor.getInstance().construct(onSystemComplete);
 			Debug.getInstance().debug("Load Data Complete");
 		}		
