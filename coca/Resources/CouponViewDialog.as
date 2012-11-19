@@ -28,7 +28,9 @@
 		
 		public function setExpireDate(setText:String){
 			//Caluculate expire date
-			var exchangeSetDate:Date = new Date( setText.slice(0, 4), setText.slice(5, 7), setText.slice(8, 10), 0, 0, 0, 0);
+			//Month is 0-11 then must (-1)
+			var exchangeSetDate:Date = new Date( setText.slice(0, 4), Number( setText.slice(5, 7) )-1, setText.slice(8, 10), 0, 0, 0, 0);
+			
 			//var millisecondsPerDay:Number = 1000 * 60 * 60 * 24;
 			var expireSetDate:Date = new Date( exchangeSetDate.getFullYear(), exchangeSetDate.getMonth(), exchangeSetDate.getDate()+COUPON_EXPIRE_TIME, 0,0,0,0);
 			//var expireSetDate:Date = new Date();
@@ -40,7 +42,8 @@
 				expireDateText = "0"+expireDateText;
 			}
 			
-			var expireMonthText:String = expireSetDate.getMonth().toString();
+			//Month is 0-11 then must (+1)
+			var expireMonthText:String = (expireSetDate.getMonth()+1).toString();
 			
 			if((expireMonthText.length)==1){
 				expireMonthText = "0"+expireMonthText;

@@ -31,7 +31,7 @@
 			startLoading();
 			
 			var debugConsole:InputableDebugConsole = new InputableDebugConsole(stage.stageWidth, stage.stageHeight);
-//			this.addChild(debugConsole);
+			//this.addChild(debugConsole);
 			
 			//---- load data ----
 			

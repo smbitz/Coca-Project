@@ -646,7 +646,12 @@
 			addItemPanel.setSupplyButton(ItemPictureBuilder.createAddItemSupplyButton(building, isSupply), isSupply);
 			addItemPanel.setExtra1Button(ItemPictureBuilder.createAddItemExtra1Button(building, isExtra1), isExtra1);
 			addItemPanel.setExtra2Button(ItemPictureBuilder.createAddItemExtra2Button(building, isExtra2), isExtra2);
-			currentPlayer.updateToServer();
+			
+			//Add tile to save data
+			var tileToSave:Array = new Array();
+			tileToSave.push( activeTile.getData() );
+			
+			currentPlayer.updateToServer( tileToSave, null );
 		}
 		
 		public function onTileHarvest(event:FarmMapEvent){
@@ -660,7 +665,18 @@
 			}
 			farmMap.setPopItem(activeTile, mcArray);
 			farmMap.updateTile(event.getClickedTile());
-			currentPlayer.updateToServer();
+			
+			//Add tile to save data
+			var tileToSave:Array = new Array();
+			tileToSave.push( event.getClickedTile().getData() );
+			
+			//Add item to save data
+			var itemToSave:Array = new Array();
+			for each(  var updateItem:ItemQuantityPair in receiveItem ){
+				itemToSave.push( updateItem.getItem() );
+			}
+			
+			currentPlayer.updateToServer( tileToSave, itemToSave );
 		}
 		
 		public function onShopClick(event:Event){
@@ -849,6 +865,7 @@
 			    activeTile.getData().getBuildingId() == BUILDING_CHINESE_CABBAGE_ID ||
 				activeTile.getData().getBuildingId() == BUILDING_PUMPKIN_ID ||
 				activeTile.getData().getBuildingId() == BUILDING_BABY_CORN_ID ||
+				activeTile.getData().getBuildingId() == BUILDING_STRAW_MUSHROOMS_ID ||
 				activeTile.getData().getBuildingId() == BUILDING_CHICKEN_ID ||
 				activeTile.getData().getBuildingId() == BUILDING_PIG_ID ||
 				activeTile.getData().getBuildingId() == BUILDING_COW_ID ||
@@ -860,7 +877,16 @@
 			farmMap.updateTile(activeTile);
 			var t:AbstractFarmTile = farmMap.getFarmTile(activeTile.getData());
 			t.setAddTile(ItemPictureBuilder.createAddTile(activeTile.getData().getBuilding().getSupplyId()));
-			currentPlayer.updateToServer();
+			
+			//Add tile to save data
+			var tileToSave:Array = new Array();
+			tileToSave.push( activeTile.getData() );
+			
+			//Add item to save data
+			var itemToSave:Array = new Array();
+			itemToSave.push( activeTile.getData().getBuilding().getSupplyItem() );
+			
+			currentPlayer.updateToServer( tileToSave, itemToSave );
 		}
 		
 		public function onExtraItem1(event:Event){
@@ -872,7 +898,16 @@
 			farmMap.updateTile(activeTile);
 			var t:AbstractFarmTile = farmMap.getFarmTile(activeTile.getData());
 			t.setAddTile(ItemPictureBuilder.createAddTile(activeTile.getData().getBuilding().getExtraItem1().getId()));
-			currentPlayer.updateToServer();
+			
+			//Add tile to save data
+			var tileToSave:Array = new Array();
+			tileToSave.push( activeTile.getData() );
+			
+			//Add item to save data
+			var itemToSave:Array = new Array();
+			itemToSave.push( activeTile.getData().getBuilding().getExtraItem1() );
+			
+			currentPlayer.updateToServer( tileToSave, itemToSave );
 		}
 	
 		public function onExtraItem2(event:Event){
@@ -884,7 +919,16 @@
 			farmMap.updateTile(activeTile);
 			var t:AbstractFarmTile = farmMap.getFarmTile(activeTile.getData());
 			t.setAddTile(ItemPictureBuilder.createAddTile(activeTile.getData().getBuilding().getExtraItem2().getId()));
-			currentPlayer.updateToServer();
+			
+			//Add tile to save data
+			var tileToSave:Array = new Array();
+			tileToSave.push( activeTile.getData() );
+			
+			//Add item to save data
+			var itemToSave:Array = new Array();
+			itemToSave.push( activeTile.getData().getBuilding().getExtraItem2() );
+			
+			currentPlayer.updateToServer( tileToSave, itemToSave );
 		}
 		
 		public function onMoveBuilding(event:Event){
@@ -893,7 +937,7 @@
 			trace("move");
 			addItemPanel.visible = false;
 			setPlayStateMoving();
-			currentPlayer.updateToServer();
+			currentPlayer.updateToServer( null, null );
 		}
 		
 		public function onOccupyClose(event:Event){
@@ -914,7 +958,15 @@
 			farmMap.getFarmTile(tileArray[index + 1]).visible = true;
 			farmMap.getFarmTile(tileArray[index + FarmMap.FARMTILE_X]).visible = true;
 			farmMap.getFarmTile(tileArray[index + FarmMap.FARMTILE_X + 1]).visible = true;
-			currentPlayer.updateToServer();
+			
+			//Add tile to save data
+			var tileToSave:Array = new Array();
+			tileToSave.push( farmMap.getFarmTile(tileArray[index]).getData() );
+			tileToSave.push( farmMap.getFarmTile(tileArray[index + 1]).getData() );
+			tileToSave.push( farmMap.getFarmTile(tileArray[index + FarmMap.FARMTILE_X]).getData() );
+			tileToSave.push( farmMap.getFarmTile(tileArray[index + FarmMap.FARMTILE_X + 1]).getData() );
+			
+			currentPlayer.updateToServer( tileToSave, null );
 		}
 		
 		public function onBuildPanelBuild(event:BuildEvent){
@@ -925,7 +977,16 @@
 			var b:Building = BuildingManager.getInstance().getMatchBuilding(buildId);
 			currentPlayer.build(activeTile.getData(), b);
 			farmMap.updateTile(activeTile);
-			currentPlayer.updateToServer();
+			
+			//Add tile to save data
+			var tileToSave:Array = new Array();
+			tileToSave.push( activeTile.getData() );
+			
+			//Add item to save data
+			var itemToSave:Array = new Array();
+			itemToSave.push( activeTile.getData().getBuilding().getBuildItem() );
+			
+			currentPlayer.updateToServer( tileToSave, itemToSave );
 		}
 		
 		public function onMoveDestination(event:FarmMapEvent){
@@ -939,6 +1000,13 @@
 				farmMap.updateTile(activeTile);
 				farmMap.updateTile(event.getClickedTile());
 			}
+			
+			//Add tile to save data
+			var tileToSave:Array = new Array();
+			tileToSave.push( activeTile.getData() );
+			tileToSave.push( destinationTile );
+			
+			currentPlayer.updateToServer( tileToSave, null );
 		}
 		
 		public function onCouponExchangeViewCode(event:CouponEvent){
@@ -960,7 +1028,7 @@
 			c.setItemQuantity(currentPlayer.getItemQuantity(itemExchange.getItem()));
 			c.setItemRequire(itemExchange.getQuantity());
 			c.setPicture(ItemPictureBuilder.createCouponExchangeItemBox2Picture(item));
-			currentPlayer.updateToServer();
+			currentPlayer.updateToServer( null, null );
 		}
 		
 		public function onShopDialogClose(event:Event){
@@ -1021,7 +1089,19 @@
 			couponViewDialog.setCoupon(event.getCode());
 			couponViewDialog.setExpireDate(event.getExpireDate());
 			couponViewDialog.visible = true;
-			currentPlayer.updateToServer();
+			
+			//Add item to save data
+			var itemToSave:Array = new Array();
+			//Coupon
+			itemToSave.push( item );
+			
+			//Exchange item
+			var extraItem:Item = ItemManager.getInstance().getMatchItem(item.getId());
+			for each(var fetchExtraItem:ItemExchangeItem in extraItem.getExchangeItem() ){
+				itemToSave.push( fetchExtraItem.getItem() );
+			}
+			
+			currentPlayer.updateToServer( null, itemToSave );
 		}
 		
 		public function onGetItemDialogClose(event:Event){
@@ -1105,7 +1185,14 @@
 		public function onTileUpdate(event:TileUpdateEvent){
 			var tile:Tile = event.getTile();
 			farmMap.updateTile(farmMap.getFarmTile(tile));
-			currentPlayer.updateToServer();
+			
+			trace("TileUpdate");
+			
+			//Add tile to save data
+			var tileToSave:Array = new Array();
+			tileToSave.push( tile );
+			
+			currentPlayer.updateToServer( tileToSave, null );
 		}
 		
 		public function onNewspaperComplete(event:Event){

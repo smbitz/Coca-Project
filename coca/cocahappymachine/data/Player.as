@@ -17,6 +17,7 @@
 	import cocahappymachine.ui.TileUpdateEvent;
 	import cocahappymachine.ui.ItemPairEvent;
 	import cocahappymachine.ui.Character;
+	import cocahappymachine.ui.AbstractFarmTile;
 	
 	public class Player extends EventDispatcher {
 
@@ -200,10 +201,13 @@
 				}
 				
 				//tile
+				var tileNumber:int;
 				for each(var landAttributes:XML in playerData.land.tile){
 					var newTile:Tile = new Tile();
+					newTile.setTileNumber( tileNumber );
 					newTile.setDataFromXmlNode(landAttributes);
 					tile.push(newTile);
+					tileNumber++;
 				}
 				
 				//backpack
@@ -471,7 +475,7 @@
 				var extraItem:Item = iManager.getMatchItem(itemId);
 				for(var i:int; i < extraItem.getExchangeItem().length; i++){
 					var backpackNumber:int = this.findItemBackpackById(extraItem.getExchangeItem()[i].getId());
-					var quantityToExchange:int = iManager.getMatchItem(itemId).getExchangeItem()[i].getQuantity();
+					var quantityToExchange:int = extraItem.getExchangeItem()[i].getQuantity();
 					
 					this.backpack[backpackNumber].setItemQty(this.backpack[backpackNumber].getItemQty()-quantityToExchange);
 				}
@@ -688,28 +692,62 @@
 		}
 		
 		//---- Update Player data to Server ----//
-		public function updateToServer(){
+		public function updateToServer( arrayUpdateTile:Array, arrayUpdateItem:Array ){
 			var checkValue:int;
 			
-			//getTileData and change millisec to sec.
-			var xmlLand:XML = <land/>;
-			for each(var tileData:Tile in this.tile){
-				checkValue+=(int(tileData.getProgress()/1000)+int(tileData.getSupply()/1000)+int(tileData.getRottenPeriod()/1000));
-				xmlLand.appendChild(<tile land_type={tileData.getLandType()} is_occupy={tileData.getIsOccupy()} building_id={tileData.getBuildingId()} progress={(tileData.getProgress()/1000)} supply_left={(tileData.getSupply()/1000)} extra_id={tileData.getExtraId()} rotten_period={(tileData.getRottenPeriod()/1000)}/>);
-			}
-			
-			//getBackpackItem
-			var xmlBackpack:XML = <backpack/>;
-			for each(var backpackItem:ItemQuantityPair in this.backpack){
-				checkValue-=int(backpackItem.getItemQty());
-				xmlBackpack.appendChild(<item id={backpackItem.getItemId()} quantity={backpackItem.getItemQty()}/>);
+			if( this.isNew == "true" ){
+				//getTileData and change millisec to sec.
+				var xmlLand:XML = <land/>;
+				for each(var tileData:Tile in this.tile){
+					checkValue+=(int(tileData.getProgress()/1000)+int(tileData.getSupply()/1000)+int(tileData.getRottenPeriod()/1000));
+					xmlLand.appendChild(<tile land_type={tileData.getLandType()} is_occupy={tileData.getIsOccupy()} building_id={tileData.getBuildingId()} progress={(tileData.getProgress()/1000)} supply_left={(tileData.getSupply()/1000)} extra_id={tileData.getExtraId()} rotten_period={(tileData.getRottenPeriod()/1000)}/>);
+				}
+				
+				//getBackpackItem
+				var xmlBackpack:XML = <backpack/>;
+				for each(var backpackItem:ItemQuantityPair in this.backpack){
+					checkValue-=int(backpackItem.getItemQty());
+					xmlBackpack.appendChild(<item id={backpackItem.getItemId()} quantity={backpackItem.getItemQty()}/>);
+				}
+			}else{
+				if( arrayUpdateTile != null ){
+					//trace("This : "+targetTile.getTileNumber());
+					//Tile Number Tag is "tile_no"
+					var xmlLand:XML = <land/>;
+					for each( var targetTile:Tile in arrayUpdateTile ){
+						checkValue+=(int(targetTile.getProgress()/1000)+int(targetTile.getSupply()/1000)+int(targetTile.getRottenPeriod()/1000));
+						xmlLand.appendChild(<tile tile_no={targetTile.getTileNumber()} land_type={targetTile.getLandType()} is_occupy={targetTile.getIsOccupy()} building_id={targetTile.getBuildingId()} progress={(targetTile.getProgress()/1000)} supply_left={(targetTile.getSupply()/1000)} extra_id={targetTile.getExtraId()} rotten_period={(targetTile.getRottenPeriod()/1000)}/>);
+					}
+				}
+				
+				if( arrayUpdateItem != null ){
+					var xmlBackpack:XML = <backpack/>;
+					for each(var updateItem:Item in arrayUpdateItem){
+						var updateItemId:String = updateItem.getId();
+						var updateItemQuantity:int = 0;
+						
+						for each(var backpackItem:ItemQuantityPair in this.backpack){
+							if( updateItemId == backpackItem.getItem().getId() ){
+								updateItemQuantity = backpackItem.getItemQty();
+							}
+						}
+						
+						checkValue-=int( updateItemQuantity );
+						xmlBackpack.appendChild(<item id={ updateItemId } quantity={ updateItemQuantity }/>);
+					}
+				}
 			}
 			
 			//Create player xml.
 			var xml:XML = <player facebook_id={this.facebookId} exp={this.exp} money={this.money} is_new={this.isNew} c1={checkValue}/>;
 			
-			xml.appendChild(xmlLand);
-			xml.appendChild(xmlBackpack);
+			if( xmlLand != null ){
+				xml.appendChild(xmlLand);
+			}
+			
+			if( xmlBackpack != null ){
+				xml.appendChild(xmlBackpack);
+			}
 			
 			var urlRequest:URLRequest = new URLRequest(Config.getInstance().getData("PLAYER_UPDATE_URL"));
 			urlRequest.data = xml;

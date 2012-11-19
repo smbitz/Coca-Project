@@ -7,7 +7,7 @@
 	
 	public class Config {
 
-		private static const CONFIG_URL:String = "config.xml";
+		private static const CONFIG_URL:String = "config_update_each_item.xml";
 		
 		private static var instance:Config;
 		

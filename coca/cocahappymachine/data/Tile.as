@@ -18,6 +18,7 @@
 		private static const BUILDING_TYPE_MEAT:String = "meat";
 		private static const BUILDING_TYPE_SEA:String = "sea";
 		
+		private var tileNumber:String;
 		private var landType:String;
 		private var isOccupy:Boolean;
 		private var buildingId:String;
@@ -109,6 +110,10 @@
 			}
 		}
 		
+		public function getTileNumber():String{
+			return this.tileNumber;
+		}
+		
 		public function getBuildingId():String{
 			return this.buildingId;
 		}
@@ -151,6 +156,10 @@
 		
 		public function getRottenPeriod():int{
 			return this.rottenPeriod;
+		}
+		
+		public function setTileNumber(setValue:int){
+			this.tileNumber = setValue.toString();
 		}
 		
 		public function setBuilding(setValue:Building){
